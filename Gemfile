@@ -61,3 +61,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# gem "challenge", path: "engines/challenge"
+gem "challenge", branch: "main", github: "friendlyantz/take-on-me-challange-engine"

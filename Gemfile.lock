@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/friendlyantz/take-on-me-challange-engine.git
+  revision: 254bee8b756a99cb2fa0965998e76e96c2d17173
+  branch: main
+  specs:
+    challenge (0.1.0)
+      rails (>= 8.0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -370,6 +378,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   capybara
+  challenge!
   debug
   importmap-rails
   jbuilder
