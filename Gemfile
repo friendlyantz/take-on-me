@@ -14,6 +14,8 @@ gem "importmap-rails"
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
+# Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -62,5 +64,5 @@ group :test do
   gem "selenium-webdriver"
 end
 
-# gem "challenge", path: "engines/challenge"
+# gem "challenge", path: "engines/take-on-me-challange-engine"
 gem "challenge", branch: "main", github: "friendlyantz/take-on-me-challange-engine"
