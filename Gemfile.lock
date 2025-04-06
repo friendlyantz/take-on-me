@@ -1,10 +1,12 @@
 GIT
   remote: https://github.com/friendlyantz/take-on-me-challange-engine.git
-  revision: f7423e1de8a984f35b2a716abe1ed975751d6184
+  revision: 53848bc9fde1cf561206f783a73704bcda1663d4
   branch: main
   specs:
     challenge (0.1.0)
+      importmap-rails
       rails (>= 8.0.2)
+      stimulus-rails
 
 GEM
   remote: https://rubygems.org/
@@ -255,7 +257,7 @@ GEM
     rdoc (6.13.1)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
-    reline (0.6.0)
+    reline (0.6.1)
       io-console (~> 0.5)
     rexml (3.4.1)
     rubocop (1.75.2)
