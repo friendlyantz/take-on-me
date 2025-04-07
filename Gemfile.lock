@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/friendlyantz/take-on-me-challange-engine.git
-  revision: da4e43504579f608392dc563ed153bdb78a3db51
+  revision: 6171b582aa3ef709aa527c887470d4ebb992873f
   branch: main
   specs:
     challenge (0.1.0)
