@@ -81,6 +81,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    host: take_on_me-db
     database: take_on_me_production
     username: take_on_me
     password: <%= ENV["TAKE_ON_ME_DATABASE_PASSWORD"] %>

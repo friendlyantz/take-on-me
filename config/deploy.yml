@@ -36,8 +36,14 @@ env:
   secret:
     - RAILS_MASTER_KEY
   clear:
-    # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
-    # When you start using multiple servers, you should split out job processing to a dedicated machine.
+    #  Docker container that will run in production will be named service_name-postgres - name it carefully
+    DB_HOST: take_on_me-db
+    POSTGRES_USER: "take_on_me"
+    POSTGRES_DB: "take_on_me_production"
+    DB_PORT: 5432 # use 5432 regardless of what `localhost` port you expose below
+
+    # Run the Sol id Queue Supervisor inside the web server's Puma process to do jobs.
+    # When you st art using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
 
     # Set number of processes dedicated to Solid Queue (default: 1)
@@ -96,12 +102,11 @@ accessories:
   db:
     image: postgres:17
     host: 192.168.1.25
-    port: 5432
+    port: "127.0.0.1:5432:5432" # Change this for multiple Postgres containers in the same machine "127.0.0.1:5433:5432"
     env:
       clear:
-        DB_HOST: take_on_me-db
-        POSTGRES_USER: "take_on_me"
-        POSTGRES_DB: "take_on_me_production"
+        POSTGRES_USER: "${POSTGRES_USER}"
+        POSTGRES_DB: "${POSTGRES_DB}"
       secret:
         - TAKE_ON_ME_DATABASE_PASSWORD
     files:
