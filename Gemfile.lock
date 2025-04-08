@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/friendlyantz/take-on-me-challange-engine.git
-  revision: da4e43504579f608392dc563ed153bdb78a3db51
+  revision: 6171b582aa3ef709aa527c887470d4ebb992873f
   branch: main
   specs:
     challenge (0.1.0)
@@ -92,7 +92,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (7.0.1)
+    brakeman (7.0.2)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -292,7 +292,7 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.2)
-    rubocop (1.75.2)
+    rubocop (1.73.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -300,30 +300,25 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.38.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.44.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
-    rubocop-performance (1.25.0)
+    rubocop-performance (1.24.0)
       lint_roller (~> 1.1)
-      rubocop (>= 1.75.0, < 2.0)
+      rubocop (>= 1.72.1, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
-    rubocop-rails (2.31.0)
+    rubocop-rails (2.26.2)
       activesupport (>= 4.2.0)
-      lint_roller (~> 1.1)
       rack (>= 1.1)
-      rubocop (>= 1.75.0, < 2.0)
-      rubocop-ast (>= 1.38.0, < 2.0)
-    rubocop-rails-omakase (1.1.0)
-      rubocop (>= 1.72)
-      rubocop-performance (>= 1.24)
-      rubocop-rails (>= 2.30)
+      rubocop (>= 1.52.0, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     securerandom (0.4.1)
-    selenium-webdriver (4.30.1)
+    selenium-webdriver (4.31.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -352,18 +347,33 @@ GEM
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
       ostruct
+    standard (1.47.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.73.0)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.7)
+    standard-custom (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50)
+    standard-performance (1.7.0)
+      lint_roller (~> 1.1)
+      rubocop-performance (~> 1.24.0)
+    standard-rails (1.2.0)
+      lint_roller (~> 1.0)
+      rubocop-rails (~> 2.26.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.6)
-    tailwindcss-rails (4.2.1)
+    tailwindcss-rails (4.2.2)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.0.17)
-    tailwindcss-ruby (4.0.17-aarch64-linux-gnu)
-    tailwindcss-ruby (4.0.17-aarch64-linux-musl)
-    tailwindcss-ruby (4.0.17-arm64-darwin)
-    tailwindcss-ruby (4.0.17-x86_64-linux-gnu)
-    tailwindcss-ruby (4.0.17-x86_64-linux-musl)
+    tailwindcss-ruby (4.1.3)
+    tailwindcss-ruby (4.1.3-aarch64-linux-gnu)
+    tailwindcss-ruby (4.1.3-aarch64-linux-musl)
+    tailwindcss-ruby (4.1.3-arm64-darwin)
+    tailwindcss-ruby (4.1.3-x86_64-linux-gnu)
+    tailwindcss-ruby (4.1.3-x86_64-linux-musl)
     thor (1.3.2)
     thruster (0.1.12)
     thruster (0.1.12-aarch64-linux)
@@ -422,11 +432,12 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.2)
   rspec-rails
-  rubocop-rails-omakase
   selenium-webdriver
   solid_cable
   solid_cache
   solid_queue
+  standard
+  standard-rails
   stimulus-rails
   tailwindcss-rails
   thruster
