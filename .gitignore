@@ -38,3 +38,5 @@
 /app/assets/builds/*
 !/app/assets/builds/.keepspec/examples.txt
 spec/examples.txt
+
+/config/credentials/production.key

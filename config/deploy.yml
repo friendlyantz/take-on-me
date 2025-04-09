@@ -19,7 +19,8 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 # proxy:
 #   ssl: true
-#   host: app.take-on.me
+#   host: take-on.me
+#   forward_headers: true
 
 # Credentials for your image host.
 registry:
@@ -35,6 +36,8 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    # List ENV for the app if you use them in config/database.yml
+    - POSTGRES_PASSWORD
   clear:
     #  Docker container that will run in production will be named service_name-postgres - name it carefully
     DB_HOST: take_on_me-db
@@ -105,10 +108,12 @@ accessories:
     port: "127.0.0.1:5432:5432" # Change this for multiple Postgres containers in the same machine "127.0.0.1:5433:5432"
     env:
       clear:
-        POSTGRES_USER: "${POSTGRES_USER}"
-        POSTGRES_DB: "${POSTGRES_DB}"
+        # hardcode it, unless you use password manager and have ENVs in your shell
+        POSTGRES_USER: take_on_me
+        POSTGRES_DB: take_on_me_production
       secret:
-        - TAKE_ON_ME_DATABASE_PASSWORD
+        # Needs to be called POSTGRES_PASSWORD! as this KEY NAME will be passed to the container
+        - POSTGRES_PASSWORD
     files:
       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:

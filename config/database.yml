@@ -84,7 +84,8 @@ production:
     host: take_on_me-db
     database: take_on_me_production
     username: take_on_me
-    password: <%= ENV["TAKE_ON_ME_DATABASE_PASSWORD"] %>
+    # for Kamal This needs to be in your env from where you run 'kamal deploy'
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: take_on_me_production_cache
