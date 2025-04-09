@@ -65,6 +65,7 @@ group :test do
   # gem "webmock"
   gem "capybara-thruster"
   gem "rspec-rails"
+  gem "site_prism"
 end
 
 # gem "challenge", path: "engines/take-on-me-challange-engine"
