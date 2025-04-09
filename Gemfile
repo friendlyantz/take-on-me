@@ -60,11 +60,11 @@ group :development do
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
+  gem "cuprite" # for headless browser testing, Selenium alternative
+  # gem "webmock"
+  gem "capybara-thruster"
   gem "rspec-rails"
-  gem "cuprite"
 end
 
 # gem "challenge", path: "engines/take-on-me-challange-engine"
