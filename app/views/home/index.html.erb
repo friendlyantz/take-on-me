@@ -1,229 +1,95 @@
+<div class="hero min-h-screen"
+  style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);">
+  <div class="hero-overlay"></div>
+  <div class="hero-content text-neutral-content text-center">
+    <div class="max-w-md">
+
+      <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
+      <p class="mb-5">
+        Take On Me is an app designed to inspire and empower individuals to motivate each other and take on personal
+        challenges. Whether you're looking to push your limits, achieve your goals, or simply find encouragement from a
+        supportive community, our app is here to help you grow and thrive together!"
+      </p>
 
 
+      <div class="avatar flex items-center">
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+        <div class="w-24 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
 
-<div>
-  <ul class="timeline timeline-vertical">
-    <li>
-      <div class="timeline-end timeline-box">check in 5</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
+      <ul class="steps">
+        <li class="step step-primary">
+          <%= (Date.today - 2.weeks).strftime("%d %B") %>
+        </li>
+        <li class="step step-primary">Choose plan</li>
+        <li class="step">Purchase</li>
+        <li class="step">
+          <%= (Date.today + 2.weeks).strftime("%d %B") %>
+        </li>
+      </ul>
+
+      <div>
+
+        <div class="chat chat-start">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Tailwind CSS chat bubble component"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            </div>
+          </div>
+          <div class="chat-header">
+            Obi-Wan Kenobi
+            <time class="text-xs opacity-50">12:45</time>
+          </div>
+          <div class="chat-bubble">You were the Chosen One!</div>
+          <div class="chat-footer opacity-50">Delivered</div>
+        </div>
+        <div class="chat chat-end">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Tailwind CSS chat bubble component"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            </div>
+          </div>
+          <div class="chat-header">
+            Anakin
+            <time class="text-xs opacity-50">12:46</time>
+          </div>
+          <div class="chat-bubble">I hate you!</div>
+          <div class="chat-footer opacity-50">Seen at 12:46</div>
+        </div>
+        <div class="chat chat-start">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Tailwind CSS chat bubble component"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            </div>
+          </div>
+          <div class="chat-header">
+            Obi-Wan Kenobi
+            <time class="text-xs opacity-50">12:45</time>
+          </div>
+          <div class="chat-bubble">OK</div>
+          <div class="chat-footer opacity-50">Delivered</div>
+        </div>
       </div>
-      <hr class="bg-primary" />
-    </li>
-    <li>
-      <hr class="bg-primary" />
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="timeline-end timeline-box">check in 4</div>
-      <hr class="bg-primary" />
-    </li>
-    <li>
-      <hr class="bg-primary" />
-      <div class="timeline-start timeline-box">check in 3</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <hr />
-    </li>
-    <li>
-      <hr />
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="timeline-end timeline-box">check in 2</div>
-      <hr />
-    </li>
-    <li>
-      <hr />
-      <div class="timeline-start timeline-box">check-in 1</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-    </li>
-  </ul>
+
+    </div>
+  </div>
 </div>
-
-
-  <div>
-
-  <div class="chat chat-start">
-    <div class="chat-image avatar">
-      <div class="w-10 rounded-full">
-        <img
-          alt="Tailwind CSS chat bubble component"
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-      </div>
-    </div>
-    <div class="chat-header">
-      Obi-Wan Kenobi
-      <time class="text-xs opacity-50">12:45</time>
-    </div>
-    <div class="chat-bubble">You were the Chosen One!</div>
-    <div class="chat-footer opacity-50">Delivered</div>
-  </div>
-  <div class="chat chat-end">
-    <div class="chat-image avatar">
-      <div class="w-10 rounded-full">
-        <img
-          alt="Tailwind CSS chat bubble component"
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-      </div>
-    </div>
-    <div class="chat-header">
-      Anakin
-      <time class="text-xs opacity-50">12:46</time>
-    </div>
-    <div class="chat-bubble">I hate you!</div>
-    <div class="chat-footer opacity-50">Seen at 12:46</div>
-  </div>
-  <div class="chat chat-start">
-    <div class="chat-image avatar">
-      <div class="w-10 rounded-full">
-        <img
-          alt="Tailwind CSS chat bubble component"
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-      </div>
-    </div>
-    <div class="chat-header">
-      Obi-Wan Kenobi
-      <time class="text-xs opacity-50">12:45</time>
-    </div>
-    <div class="chat-bubble">OK</div>
-    <div class="chat-footer opacity-50">Delivered</div>
-  </div>
-  </div>
-
-<div>
-  <ul class="timeline timeline-vertical">
-    <li>
-      <div class="timeline-end timeline-box">check in 5</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <hr class="bg-primary" />
-    </li>
-    <li>
-      <hr class="bg-primary" />
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="timeline-end timeline-box">check in 4</div>
-      <hr class="bg-primary" />
-    </li>
-    <li>
-      <hr class="bg-primary" />
-      <div class="timeline-start timeline-box">check in 3</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <hr />
-    </li>
-    <li>
-      <hr />
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="timeline-end timeline-box">check in 2</div>
-      <hr />
-    </li>
-    <li>
-      <hr />
-      <div class="timeline-start timeline-box">check-in 1</div>
-      <div class="timeline-middle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="text-primary h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-    </li>
-  </ul>
-</div>
-
