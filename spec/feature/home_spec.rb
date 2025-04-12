@@ -1,6 +1,8 @@
+require "system_helper"
+
 RSpec.describe "Home Page", type: :feature do
   it "has navbar" do
-    @home = Home.new
+    @home = HomePage.new
     @home.load
 
     expect(@home).to have_navbar

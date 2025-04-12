@@ -1,23 +1,16 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require "spec_helper"
+
 ENV["RAILS_ENV"] ||= "test"
+
 require_relative "../config/environment"
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 # Uncomment the line below in case you have `--require rails_helper` in the `.rspec` file
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 # Add additional requires below this line. Rails is not loaded until this point!
-
-require "rspec/rails"
-require "capybara/rspec"
-Capybara.server = :thruster
-
-require "capybara/cuprite"
-Capybara.javascript_driver = :cuprite
-Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
-end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -41,6 +34,9 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+require "rspec/rails"
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
