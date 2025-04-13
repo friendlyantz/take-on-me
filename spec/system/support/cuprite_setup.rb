@@ -5,7 +5,20 @@ require "capybara/cuprite"
 # with #driven_by method.#
 # NOTE: The name :cuprite is already registered by Rails.
 # See https://github.com/rubycdp/cuprite/issues/180
-Capybara.register_driver(:cuprite) do |app|
+
+# monkey patch untill Cuprite FIX pr is merged
+# https://github.com/rubycdp/cuprite/pull/297
+class Capybara::Cuprite::Driver
+  def build_remote_debug_url(path:)
+    uri = URI.parse(path)
+    uri.scheme ||= "http"
+    uri.host ||= browser.process.host
+    uri.port ||= browser.process.port
+    uri.to_s
+  end
+end
+
+Capybara.register_driver(:better_cuprite) do |app|
   Capybara::Cuprite::Driver.new(
     app,
     window_size: [1200, 800],
@@ -21,8 +34,8 @@ Capybara.register_driver(:cuprite) do |app|
   )
 end
 
-# Configure Capybara to use :cuprite driver by default
-Capybara.default_driver = Capybara.javascript_driver = :cuprite
+# Configure Capybara to use :better_cuprite driver by default
+Capybara.default_driver = Capybara.javascript_driver = :better_cuprite
 
 # Add shortcuts for cuprite-specific debugging helpers
 module CupriteHelpers
@@ -30,10 +43,8 @@ module CupriteHelpers
     page.driver.pause
   end
 
-  def debug(binding = nil)
-    $stdout.puts "🔎 Open Chrome inspector at http://localhost:#{Capybara.server_port}"
-    return binding.break if binding
-    page.driver.pause
+  def debug(*args)
+    page.driver.debug(*args)
   end
 end
 
