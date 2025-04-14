@@ -1,4 +1,10 @@
+RSpec.shared_context "site_prism" do
+  let(:prism) { ApplicationPrism.new }
+end
+
 RSpec.configure do |config|
+  config.include_context "site_prism", type: :system
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end

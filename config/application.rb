@@ -38,5 +38,7 @@ module TakeOnMe
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.autoload_paths << Rails.root.join("spec/system/pages") if Rails.env.test?
   end
 end
