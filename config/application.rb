@@ -36,8 +36,14 @@ module TakeOnMe
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.generators do |g|
+      # Don't generate system test files.
+      g.system_tests = nil
+
+      g.test_framework :rspec
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
+      g.orm :active_record, primary_key_type: :uuid
+    end
 
     config.autoload_paths << Rails.root.join("spec/system/pages") if Rails.env.test?
   end

@@ -1,0 +1,7 @@
+<% content_for :title, "Editing challenge story" %>
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">Editing challenge story</h1>
+  <%= render "form", challenge_story: @challenge_story %>
+  <%= link_to "Show this challenge story", @challenge_story, class: "btn btn-soft" %>
+  <%= link_to "Back to challenge stories", challenge_stories_path, class: "btn btn-soft" %>
+</div>
