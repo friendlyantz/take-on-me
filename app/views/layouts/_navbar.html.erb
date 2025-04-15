@@ -7,14 +7,16 @@
       <ul
         tabindex="0"
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Homepage</a></li>
+        <li>
+          <%= link_to "Homepage", root_path %>
+        </li>
         <li><a>Portfolio</a></li>
         <li><a>About</a></li>
       </ul>
     </div>
   </div>
   <div class="navbar-center">
-    <a class="btn btn-ghost text-xl">Take On Me Challange</a>
+    <%= link_to "Take On Me Challange", challenge_stories_path, class: "btn btn-ghost text-xl" %>
   </div>
   <div class="navbar-end">
     <button class="btn btn-ghost btn-circle">
