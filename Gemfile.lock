@@ -113,6 +113,7 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
     crass (1.0.6)
+    csv (3.3.4)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -181,6 +182,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
@@ -383,6 +385,9 @@ GEM
     thruster (0.1.12-arm64-darwin)
     thruster (0.1.12-x86_64-linux)
     timeout (0.4.3)
+    trace_location (1.2.0)
+      csv
+      method_source
     turbo-rails (2.0.13)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
@@ -444,6 +449,7 @@ DEPENDENCIES
   stimulus-rails
   tailwindcss-rails
   thruster
+  trace_location
   turbo-rails
   tzinfo-data
   web-console
