@@ -58,6 +58,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "trace_location"
+  gem "database_consistency", require: false
 end
 
 group :test do

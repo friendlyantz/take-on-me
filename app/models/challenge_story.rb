@@ -1,4 +1,6 @@
 class ChallengeStory < ApplicationRecord
+  self.implicit_order_column = "created_at"
+
   validates :title, presence: true
   validates :description, presence: true
   validates :description, length: {maximum: 500}
