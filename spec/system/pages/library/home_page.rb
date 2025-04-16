@@ -1,4 +1,4 @@
-class HomePage < SitePrism::Page
+class Library::HomePage < SitePrism::Page
   set_url "/home/index.htm"
   element :navbar, "#navbar"
   element :menu, "#menu"
