@@ -1,5 +1,6 @@
 class ChallengeStoriesController < ApplicationController
-  before_action :set_challenge_story, only: %i[ show edit update destroy ]
+  before_action :set_challenge_story, only: %i[show edit update destroy]
+  before_action :enforce_current_user, only: %i[new create edit update destroy]
 
   # GET /challenge_stories or /challenge_stories.json
   def index
@@ -14,7 +15,7 @@ class ChallengeStoriesController < ApplicationController
   def new
     @challenge_story = ChallengeStory.new(
       start: Date.today,
-      finish: Date.today + 28.days,
+      finish: Date.today + 28.days
     )
   end
 
@@ -67,6 +68,12 @@ class ChallengeStoriesController < ApplicationController
   end
 
   def challenge_story_params
-    params.expect(challenge_story: [ :title, :description, :start, :finish ])
+    params.expect(challenge_story: [:title, :description, :start, :finish])
+  end
+
+  def enforce_current_user
+    if current_user.blank?
+      redirect_to new_session_path
+    end
   end
 end
