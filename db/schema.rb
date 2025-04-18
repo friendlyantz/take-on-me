@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_15_120800) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -23,4 +23,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_15_120800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "external_id", null: false
+    t.string "public_key", null: false
+    t.string "nickname"
+    t.bigint "sign_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_credentials_on_external_id", unique: true
+    t.index ["user_id"], name: "index_credentials_on_user_id"
+  end
+
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "username", null: false
+    t.string "webauthn_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  add_foreign_key "credentials", "users"
 end
