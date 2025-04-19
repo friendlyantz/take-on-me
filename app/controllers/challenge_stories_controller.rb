@@ -14,8 +14,8 @@ class ChallengeStoriesController < ApplicationController
   # GET /challenge_stories/new
   def new
     @challenge_story = ChallengeStory.new(
-      start: Date.today,
-      finish: Date.today + 28.days
+      start: Time.zone.today,
+      finish: Time.zone.today + 28.days
     )
   end
 
