@@ -16,14 +16,6 @@ pin "@material/textfield", to: "https://ga.jspm.io/npm:@material/textfield@4.0.0
 pin "@material/top-app-bar", to: "https://ga.jspm.io/npm:@material/top-app-bar@4.0.0/dist/mdc.topAppBar.js"
 pin "@github/webauthn-json", to: "https://ga.jspm.io/npm:@github/webauthn-json@2.1.1/dist/esm/webauthn-json.js"
 
-# sinon
-pin "sinon", to: "https://ga.jspm.io/npm:sinon@9.0.2/lib/sinon.js"
-pin "@sinonjs/commons", to: "https://ga.jspm.io/npm:@sinonjs/commons@1.8.6/lib/index.js"
-pin "@sinonjs/fake-timers", to: "https://ga.jspm.io/npm:@sinonjs/fake-timers@6.0.1/src/fake-timers-src.js"
-pin "@sinonjs/formatio", to: "https://ga.jspm.io/npm:@sinonjs/formatio@5.0.1/lib/formatio.js"
-pin "@sinonjs/samsam", to: "https://ga.jspm.io/npm:@sinonjs/samsam@5.3.1/lib/samsam.js"
-pin "@sinonjs/text-encoding", to: "https://ga.jspm.io/npm:@sinonjs/text-encoding@0.7.2/index.js"
-
 pin "diff", to: "https://ga.jspm.io/npm:diff@4.0.2/dist/diff.js"
 pin "isarray", to: "https://ga.jspm.io/npm:isarray@0.0.1/index.js"
 pin "just-extend", to: "https://ga.jspm.io/npm:just-extend@4.2.1/index.js"
