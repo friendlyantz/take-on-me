@@ -14,10 +14,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
 
-  create_table "challenge_stories", force: :cascade do |t|
+  create_table "challenge_stories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
-    t.string "description", default: "", null: false
+    t.text "description", default: "", null: false
     t.date "start", null: false
     t.date "finish", null: false
     t.datetime "created_at", null: false
@@ -25,7 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
   end
 
   create_table "credentials", force: :cascade do |t|
-    t.bigint "user_id"
+    t.uuid "user_id", null: false
     t.string "external_id", null: false
     t.string "public_key", null: false
     t.string "nickname"
@@ -36,7 +37,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
     t.index ["user_id"], name: "index_credentials_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "username", null: false
     t.string "webauthn_id"
     t.datetime "created_at", null: false

@@ -1,7 +1,7 @@
 class CreateCredentials < ActiveRecord::Migration[8.0]
   def change
     create_table :credentials do |t|
-      t.references :user, foreign_key: true
+      t.references :user, null: false, foreign_key: true, type: :uuid
 
       t.string :external_id, null: false
       t.string :public_key, null: false
