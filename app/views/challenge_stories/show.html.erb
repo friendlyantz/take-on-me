@@ -1,13 +1,16 @@
-<% content_for :title, "Showing challenge story" %>
+<% content_for :title, @challenge_story.title %>
 <div class="md:w-2/3 w-full">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <h1 class="font-bold text-4xl">Showing challenge story</h1>
+
   <%= render @challenge_story %>
+
   <%= link_to "Edit this challenge story", edit_challenge_story_path(@challenge_story), 
-  class: "btn btn-soft btn-primary" %>
+      class: "btn btn-soft btn-primary" %>
+
   <%= link_to "Back to challenge stories", challenge_stories_path, class: "btn btn-soft" %>
-  <%= button_to "Destroy this challenge story", @challenge_story, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2",
+
+  <%#= button_to "Destroy this challenge story", @challenge_story, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2",
    class: "btn btn-soft btn-secondary", data: { turbo_confirm: "Are you sure?" } %>
 </div>

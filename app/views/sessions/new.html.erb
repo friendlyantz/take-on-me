@@ -5,7 +5,12 @@
     data: { controller: "new-session",
     action: "ajax:success->new-session#create ajax:error->new-session#error" } do |form| %>
     <div data-controller="textfield" data-target="new-session.usernameField">
-      <%= form.text_field :username, class: "input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
+      <%= form.text_field :username, class: "input mdc-text-field__input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
+    </div>
+
+    <div class="mdc-text-field-helper-line">
+      <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+      </div>
     </div>
     <%= form.submit "Sign in using WebAuthn", class: "btn btn-neutral mt-4" %>
   <% end %>

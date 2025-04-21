@@ -1,5 +1,7 @@
 <div class="dock dock-sm">
-  <button>
+  <%= link_to challenge_stories_path, 
+    class: current_page?(challenge_stories_path) ? "dock-active" : "dock",
+    id: "challenges-dock-button" do %>
     <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt">
         <polyline points="1 11 12 2 23 11" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"> </polyline>
@@ -7,15 +9,19 @@
         <line x1="12" y1="22" x2="12" y2="18" fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"> </line>
       </g>
     </svg>
-  </button>
-  <%= link_to new_challenge_story_path, class: "dock-active", id: "new-challenge" do %>
+  <% end %>
+  <%= link_to new_challenge_story_path,
+  class: current_page?(new_challenge_story_path) ? "dock-active" : "dock",
+    id: "new-challenge" do %>
     <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="--darkreader-inline-stroke: currentColor;" data-darkreader-inline-stroke=""></path>
       <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="6.545" x2="17.455" y1="12.001" y2="12.001" style="--darkreader-inline-stroke: currentColor;" data-darkreader-inline-stroke=""></line>
       <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12.003" x2="12.003" y1="6.545" y2="17.455" style="--darkreader-inline-stroke: currentColor;" data-darkreader-inline-stroke=""></line>
     </svg>
   <% end %>
-  <button>
+  <%= link_to credentials_path, 
+    class: current_page?(credentials_path) ? "dock-active" : "dock",
+    id: "credentials-dock-button" do %>
     <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"></circle><path d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z" fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"></path></g></svg>
-  </button>
+  <% end %>
 </div>

@@ -1,23 +1,38 @@
-<% content_for :title, "Challenge stories" %>
+<% content_for :title, "Challenges" %>
 <div class="w-full">
+
+  <h1 class="font-bold text-4xl">Challenges</h1>
+
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Challenge stories</h1>
-    <%= link_to "New challenge story", new_challenge_story_path,
-     class: "btn btn-soft btn-primary" %>
-  </div>
-  <div id="challenge_stories" class="min-w-full divide-y divide-gray-200 space-y-5">
+
+  <div id="challenge_stories" class="grid grid-cols-3 gap-4">
+
     <% if @challenge_stories.any? %>
       <% @challenge_stories.each do |challenge_story| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render challenge_story %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", challenge_story, class: "btn btn-soft btn-primary" %>
-            <%= link_to "Edit", edit_challenge_story_path(challenge_story), class: "btn btn-soft btn-secondary" %>
-            <%= button_to "Destroy", challenge_story, method: :delete, class: "btn btn-soft btn-error", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
+        <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200">
+          <%= link_to challenge_story do %>
+            <figure>
+              <%= render challenge_story %>
+            </figure>
+
+            <div class="card-body">
+              <h2 class="card-title">
+                <%= challenge_story.title %>
+              </h2>
+              <p>
+                <%= challenge_story.description %>
+              </p>
+              <%= link_to edit_challenge_story_path(challenge_story) do %>
+                <div class="card-actions justify-end">
+                  <button class="btn btn-primary">Edit</button>
+                </div>
+              <% end %>
+            </div>
+
+          <% end %>
+
         </div>
       <% end %>
     <% else %>

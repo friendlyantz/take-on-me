@@ -1,45 +1,40 @@
-<%= form_with(model: challenge_story, class: "contents") do |form| %>
-  <% if challenge_story.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(challenge_story.errors.count, "error") %> prohibited this challenge_story from being saved:</h2>
-      <ul class="list-disc ml-6">
-        <% challenge_story.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <div class="my-5">
-    <%= form.label :title %>
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+  <%= form_with(model: challenge_story, class: "contents") do |form| %>
+    <% if challenge_story.errors.any? %>
+      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+        <h2><%= pluralize(challenge_story.errors.count, "error") %> prohibited this challenge_story from being saved:</h2>
+        <ul class="list-disc ml-6">
+          <% challenge_story.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
     <%= 
-      form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:title].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:title].any?}],
-      id: "challenge-title"
+      form.text_field :title, class: ["input", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:title].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:title].any?}],
+      id: "challenge-title",
+      placeholder: "Challenge title"
      %>
-  </div>
-  <div class="my-5">
-    <%= form.label :description %>
     <%= 
-      form.text_field :description, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:description].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:description].any?}],
-      id: "description"
+      form.text_area :description, class: ["textarea", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:description].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:description].any?}],
+      id: "description",
+      placeholder: "Description, your challenge terms, and rewards if you win or lose"
     %>
-  </div>
-  <div class="my-5">
     <%= form.label :start %>
     <%= 
-      form.date_field :start, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:start].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:start].any?}],
+      form.date_field :start, class: ["input", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:start].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:start].any?}],
       id: "start"
     %>
-  </div>
-  <div class="my-5">
     <%= form.label :finish %>
     <%=
       form.date_field :finish,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:finish].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:finish].any?}],
+      class: ["input", {"input": challenge_story.errors[:finish].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:finish].any?}],
       id: "finish"
     %>
-  </div>
-  <div class="inline">
-    <%= 
+    <div class="inline">
+      <%= 
     form.submit class: "btn btn-soft btn-primary", id: "submit"%>
-  </div>
-<% end %>
+    </div>
+  <% end %>
+
+</fieldset>
