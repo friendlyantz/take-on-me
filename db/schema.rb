@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_21_131922) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "challenge_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "user_id", null: false
+    t.uuid "challenge_story_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["challenge_story_id"], name: "index_challenge_participants_on_challenge_story_id"
+    t.index ["user_id", "challenge_story_id"], name: "index_challenge_participants_on_user_id_and_challenge_story_id", unique: true
+    t.index ["user_id"], name: "index_challenge_participants_on_user_id"
+  end
 
   create_table "challenge_stories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
@@ -45,5 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_112914) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "challenge_participants", "challenge_stories"
+  add_foreign_key "challenge_participants", "users"
   add_foreign_key "credentials", "users"
 end

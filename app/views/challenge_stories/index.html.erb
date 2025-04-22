@@ -1,11 +1,11 @@
 <% content_for :title, "Challenges" %>
 <div class="w-full">
-
-  <h1 class="font-bold text-4xl">Challenges</h1>
-
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
+
+
+  <h1 class="font-bold text-4xl">Challenges</h1>
 
   <div id="challenge_stories" class="grid grid-cols-3 gap-4">
 
@@ -14,25 +14,37 @@
         <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200">
           <%= link_to challenge_story do %>
             <figure>
-              <%= render challenge_story %>
+              <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
             </figure>
 
             <div class="card-body">
-              <h2 class="card-title">
-                <%= challenge_story.title %>
-              </h2>
+              <h2 class="card-title"> Title </h2>
               <p>
-                <%= challenge_story.description %>
+                <%= render challenge_story %>
               </p>
+
+
+              <% unless ChallengeParticipant.find_by( challenge_story: challenge_story, user: current_user) %>
+                <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
+                  <div class="card-actions justify-end">
+                    <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
+                      <button class="btn btn-primary">join</button>
+                    </turbo-frame >
+                  </div>
+                <% end %>
+              <% else %>
+                <%= link_to 'leave', challenge_participant_path(
+                  ChallengeParticipant.find_by(challenge_story: challenge_story, user: current_user) 
+                  ), method: :delete, class: 'btn btn-danger' %>
+              <% end %>
               <%= link_to edit_challenge_story_path(challenge_story) do %>
                 <div class="card-actions justify-end">
                   <button class="btn btn-primary">Edit</button>
                 </div>
               <% end %>
+
             </div>
-
           <% end %>
-
         </div>
       <% end %>
     <% else %>

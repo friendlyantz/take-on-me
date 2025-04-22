@@ -4,6 +4,16 @@
     <%= challenge_story.title %>
   </h1>
 
+  <div class="avatar-group -space-x-6">
+    <% ChallengeParticipant.where(challenge_story: challenge_story).each do |participant| %>
+      <div class="avatar">
+        <div class="w-12">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
+    <% end %>
+  </div>
+
   <ul class="steps steps-vertical lg:steps-horizontal">
     <li class="step step-primary">
       <%= challenge_story.start.strftime("%B %d, %Y") %>
