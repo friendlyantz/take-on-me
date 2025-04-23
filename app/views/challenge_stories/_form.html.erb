@@ -18,7 +18,7 @@
     <%= 
       form.text_area :description, class: ["textarea", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:description].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:description].any?}],
       id: "description",
-      placeholder: "Description, your challenge terms, and rewards if you win or lose"
+      placeholder: "Challenge rules, and rewards if you win or lose"
     %>
     <%= form.label :start %>
     <%= 
