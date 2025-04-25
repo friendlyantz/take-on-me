@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resources :challenge_stories, only: %i[index show new create edit update destroy]
+  resources :challenge_stories, only: %i[index show new create edit update destroy] do
+    resources :challenge_comments, only: %i[new create destroy]
+  end
   resources :challenge_participants, only: %i[create destroy]
-  resources :challenge_comments, only: %i[create destroy]
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

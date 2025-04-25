@@ -1,4 +1,5 @@
 class ChallengeStory < ApplicationRecord
+  has_many :challenge_comments, dependent: :destroy
   self.implicit_order_column = "created_at"
 
   validates :title, presence: true

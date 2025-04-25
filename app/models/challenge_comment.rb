@@ -2,5 +2,5 @@ class ChallengeComment < ApplicationRecord
   belongs_to :challenge_participant
   belongs_to :challenge_story
 
-  validates :comment, presence: true
+  validates :message, presence: true
 end

@@ -4,7 +4,7 @@ class ChallengeStoriesController < ApplicationController
 
   # GET /challenge_stories or /challenge_stories.json
   def index
-    @challenge_stories = ChallengeStory.all
+    @challenge_stories = ChallengeStory.all.order(updated_at: :desc)
   end
 
   # GET /challenge_stories/1 or /challenge_stories/1.json

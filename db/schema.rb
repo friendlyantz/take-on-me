@@ -17,7 +17,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_111417) do
   enable_extension "pgcrypto"
 
   create_table "challenge_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "comment", null: false
+    t.text "message", null: false
     t.uuid "challenge_participant_id", null: false
     t.uuid "challenge_story_id", null: false
     t.datetime "created_at", null: false
