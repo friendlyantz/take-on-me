@@ -16,10 +16,24 @@
       </p>
     <% end %>
 
+    <ul class="steps">
+      <li data-content="●" class="step step-error">
+        <%= @challenge_story.start.strftime("%B %d, %Y") %>
+      </li>
+      <li data-content="?" class="step step-info">check in 1</li>
+      <li data-content="!" class="step step-info">check in 2</li>
+      <li data-content="✓" class="step step-neutral">check in 3</li>
+      <li data-content="✕" class="step step-neutral">check in 4</li>
+      <li data-content="★" class="step step-neutral">check in 5</li>
+      <li data-content="⚡️" class="step step-neutral">check in 6</li>
+      <li data-content="●" class="step step-error">
+        <%= @challenge_story.finish.strftime("%B %d, %Y") %>
+      </li>
+    </ul>
+
     <%= render @challenge_story %>
 
-
-    <%= link_to "Edit this challenge story", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
+    <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
 
 
     <%#= button_to "Destroy this challenge story", @challenge_story, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2",
