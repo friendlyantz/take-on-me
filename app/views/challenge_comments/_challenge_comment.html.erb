@@ -1,6 +1,11 @@
 <div id="<%= dom_id challenge_comment %>" 
   class="<%= current_user == challenge_comment.challenge_participant.user ? 'chat chat-end' : 'chat chat-start' %>"
 >
+  <div class="chat-image avatar">
+    <div class="w-10 rounded-full">
+      <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(challenge_comment.challenge_participant.name)}?s=80&d=identicon", alt: 'avatar', class: "rounded-full" %>
+    </div>
+  </div>
   <div class="chat-header">
     <%=  challenge_comment.challenge_participant.name %>
     <time class="text-xs opacity-50">

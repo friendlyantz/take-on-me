@@ -8,7 +8,7 @@
     <% ChallengeParticipant.where(challenge_story: challenge_story).each do |participant| %>
       <div class="avatar">
         <div class="w-12">
-          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+          <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(participant.name)}?s=80&d=identicon", alt: current_user.username, class: "rounded-full" %>
         </div>
       </div>
     <% end %>
