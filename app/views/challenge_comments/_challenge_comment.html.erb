@@ -1,3 +1,13 @@
-<p id="<%= dom_id challenge_comment %>">
-  <%=  challenge_comment.created_at.to_fs(:short) %>: <%= challenge_comment.message %>
-</p>
+<div id="<%= dom_id challenge_comment %>" 
+  class="<%= current_user == challenge_comment.challenge_participant.user ? 'chat chat-end' : 'chat chat-start' %>"
+>
+  <div class="chat-header">
+    <%=  challenge_comment.challenge_participant.name %>
+    <time class="text-xs opacity-50">
+      <%=  challenge_comment.created_at.to_fs(:short) %>
+    </time>
+  </div>
+  <div class="chat-bubble">
+    <%= challenge_comment.message %>
+  </div>
+</div>

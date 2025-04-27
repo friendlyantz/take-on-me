@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "new_message" do %>
+<%= turbo_frame_tag "new_message", target: "_top" do %>
   <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
     <%= form_with(model: [@challenge_comment.challenge_story, @challenge_comment], class: "contents") do |form| %>
       <%= 

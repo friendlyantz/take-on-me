@@ -4,7 +4,10 @@ class ChallengeStoriesController < ApplicationController
 
   # GET /challenge_stories or /challenge_stories.json
   def index
-    @challenge_stories = ChallengeStory.all.order(updated_at: :desc)
+    @challenge_stories = ChallengeStory
+      .left_joins(:challenge_comments)
+      .group(:id)
+      .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
   end
 
   # GET /challenge_stories/1 or /challenge_stories/1.json

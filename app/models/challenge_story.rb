@@ -9,6 +9,8 @@ class ChallengeStory < ApplicationRecord
   validates :finish, presence: true
   validate :finish_cannot_be_earlier_than_start
 
+  broadcasts
+
   private
 
   def finish_cannot_be_earlier_than_start

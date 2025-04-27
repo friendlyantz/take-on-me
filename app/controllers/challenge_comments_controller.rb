@@ -1,4 +1,5 @@
 class ChallengeCommentsController < ApplicationController
+  include ActionView::RecordIdentifier
   before_action :enforce_current_user
   def new
     @challenge_comment = ChallengeComment.new(challenge_story_id: params[:challenge_story_id])
@@ -15,6 +16,15 @@ class ChallengeCommentsController < ApplicationController
       if @challenge_comment.save
         format.html { redirect_to challenge_story, notice: "Comment was successfully added." }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "new_message",
+            template: "challenge_comments/new",
+
+            locals: {challenge_comment: @challenge_comment},
+            status: :unprocessable_entity
+          )
+        end
         format.html { render :new, status: :unprocessable_entity }
       end
     end
