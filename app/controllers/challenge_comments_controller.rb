@@ -42,6 +42,6 @@ class ChallengeCommentsController < ApplicationController
   end
 
   def challenge_comment_params
-    params.expect(challenge_comment: [:message])
+    params.expect(challenge_comment: [:message, :photo])
   end
 end
