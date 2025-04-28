@@ -39,6 +39,7 @@ env:
     # List ENV for the app if you use them in config/database.yml
     - POSTGRES_PASSWORD
     - NEW_RELIC_API_KEY_GEM
+    - CLOUDINARY_URL
   clear:
     #  Docker container that will run in production will be named service_name-postgres - name it carefully
     DB_HOST: take_on_me-db

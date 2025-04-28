@@ -14,5 +14,6 @@
   </div>
   <div class="chat-bubble">
     <%= simple_format(challenge_comment.message) %>
+    <%= cl_image_tag(challenge_comment.photo.key, height: 300, width: 400, crop: :fill) if challenge_comment.photo.attached?%>
   </div>
 </div>

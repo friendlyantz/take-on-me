@@ -2,6 +2,8 @@ class ChallengeComment < ApplicationRecord
   belongs_to :challenge_participant
   belongs_to :challenge_story
 
+  has_one_attached :photo
+
   validates :message, presence: true
 
   broadcasts_to :challenge_story, action: :prepend
