@@ -1,6 +1,9 @@
 class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
   def create
+    if current_user.nil?
+      return redirect_to new_session_path
+    end
     @challenge_story = ChallengeStory.find(params[:challenge_story_id])
     @participant = ChallengeParticipant.find_or_create_by(
       user: current_user,
