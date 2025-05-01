@@ -62,9 +62,19 @@
             </svg>
             Pledge a reward
           <% end %>
+        <% elsif current_user %>
+
+          <%= link_to challenge_participants_path(challenge_story_id: @challenge_story.id), method: :post, turbo: true do %>
+            <div class="card-actions justify-end">
+              <turbo-frame id="story-<%= @challenge_story.id %>-joining_participant">
+                <button class="btn btn-primary">join</button>
+              </turbo-frame >
+            </div>
+          <% end %>
+
         <% else %>
-          <%= link_to challenge_story_challenge_participants_path(@challenge_story), method: :post, class: "btn btn-secondary" do %>
-            Join challenge to pledge rewards
+          <%= link_to new_session_path, class: "btn btn-secondary" do %>
+            Sign in to join this challenge
           <% end %>
         <% end %>
       </div>
@@ -96,14 +106,20 @@
 
     <%= render @challenge_story %>
 
-    <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
-
 
     <%#= button_to "Destroy this challenge story", @challenge_story, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2",
    class: "btn btn-soft btn-secondary", data: { turbo_confirm: "Are you sure?" } %>
 
   <% end%>
-  <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+
+  <% if current_user %>
+    <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
+    <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+  <% else %>
+    <%= link_to new_session_path, class: "btn btn-secondary" do %>
+      Sign in to join this challenge
+    <% end %>
+  <% end %>
 
   <div id="challenge_comments" class="w-full sm:w-auto my-5 space-y-5">
     <%= render @challenge_story.challenge_comments.reverse %>
