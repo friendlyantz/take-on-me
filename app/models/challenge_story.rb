@@ -1,5 +1,8 @@
 class ChallengeStory < ApplicationRecord
   has_many :challenge_comments, dependent: :destroy
+  has_many :challenge_participants, dependent: :destroy
+  has_many :challenge_rewards, dependent: :destroy
+
   self.implicit_order_column = "created_at"
 
   validates :title, presence: true
@@ -10,6 +13,10 @@ class ChallengeStory < ApplicationRecord
   validate :finish_cannot_be_earlier_than_start
 
   broadcasts
+
+  def finished?
+    finish < Time.zone.today
+  end
 
   private
 

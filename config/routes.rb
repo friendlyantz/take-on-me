@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   resources :challenge_stories, only: %i[index show new create edit update destroy] do
     resources :challenge_comments, only: %i[new create destroy]
+    resources :challenge_rewards, only: %i[index new create show] do
+      member do
+        patch :fulfill
+        patch :cancel
+      end
+    end
   end
   resources :challenge_participants, only: %i[create destroy]
   get "home/index"

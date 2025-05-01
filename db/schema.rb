@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_28_093100) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_01_102742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -65,6 +65,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_093100) do
     t.index ["user_id"], name: "index_challenge_participants_on_user_id"
   end
 
+  create_table "challenge_rewards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "giver_id", null: false
+    t.uuid "receiver_id", null: false
+    t.uuid "challenge_story_id", null: false
+    t.string "description", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "fulfilled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["challenge_story_id"], name: "index_challenge_rewards_on_challenge_story_id"
+    t.index ["giver_id", "receiver_id", "challenge_story_id"], name: "index_challenge_rewards_on_participants_and_story", unique: true
+    t.index ["giver_id"], name: "index_challenge_rewards_on_giver_id"
+    t.index ["receiver_id"], name: "index_challenge_rewards_on_receiver_id"
+  end
+
   create_table "challenge_stories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.text "description", default: "", null: false
@@ -100,5 +115,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_093100) do
   add_foreign_key "challenge_comments", "challenge_stories"
   add_foreign_key "challenge_participants", "challenge_stories"
   add_foreign_key "challenge_participants", "users"
+  add_foreign_key "challenge_rewards", "challenge_participants", column: "giver_id"
+  add_foreign_key "challenge_rewards", "challenge_participants", column: "receiver_id"
+  add_foreign_key "challenge_rewards", "challenge_stories"
   add_foreign_key "credentials", "users"
 end
