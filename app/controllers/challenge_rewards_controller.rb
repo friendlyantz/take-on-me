@@ -11,8 +11,8 @@ class ChallengeRewardsController < ApplicationController
 
   def new
     @reward = ChallengeReward.new(challenge_story: @challenge_story)
-    @participants = @challenge_story.challenge_participants
-    @current_participant = @challenge_story.challenge_participants.find_by(user: current_user)
+    @participants = @challenge_story.active_participants
+    @current_participant = @challenge_story.active_participants.find_by(user: current_user)
   end
 
   def create

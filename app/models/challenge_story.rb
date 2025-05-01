@@ -2,6 +2,7 @@ class ChallengeStory < ApplicationRecord
   has_many :challenge_comments, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
   has_many :challenge_rewards, dependent: :destroy
+  has_many :active_participants, -> { where(status: "active") }, class_name: "ChallengeParticipant"
 
   self.implicit_order_column = "created_at"
 

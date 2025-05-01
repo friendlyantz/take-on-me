@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_01_102742) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_01_111618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -60,7 +60,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_102742) do
     t.uuid "challenge_story_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "active", null: false
     t.index ["challenge_story_id"], name: "index_challenge_participants_on_challenge_story_id"
+    t.index ["status"], name: "index_challenge_participants_on_status"
     t.index ["user_id", "challenge_story_id"], name: "index_challenge_participants_on_user_id_and_challenge_story_id", unique: true
     t.index ["user_id"], name: "index_challenge_participants_on_user_id"
   end

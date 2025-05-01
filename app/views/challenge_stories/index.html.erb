@@ -28,8 +28,8 @@
                 <%= render challenge_story %>
               </p>
 
+              <% unless challenge_story.active_participants.exists?(user: current_user) %>
 
-              <% unless ChallengeParticipant.find_by( challenge_story: challenge_story, user: current_user) %>
                 <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
                   <div class="card-actions justify-end">
                     <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">

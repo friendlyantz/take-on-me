@@ -1,6 +1,7 @@
 class ChallengeCommentsController < ApplicationController
   include ActionView::RecordIdentifier
   before_action :enforce_current_user
+
   def new
     @challenge_comment = ChallengeComment.new(challenge_story_id: params[:challenge_story_id])
   end
@@ -8,7 +9,16 @@ class ChallengeCommentsController < ApplicationController
   def create
     @challenge_comment = ChallengeComment.new(challenge_comment_params)
     challenge_story = ChallengeStory.find(params[:challenge_story_id])
-    challenge_participant = ChallengeParticipant.find_or_create_by(user: current_user, challenge_story: challenge_story)
+
+    # Find or create participant, ensuring they're active
+    challenge_participant = ChallengeParticipant.find_by(user: current_user, challenge_story: challenge_story)
+
+    if challenge_participant
+      challenge_participant.update(status: "active") if challenge_participant.status == "inactive"
+    else
+      challenge_participant = ChallengeParticipant.create(user: current_user, challenge_story: challenge_story)
+    end
+
     @challenge_comment.challenge_participant = challenge_participant
     @challenge_comment.challenge_story = challenge_story
 

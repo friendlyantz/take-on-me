@@ -1,14 +1,29 @@
 class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
+
   def create
     if current_user.nil?
       return redirect_to new_session_path
     end
+
     @challenge_story = ChallengeStory.find(params[:challenge_story_id])
-    @participant = ChallengeParticipant.find_or_create_by(
+
+    # Try to find an existing participant (active or inactive)
+    @participant = ChallengeParticipant.find_by(
       user: current_user,
       challenge_story_id: params[:challenge_story_id]
     )
+
+    if @participant
+      # If the participant exists but is inactive, reactivate them
+      @participant.update(status: "active") if @participant.status == "inactive"
+    else
+      # Create a new participant if none exists
+      @participant = ChallengeParticipant.create(
+        user: current_user,
+        challenge_story_id: params[:challenge_story_id]
+      )
+    end
 
     respond_to do |format|
       format.turbo_stream do
@@ -24,7 +39,7 @@ class ChallengeParticipantsController < ApplicationController
 
   def destroy
     @challenge_participant = ChallengeParticipant.find(params[:id])
-    @challenge_participant.destroy
+    @challenge_participant.leave!
 
     respond_to do |format|
       format.html { redirect_to challenge_stories_path, notice: "You have left the challenge!" }
