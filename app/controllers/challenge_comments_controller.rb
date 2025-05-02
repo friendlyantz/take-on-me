@@ -24,6 +24,14 @@ class ChallengeCommentsController < ApplicationController
 
     respond_to do |format|
       if @challenge_comment.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.prepend("challenge_comments", partial: "challenge_comments/challenge_comment", locals: {challenge_comment: @challenge_comment}),
+            turbo_stream.replace("new_message",
+              template: "challenge_comments/new",
+              locals: {challenge_comment: ChallengeComment.new(challenge_story_id: challenge_story.id)})
+          ]
+        end
         format.html { redirect_to challenge_story, notice: "Comment was successfully added." }
       else
         format.turbo_stream do
