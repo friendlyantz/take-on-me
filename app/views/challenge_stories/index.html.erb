@@ -28,8 +28,8 @@
                 <%= render challenge_story %>
               </p>
 
-              <% unless challenge_story.active_participants.exists?(user: current_user) %>
 
+              <% unless challenge_story.active_participants.exists?(user: current_user) %>
                 <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
                   <div class="card-actions justify-end">
                     <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
@@ -45,6 +45,21 @@
 
             </div>
           <% end %>
+
+          <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
+            <div class="flex items-center">
+              <%= render 'challenge_stories/likes', challenge_story: challenge_story %>
+            </div>
+
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+              <%= challenge_story.challenge_comments.count %>
+            </div>
+          </div>
+
+
         </div>
       <% end %>
     <% else %>

@@ -7,6 +7,11 @@ Rails.application.routes.draw do
         patch :cancel
       end
     end
+    resource :challenge_story_like, only: [:create] do
+      collection do
+        delete :destroy
+      end
+    end
   end
   resources :challenge_participants, only: %i[create destroy]
   get "home/index"
