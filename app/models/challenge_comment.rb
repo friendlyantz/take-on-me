@@ -5,13 +5,20 @@ class ChallengeComment < ApplicationRecord
   belongs_to :challenge_story
 
   has_one_attached :photo
+  has_many :challenge_comment_likes, dependent: :destroy
+  has_many :liking_users, through: :challenge_comment_likes, source: :user
 
   validates :message, presence: true
 
   broadcasts_to :challenge_story, action: :prepend
-  # broadcasts_to ->(challenge_story) { "challenge_stories" }, inserts_by: :prepend
   default_scope { order(created_at: :asc) } # Oldest first
-  # after_create_commit -> { broadcast_append_to challenge_story }
-  # after_destroy_commit -> { broadcast_remove_to challenge_story }
-  # after_update_commit -> { broadcast_remove_to challenge_story }
+
+  def liked_by?(user)
+    return false unless user
+    challenge_comment_likes.exists?(user: user)
+  end
+
+  def like_count
+    challenge_comment_likes.count
+  end
 end

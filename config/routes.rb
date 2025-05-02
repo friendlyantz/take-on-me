@@ -13,6 +13,15 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :challenge_comments, only: [] do
+    resource :challenge_comment_like, only: [:create] do
+      collection do
+        delete :destroy
+      end
+    end
+  end
+
   resources :challenge_participants, only: %i[create destroy]
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
