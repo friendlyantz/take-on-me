@@ -77,6 +77,10 @@
           <div class="chat-footer opacity-50">Delivered</div>
         </div>
       </div>
+
+      Users registered
+      <%= line_chart User.group_by_day(:created_at).count %>
+
     </div>
   </div>
 </div>

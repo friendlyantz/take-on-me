@@ -26,3 +26,6 @@ pin "process", to: "https://ga.jspm.io/npm:@jspm/core@2.0.1/nodelibs/browser/pro
 pin "supports-color", to: "https://ga.jspm.io/npm:supports-color@7.2.0/browser.js"
 pin "type-detect", to: "https://ga.jspm.io/npm:type-detect@4.0.8/type-detect.js"
 pin "util", to: "https://ga.jspm.io/npm:@jspm/core@2.0.1/nodelibs/browser/util.js"
+
+pin "chartkick", to: "chartkick.js"
+pin "Chart.bundle", to: "Chart.bundle.js"

@@ -111,6 +111,7 @@ GEM
       childprocess (>= 4.0)
       puma
     cbor (0.5.9.8)
+    chartkick (5.1.5)
     childprocess (5.1.0)
       logger (~> 1.5)
     cloudinary (2.3.0)
@@ -166,6 +167,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    groupdate (6.5.1)
+      activesupport (>= 7)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -476,11 +479,13 @@ DEPENDENCIES
   capybara
   capybara-thruster
   challenge!
+  chartkick
   cloudinary
   cuprite
   database_consistency
   debug
   factory_bot_rails
+  groupdate
   importmap-rails
   jbuilder
   kamal
