@@ -182,6 +182,13 @@
 
   <% end %>
 
+  <%= line_chart @challenge_story.challenge_participants.map { |element|
+    {name: element.name, 
+    data: element.challenge_comments.unscope(:order).group_by_day(:created_at).count}
+} %>
+  <%= column_chart @challenge_story.challenge_comments.unscope(:order).group_by_day_of_week(:created_at, format: "%a").count %>
+
+
   <% if current_user %>
     <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
     <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>

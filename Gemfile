@@ -45,6 +45,9 @@ gem "thruster", require: false
 
 gem "webauthn"
 
+gem "chartkick"
+gem "groupdate"
+
 group :production do
   gem "newrelic_rpm"
 end
