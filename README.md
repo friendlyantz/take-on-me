@@ -209,6 +209,9 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 - Tailwind / DaisyUI
 - SitePrism
 
+- <https://chartkick.com/>
+-
+
 # Debugging
 
 ```ruby
