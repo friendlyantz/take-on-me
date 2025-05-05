@@ -7,7 +7,7 @@ image: friendlyantz/take_on_me
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.1.25
+    - 192.168.1.23
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -104,7 +104,7 @@ ssh:
 accessories:
   db:
     image: postgres:17
-    host: 192.168.1.25
+    host: 192.168.1.23
     port: "127.0.0.1:5432:5432" # Change this for multiple Postgres containers in the same machine "127.0.0.1:5433:5432"
     env:
       clear:
