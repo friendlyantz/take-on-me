@@ -16,7 +16,7 @@ common:
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: "Take On Me - Rails gem"
+  app_name: "Strivo - Rails gem"
 
   distributed_tracing:
     enabled: true
@@ -51,7 +51,7 @@ common:
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: "Take On Me - Rails gem (Development)"
+  app_name: "Strivo - Rails gem (Development)"
 
 test:
   <<: *default_settings
@@ -60,7 +60,7 @@ test:
 
 staging:
   <<: *default_settings
-  app_name: "Take On Me - Rails gem (Staging)"
+  app_name: "Strivo - Rails gem (Staging)"
 
 production:
   <<: *default_settings

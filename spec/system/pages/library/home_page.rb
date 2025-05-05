@@ -4,5 +4,5 @@ class Library::HomePage < SitePrism::Page
   element :menu, "#menu"
   element :new_challenge, "#new-challenge"
 
-  load_validation { has_navbar? && navbar.has_text?("Take On Me") }
+  load_validation { has_navbar? && navbar.has_text?("Strivo") }
 end
