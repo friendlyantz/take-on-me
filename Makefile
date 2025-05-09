@@ -16,6 +16,13 @@ APP_REVISION    = $(shell git rev-parse HEAD)
 install:
 	bundle install
 
+	docker run --name friendly-postgres-container \
+	-e POSTGRES_USER=friendlyantz \
+	-e POSTGRES_PASSWORD=password \
+	-e POSTGRES_DB=take_on_me_development \
+	-p 5432:5432 \
+	-d postgres
+
 .PHONY: test
 test:
 	bundle exec rspec
