@@ -18,19 +18,20 @@
       </div>
     </div>
   <% else %>
-    <div class="divider"></div>
-    <h2 class="text-xl font-semibold mb-4">Rewards You've Pledged</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      <% @rewards.select { |r| r.giver.user == current_user }.each do |reward| %>
-        <%= render "reward_card", reward: reward, is_giver: true %>
-      <% end %>
-    </div>
 
     <div class="divider"></div>
     <h2 class="text-xl font-semibold mb-4">Rewards Pledged to You</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
       <% @rewards.select { |r| r.receiver.user == current_user }.each do |reward| %>
         <%= render "reward_card", reward: reward, is_giver: false %>
+      <% end %>
+    </div>
+
+    <div class="divider"></div>
+    <h2 class="text-xl font-semibold mb-4">Rewards You've Pledged</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <% @rewards.select { |r| r.giver.user == current_user }.each do |reward| %>
+        <%= render "reward_card", reward: reward, is_giver: true %>
       <% end %>
     </div>
 

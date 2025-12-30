@@ -3,7 +3,8 @@ class ChallengeRewardsController < ApplicationController
   before_action :enforce_current_user
   before_action :set_challenge_story
   before_action :set_reward, only: [:fulfill, :cancel]
-  before_action :verify_giver, only: [:fulfill, :cancel]
+  before_action :verify_receiver, only: [:fulfill]
+  before_action :verify_giver, only: [:cancel]
 
   def index
     @rewards = @challenge_story.challenge_rewards
@@ -76,7 +77,14 @@ class ChallengeRewardsController < ApplicationController
   def verify_giver
     unless @reward.giver.user == current_user
       redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        alert: "You can only modify rewards you've pledged."
+        alert: "You can only cancel rewards you've pledged."
+    end
+  end
+
+  def verify_receiver
+    unless @reward.receiver.user == current_user
+      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
+        alert: "You can only fulfill rewards pledged to you."
     end
   end
 
