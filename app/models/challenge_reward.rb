@@ -5,6 +5,7 @@ class ChallengeReward < ApplicationRecord
 
   validates :description, presence: true
   validates :status, inclusion: {in: %w[pending fulfilled canceled]}
+  validates :giver_id, uniqueness: {scope: [:receiver_id, :challenge_story_id], message: "has already pledged a reward to this participant"}
   validate :cannot_reward_self
   validate :participants_in_same_challenge
 
