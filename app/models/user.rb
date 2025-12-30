@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :credentials, dependent: :destroy
   has_many :challenge_story_likes, dependent: :destroy
   has_many :liked_challenge_stories, through: :challenge_story_likes, source: :challenge_story
+  has_many :challenge_participants, dependent: :destroy
+  has_many :challenge_stories, through: :challenge_participants
 
   validates :username, presence: true, uniqueness: true
 
