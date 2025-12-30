@@ -27,6 +27,14 @@ install:
 test:
 	bundle exec rspec
 
+.PHONY: server
+server:
+	bundle exec rails server
+
+.PHONY: tailwind
+tailwind:
+	bin/rails tailwindcss:watch
+
 .PHONY: load-deploy-secrets
 load-deploy-secrets:
 	bw unlock
@@ -34,10 +42,6 @@ load-deploy-secrets:
 .PHONY: deploy
 deploy:
 	kamal deploy
-
-.PHONY: server
-server:
-	bundle exec rails server
 
 .PHONY: lint
 lint:
@@ -66,7 +70,11 @@ usage:
 	@echo "Getting started"
 	@echo
 	@echo "${YELLOW}make install${NC}                  install dependencies"
-	@echo "${YELLOW}make test${NC}                     run tests"
+	@echo
+	@echo "${YELLOW}make server${NC}                   run server"
+	@echo "${YELLOW}make tailwind${NC}                 run tailwind watcher"
+	@echo
+# 	@echo "${YELLOW}make test${NC}                     run tests"
 	@echo
 	@echo "before deploying run: export EMAIL=your@email.com"
 	@echo "${YELLOW}make load-deploy-secrets${NC}      load deploy secrets. then manually export SESSION_TOKEN"
@@ -75,7 +83,7 @@ usage:
 	@echo "${YELLOW}make run${NC}                      launch app"
 	@echo "${YELLOW}make lint${NC}                     lint app"
 	@echo "${YELLOW}make lint-unsafe${NC}              lint app(UNSAFE)"
-	@echo "${YELLOW}make lint-checkonly${NC}           check lintintg"
-	@echo "${YELLOW}make audit-dependencies${NC}       security audit of dependencies"
-	@echo "${YELLOW}make ci${NC}                       ci to check linting and run tests"
+# 	@echo "${YELLOW}make lint-checkonly${NC}           check lintintg"
+# 	@echo "${YELLOW}make audit-dependencies${NC}       security audit of dependencies"
+# 	@echo "${YELLOW}make ci${NC}                       ci to check linting and run tests"
 	@echo
