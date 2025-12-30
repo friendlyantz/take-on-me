@@ -1,6 +1,6 @@
 <%= render partial: 'application/feature_detection' %>
 <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-  <legend class="fieldset-legend">Authorisation</legend>
+  <legend class="fieldset-legend">Sign In</legend>
   <%= form_with scope: :session, url: session_path, local: false, id: "new-session",
     data: { controller: "new-session",
     action: "ajax:success->new-session#create ajax:error->new-session#error" } do |form| %>

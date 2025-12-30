@@ -11,6 +11,7 @@
     </svg>
   <% end %>
 
+<%# 
   <svg class="size-[1.5em]" version="1.0" xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 200.000000 200.000000"
  preserveAspectRatio="xMidYMid meet">
@@ -61,7 +62,7 @@ fill="purple" stroke="butt">
 12 -44 -11z"/>
     </g>
   </svg>
-
+ %>
 
   <%= link_to new_challenge_story_path,
   class: current_page?(new_challenge_story_path) ? "dock-active" : "dock",
@@ -73,9 +74,11 @@ fill="purple" stroke="butt">
     </svg>
   <% end %>
 
+  <%# 
   <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M12 22c1.104 0 2-.896 2-2h-4c0 1.104.896 2 2 2Zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 1 0-3 0v.68C7.64 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
-  </svg>
+  </svg> 
+  %>
 
   <%= render "layouts/webauthn" %>
 </div>
