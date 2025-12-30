@@ -27,6 +27,10 @@ install:
 test:
 	bundle exec rspec
 
+.PHONY: load-deploy-secrets
+load-deploy-secrets:
+	bw unlock
+
 .PHONY: deploy
 deploy:
 	kamal deploy
@@ -63,7 +67,11 @@ usage:
 	@echo
 	@echo "${YELLOW}make install${NC}                  install dependencies"
 	@echo "${YELLOW}make test${NC}                     run tests"
+	@echo
+	@echo "before deploying run: export EMAIL=your@email.com"
+	@echo "${YELLOW}make load-deploy-secrets${NC}      load deploy secrets. then manually export SESSION_TOKEN"
 	@echo "${YELLOW}make deploy${NC}                   deploy"
+	@echo
 	@echo "${YELLOW}make run${NC}                      launch app"
 	@echo "${YELLOW}make lint${NC}                     lint app"
 	@echo "${YELLOW}make lint-unsafe${NC}              lint app(UNSAFE)"
