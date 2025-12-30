@@ -3,11 +3,13 @@
   <div class="hero-overlay"></div>
   <div class="hero-content text-neutral-content text-center">
     <div class="max-w-md">
-      <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
+      <h1 class="mb-5 text-5xl font-bold">
+        Bet on yourself
+      </h1>
       <p class="mb-5">
-        Strivo is an app designed to inspire and empower individuals to motivate each other and take on personal
-        challenges. Whether you're looking to push your limits, achieve your goals, or simply find encouragement from a
-        supportive community, our app is here to help you grow and thrive together!"
+        Personal challenges with social proof.
+         <br>
+         Let friends keep you honest.
       </p>
       <div class="avatar-group -space-x-6 justify-center mb-5">
         <div class="avatar">
@@ -32,13 +34,15 @@
         </div>
       </div>
       <ul class="steps">
-        <li class="step step-primary">
-          <%= (Date.today - 2.weeks).strftime("%d %B") %>
+        <li class="step step-primary" data-content="✓"> 
+          <%= (Date.today - 3.days).strftime("%d %B") %>
         </li>
-        <li class="step step-primary">Choose plan</li>
-        <li class="step">Purchase</li>
+        <li class="step step-primary" data-content="✓"></li>
+        <li class="step step-warning" data-content="?"></li>
+
+        <li class="step"></li>
         <li class="step">
-          <%= (Date.today + 2.weeks).strftime("%d %B") %>
+          <%= (Date.today + 4.days).strftime("%d %B") %>
         </li>
       </ul>
       <div>
