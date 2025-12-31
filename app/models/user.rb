@@ -22,4 +22,12 @@ class User < ApplicationRecord
   def can_delete_credentials?
     credentials.size > CREDENTIAL_MIN_AMOUNT
   end
+
+  def latest_active_participation
+    challenge_participants.active
+      .joins(:challenge_story)
+      .merge(ChallengeStory.active)
+      .order("challenge_stories.updated_at DESC")
+      .first
+  end
 end

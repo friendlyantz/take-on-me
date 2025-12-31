@@ -28,6 +28,10 @@ class ChallengeStory < ApplicationRecord
     finish < Time.zone.today
   end
 
+  def latest_photo_comment
+    challenge_comments.where.not(photo_attachment_id: nil).order(created_at: :desc).first
+  end
+
   def liked_by?(user)
     return false unless user
     challenge_story_likes.exists?(user: user)

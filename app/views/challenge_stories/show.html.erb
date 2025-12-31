@@ -43,8 +43,7 @@
 
   <% if current_user %>
     <% unless @challenge_story.completed? %>
-      <% participant = @challenge_story.challenge_participants.find_by(user: current_user) %>
-      <% if participant && participant.challenge_comments.exists?(created_at: Time.zone.today.all_day) %>
+      <% if @today_comment %>
         <div class="alert alert-info mt-4">
           <span>You've already checked in today. Come back tomorrow!</span>
         </div>

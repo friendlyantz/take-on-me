@@ -66,8 +66,7 @@ fill="purple" stroke="butt">
  %>
 
   <% if current_user %>
-    <% latest_participation = current_user.challenge_participants.active.joins(:challenge_story).merge(ChallengeStory.active).order("challenge_stories.updated_at DESC").first %>
-    <% if latest_participation %>
+    <% if (latest_participation = current_user.latest_active_participation) %>
       <%= link_to challenge_story_path(latest_participation.challenge_story, anchor: "new_message"),
         class: "dock",
         id: "new-comment" do %>
