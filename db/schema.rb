@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "challenge_participant_status", ["active", "inactive"]
+  create_enum "challenge_reward_status", ["pending", "fulfilled", "canceled"]
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -60,6 +65,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
     t.uuid "challenge_story_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "challenge_comment_likes_count", default: 0, null: false
     t.index ["challenge_participant_id"], name: "index_challenge_comments_on_challenge_participant_id"
     t.index ["challenge_story_id"], name: "index_challenge_comments_on_challenge_story_id"
   end
@@ -70,9 +76,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
     t.uuid "challenge_story_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status", default: "active", null: false
+    t.integer "given_rewards_count", default: 0, null: false
+    t.integer "received_rewards_count", default: 0, null: false
+    t.integer "challenge_comments_count", default: 0, null: false
+    t.enum "status", default: "active", null: false, enum_type: "challenge_participant_status"
     t.index ["challenge_story_id"], name: "index_challenge_participants_on_challenge_story_id"
-    t.index ["status"], name: "index_challenge_participants_on_status"
     t.index ["user_id", "challenge_story_id"], name: "index_challenge_participants_on_user_id_and_challenge_story_id", unique: true
     t.index ["user_id"], name: "index_challenge_participants_on_user_id"
   end
@@ -82,10 +90,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
     t.uuid "receiver_id", null: false
     t.uuid "challenge_story_id", null: false
     t.string "description", null: false
-    t.string "status", default: "pending", null: false
     t.datetime "fulfilled_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "status", default: "pending", null: false, enum_type: "challenge_reward_status"
     t.index ["challenge_story_id"], name: "index_challenge_rewards_on_challenge_story_id"
     t.index ["giver_id", "receiver_id", "challenge_story_id"], name: "index_challenge_rewards_on_participants_and_story", unique: true
     t.index ["giver_id"], name: "index_challenge_rewards_on_giver_id"
@@ -100,6 +108,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "completed", default: false, null: false
+    t.integer "challenge_story_likes_count", default: 0, null: false
+    t.integer "challenge_comments_count", default: 0, null: false
+    t.integer "challenge_participants_count", default: 0, null: false
+    t.integer "challenge_rewards_count", default: 0, null: false
   end
 
   create_table "challenge_story_likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -129,6 +141,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_013411) do
     t.string "webauthn_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "challenge_participants_count", default: 0, null: false
+    t.integer "challenge_story_likes_count", default: 0, null: false
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

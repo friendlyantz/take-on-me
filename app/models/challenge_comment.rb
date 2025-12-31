@@ -1,9 +1,9 @@
 class ChallengeComment < ApplicationRecord
   self.implicit_order_column = "created_at"
+  default_scope { order(created_at: :asc) }
 
-  belongs_to :challenge_participant
-  belongs_to :challenge_story
-
+  belongs_to :challenge_participant, counter_cache: true
+  belongs_to :challenge_story, counter_cache: true
   has_one_attached :photo
   has_many :challenge_comment_likes, dependent: :destroy
   has_many :liking_users, through: :challenge_comment_likes, source: :user
@@ -11,16 +11,13 @@ class ChallengeComment < ApplicationRecord
   validates :message, presence: true
   validate :one_comment_per_day_per_participant
 
+  # Broadcasts (after attachments, as it is callback anti-pattern)
   broadcasts_to :challenge_story, action: :prepend
-  default_scope { order(created_at: :asc) } # Oldest first
 
+  # Public methods
   def liked_by?(user)
     return false unless user
     challenge_comment_likes.exists?(user: user)
-  end
-
-  def like_count
-    challenge_comment_likes.count
   end
 
   private

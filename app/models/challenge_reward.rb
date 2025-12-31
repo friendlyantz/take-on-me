@@ -1,24 +1,30 @@
 class ChallengeReward < ApplicationRecord
-  belongs_to :giver, class_name: "ChallengeParticipant"
-  belongs_to :receiver, class_name: "ChallengeParticipant"
-  belongs_to :challenge_story
+  # Associations
+  belongs_to :giver, class_name: "ChallengeParticipant", counter_cache: :given_rewards_count
+  belongs_to :receiver, class_name: "ChallengeParticipant", counter_cache: :received_rewards_count
+  belongs_to :challenge_story, counter_cache: true
 
+  # Enums
+  enum :status, %w[pending fulfilled canceled].index_by(&:itself)
+
+  # Validations
   validates :description, presence: true
-  validates :status, inclusion: {in: %w[pending fulfilled canceled]}
   validates :giver_id, uniqueness: {scope: [:receiver_id, :challenge_story_id], message: "has already pledged a reward to this participant"}
   validate :cannot_reward_self
   validate :participants_in_same_challenge
 
-  scope :pending, -> { where(status: "pending") }
-  scope :fulfilled, -> { where(status: "fulfilled") }
-  scope :canceled, -> { where(status: "canceled") }
+  # Scopes
+  scope :pending, -> { where(status: :pending) }
+  scope :fulfilled, -> { where(status: :fulfilled) }
+  scope :canceled, -> { where(status: :canceled) }
 
+  # Public methods
   def fulfill!
-    update(status: "fulfilled", fulfilled_at: Time.current)
+    update!(status: :fulfilled, fulfilled_at: Time.current)
   end
 
   def cancel!
-    update(status: "canceled")
+    update!(status: :canceled)
   end
 
   private

@@ -1,27 +1,29 @@
 class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 2
 
-  has_many :challenge_comments, dependent: :destroy
-  has_many :challenge_participants, dependent: :destroy
-  has_many :challenge_rewards, dependent: :destroy
+  # Associations
+  has_many :challenge_comments, dependent: :destroy, counter_cache: true
+  has_many :challenge_participants, dependent: :destroy, counter_cache: true
+  has_many :challenge_rewards, dependent: :destroy, counter_cache: true
+  has_many :challenge_story_likes, dependent: :destroy, counter_cache: true
   has_many :active_participants, -> { where(status: "active") }, class_name: "ChallengeParticipant"
-  has_many :challenge_story_likes, dependent: :destroy
   has_many :liking_users, through: :challenge_story_likes, source: :user
 
+  # DSL extensions
   self.implicit_order_column = "created_at"
+  broadcasts
 
+  # Validations
   validates :title, presence: true
-  validates :description, presence: true
-  validates :description, length: {maximum: 500}
-  validates :start, presence: true
-  validates :finish, presence: true
+  validates :description, presence: true, length: {maximum: 500}
+  validates :start, :finish, presence: true
   validate :finish_cannot_be_earlier_than_start
 
+  # Scopes
   scope :active, -> { where(completed: false) }
   scope :completed, -> { where(completed: true) }
 
-  broadcasts
-
+  # Public methods
   def finished?
     finish < Time.zone.today
   end
@@ -29,10 +31,6 @@ class ChallengeStory < ApplicationRecord
   def liked_by?(user)
     return false unless user
     challenge_story_likes.exists?(user: user)
-  end
-
-  def like_count
-    challenge_story_likes.count
   end
 
   def at_capacity?
@@ -45,10 +43,6 @@ class ChallengeStory < ApplicationRecord
 
   def mark_complete!
     update!(completed: true)
-  end
-
-  def completed?
-    completed
   end
 
   private
