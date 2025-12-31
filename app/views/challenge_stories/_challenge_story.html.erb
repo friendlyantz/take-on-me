@@ -1,29 +1,70 @@
-<div id="<%= dom_id challenge_story %>" class="w-full sm:w-auto my-5 space-y-5">
-
-  <div class="flex items-center justify-between">
-    <h1 class="font-bold text-4xl">
-      <%= challenge_story.title %>
-    </h1>
-    
-    <% if challenge_story.completed? %>
-      <span class="badge badge-success badge-lg">✓ Completed</span>
-    <% else %>
-      <span class="badge badge-primary badge-lg">Active</span>
-    <% end %>
-  </div>
-
-  <div class="avatar-group -space-x-6">
-    <% challenge_story.challenge_participants.each do |participant| %>
-      <div class="avatar">
-        <div class="w-12">
-          <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(participant.name)}?s=80&d=identicon", alt: "participant avatar", class: "rounded-full" %>
+<div id="<%= dom_id challenge_story %>" class="card bg-base-100 shadow-xl mb-6">
+  <div class="card-body">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex-1">
+        <h1 class="card-title text-3xl mb-3">
+          <%= challenge_story.title %>
+        </h1>
+        
+        <div class="flex items-center gap-4 text-sm mb-4">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="opacity-70"><%= challenge_story.start.to_fs(:long) %> - <%= challenge_story.finish.to_fs(:long) %></span>
+          </div>
         </div>
       </div>
+      
+      <% if challenge_story.completed? %>
+        <div class="badge badge-success gap-2 p-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Completed
+        </div>
+      <% else %>
+        <div class="badge badge-primary gap-2 p-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Active
+        </div>
+      <% end %>
+    </div>
+
+    <% if challenge_story.description.present? %>
+      <div class="prose max-w-none">
+        <%= simple_format challenge_story.description %>
+      </div>
     <% end %>
-  </div>
 
-  <div>
-    <%= simple_format challenge_story.description %>
-  </div>
+    <div class="divider"></div>
 
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-semibold">Participants:</span>
+      <div class="avatar-group -space-x-4">
+        <% challenge_story.challenge_participants.limit(5).each do |participant| %>
+          <div class="avatar">
+            <div class="w-10">
+              <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(participant.name)}?s=80&d=identicon", 
+                  alt: participant.name, 
+                  class: "rounded-full",
+                  title: participant.name %>
+            </div>
+          </div>
+        <% end %>
+        <% if challenge_story.challenge_participants.count > 5 %>
+          <div class="avatar placeholder">
+            <div class="w-10 bg-neutral text-neutral-content">
+              <span>+<%= challenge_story.challenge_participants.count - 5 %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="text-sm opacity-70">
+        <%= pluralize(challenge_story.challenge_participants.count, 'participant') %>
+      </div>
+    </div>
+  </div>
 </div>

@@ -9,28 +9,23 @@
       Back
     <% end %>
 
-    <div class="flex items-center gap-2">
-      <span class="text-sm opacity-70">Like this challenge:</span>
+    <div class="flex items-center gap-3">
+      <% if current_user %>
+        <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-sm btn-ghost" %>
+        
+        <% unless @challenge_story.completed? %>
+          <%= button_to "Mark Complete", complete_challenge_story_path(@challenge_story), 
+              method: :patch, 
+              class: "btn btn-sm btn-success",
+              data: { turbo_confirm: "Are you sure you want to mark this challenge as complete?" } %>
+        <% end %>
+      <% end %>
+      
       <%= render 'challenge_stories/likes', challenge_story: @challenge_story %>
     </div>
   </div>
 
   <%= render @challenge_story %>
-
-  <% if current_user %>
-    <div class="flex gap-2 mb-4">
-      <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
-      
-      <% unless @challenge_story.completed? %>
-        <%= button_to "Mark as Complete", complete_challenge_story_path(@challenge_story), 
-            method: :patch, 
-            class: "btn btn-success",
-            data: { turbo_confirm: "Are you sure you want to mark this challenge as complete?" } %>
-      <% else %>
-        <span class="badge badge-success badge-lg">✓ Completed</span>
-      <% end %>
-    </div>
-      <% end %>
 
   <%= render "rewards_section", challenge_story: @challenge_story %>
 
@@ -44,22 +39,34 @@
   <% if current_user %>
     <% unless @challenge_story.completed? %>
       <% if @today_comment %>
-        <div class="alert alert-info mt-4">
+        <div class="alert alert-success shadow-lg mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
           <span>You've already checked in today. Come back tomorrow!</span>
         </div>
       <% else %>
         <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
       <% end %>
     <% else %>
-      <div class="alert alert-info mt-4">
+      <div class="alert alert-info shadow-lg mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
         <span>This challenge is complete. No more check-ins can be added.</span>
       </div>
     <% end %>
   <% else %>
-    <%= link_to new_session_path, class: "btn btn-secondary" do %>
-      Sign in to join this challenge
-    <% end %>
+    <div class="card bg-base-200 shadow-lg mb-6">
+      <div class="card-body text-center">
+        <h3 class="card-title justify-center">Want to join this challenge?</h3>
+        <p class="opacity-70">Sign in to start tracking your progress</p>
+        <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
+      </div>
+    </div>
   <% end %>
+
+  <div class="divider">Check-ins</div>
 
   <div id="challenge_comments" class="w-full sm:w-auto my-5 space-y-5">
     <%= render @challenge_story.challenge_comments.reverse %>
