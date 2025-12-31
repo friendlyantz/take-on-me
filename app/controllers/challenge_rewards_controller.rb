@@ -14,7 +14,7 @@ class ChallengeRewardsController < ApplicationController
     return @rewards_received = @rewards_given = @rewards_others = [] unless current_participant
 
     all_rewards = @challenge_story.challenge_rewards.includes(giver: :user, receiver: :user)
-    
+
     @rewards_received = all_rewards.where(receiver: current_participant)
     @rewards_given = all_rewards.where(giver: current_participant)
     @rewards_others = all_rewards.where.not(id: @rewards_received.pluck(:id) + @rewards_given.pluck(:id))
@@ -22,15 +22,8 @@ class ChallengeRewardsController < ApplicationController
 
   def new
     @reward = ChallengeReward.new(challenge_story: @challenge_story)
-    @current_participant = @challenge_story.active_participants.find_by(user: current_user)
-
-    # Exclude participants who already have a pledge from current user
-    existing_receiver_ids = ChallengeReward.where(
-      giver_id: @current_participant&.id,
-      challenge_story_id: @challenge_story.id
-    ).pluck(:receiver_id)
-
-    @participants = @challenge_story.active_participants.where.not(id: existing_receiver_ids)
+    @current_participant = current_participant_for_story
+    @participants = available_participants_for_pledge
   end
 
   def create
@@ -41,37 +34,22 @@ class ChallengeRewardsController < ApplicationController
       redirect_to challenge_story_challenge_rewards_path(@challenge_story),
         notice: "You've successfully pledged a reward!"
     else
-      @current_participant = @challenge_story.active_participants.find_by(user: current_user)
-
-      # Exclude participants who already have a pledge from current user
-      existing_receiver_ids = ChallengeReward.where(
-        giver_id: @current_participant&.id,
-        challenge_story_id: @challenge_story.id
-      ).pluck(:receiver_id)
-
-      @participants = @challenge_story.active_participants.where.not(id: existing_receiver_ids)
+      @current_participant = current_participant_for_story
+      @participants = available_participants_for_pledge
       render :new, status: :unprocessable_content
     end
   end
 
   def fulfill
-    if @reward.fulfill!
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        notice: "Reward has been marked as fulfilled!"
-    else
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        alert: "Could not fulfill the reward."
-    end
+    @reward.fulfill!
+    redirect_to challenge_story_challenge_rewards_path(@challenge_story),
+      notice: "Reward has been marked as fulfilled!"
   end
 
   def cancel
-    if @reward.cancel!
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        notice: "Reward has been canceled."
-    else
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        alert: "Could not cancel the reward."
-    end
+    @reward.cancel!
+    redirect_to challenge_story_challenge_rewards_path(@challenge_story),
+      notice: "Reward has been canceled."
   end
 
   private
@@ -85,17 +63,17 @@ class ChallengeRewardsController < ApplicationController
   end
 
   def verify_giver
-    unless @reward.giver.user == current_user
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        alert: "You can only cancel rewards you've pledged."
-    end
+    return if @reward.giver.user == current_user
+
+    redirect_to challenge_story_challenge_rewards_path(@challenge_story),
+      alert: "You can only cancel rewards you've pledged."
   end
 
   def verify_receiver
-    unless @reward.receiver.user == current_user
-      redirect_to challenge_story_challenge_rewards_path(@challenge_story),
-        alert: "You can only fulfill rewards pledged to you."
-    end
+    return if @reward.receiver.user == current_user
+
+    redirect_to challenge_story_challenge_rewards_path(@challenge_story),
+      alert: "You can only fulfill rewards pledged to you."
   end
 
   def reward_params
@@ -103,8 +81,22 @@ class ChallengeRewardsController < ApplicationController
   end
 
   def enforce_current_user
-    if current_user.blank?
-      redirect_to new_session_path
-    end
+    redirect_to new_session_path if current_user.blank?
+  end
+
+  def current_participant_for_story
+    @challenge_story.active_participants.find_by(user: current_user)
+  end
+
+  def available_participants_for_pledge
+    current_participant = current_participant_for_story
+    return [] unless current_participant
+
+    existing_receiver_ids = ChallengeReward.where(
+      giver_id: current_participant.id,
+      challenge_story_id: @challenge_story.id
+    ).pluck(:receiver_id)
+
+    @challenge_story.active_participants.where.not(id: existing_receiver_ids)
   end
 end
