@@ -10,14 +10,17 @@ class ChallengeRewardsController < ApplicationController
   def index
     return @rewards_received = @rewards_given = @rewards_others = [] unless current_user
 
-    current_participant = @challenge_story.challenge_participants.find_by(user: current_user)
-    return @rewards_received = @rewards_given = @rewards_others = [] unless current_participant
+    @current_participant = @challenge_story.challenge_participants.find_by(user: current_user)
+    return @rewards_received = @rewards_given = @rewards_others = [] unless @current_participant
 
-    all_rewards = @challenge_story.challenge_rewards.includes(giver: :user, receiver: :user)
+    # Load all rewards once with eager loading
+    all_rewards = @challenge_story.challenge_rewards.includes(giver: :user, receiver: :user).to_a
 
-    @rewards_received = all_rewards.where(receiver: current_participant)
-    @rewards_given = all_rewards.where(giver: current_participant)
-    @rewards_others = all_rewards.where.not(id: @rewards_received.pluck(:id) + @rewards_given.pluck(:id))
+    # Partition in-memory to avoid multiple queries
+    @rewards_received = all_rewards.select { |r| r.receiver_id == @current_participant.id }
+    @rewards_given = all_rewards.select { |r| r.giver_id == @current_participant.id }
+    my_reward_ids = (@rewards_received + @rewards_given).map(&:id)
+    @rewards_others = all_rewards.reject { |r| my_reward_ids.include?(r.id) }
   end
 
   def new
