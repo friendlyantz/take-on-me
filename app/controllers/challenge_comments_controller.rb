@@ -10,6 +10,10 @@ class ChallengeCommentsController < ApplicationController
     @challenge_comment = ChallengeComment.new(challenge_comment_params)
     challenge_story = ChallengeStory.find(params[:challenge_story_id])
 
+    if challenge_story.completed?
+      return redirect_to challenge_story_path(challenge_story), alert: "Cannot add comments to completed challenges"
+    end
+
     # Find or create participant, ensuring they're active
     challenge_participant = ChallengeParticipant.find_by(user: current_user, challenge_story: challenge_story)
 

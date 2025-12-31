@@ -17,6 +17,21 @@
 
   <%= render @challenge_story %>
 
+  <% if current_user %>
+    <div class="flex gap-2 mb-4">
+      <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
+      
+      <% unless @challenge_story.completed? %>
+        <%= button_to "Mark as Complete", complete_challenge_story_path(@challenge_story), 
+            method: :patch, 
+            class: "btn btn-success",
+            data: { turbo_confirm: "Are you sure you want to mark this challenge as complete?" } %>
+      <% else %>
+        <span class="badge badge-success badge-lg">✓ Completed</span>
+      <% end %>
+    </div>
+      <% end %>
+
   <%= render "rewards_section", challenge_story: @challenge_story %>
 
   <%= turbo_stream_from @challenge_story %>
@@ -27,8 +42,13 @@
 
 
   <% if current_user %>
-    <%= link_to "Edit", edit_challenge_story_path(@challenge_story), class: "btn btn-soft btn-primary" %>
-    <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+    <% unless @challenge_story.completed? %>
+      <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+    <% else %>
+      <div class="alert alert-info mt-4">
+        <span>This challenge is complete. No more check-ins can be added.</span>
+      </div>
+    <% end %>
   <% else %>
     <%= link_to new_session_path, class: "btn btn-secondary" do %>
       Sign in to join this challenge

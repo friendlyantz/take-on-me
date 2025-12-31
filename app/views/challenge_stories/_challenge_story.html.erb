@@ -1,8 +1,16 @@
 <div id="<%= dom_id challenge_story %>" class="w-full sm:w-auto my-5 space-y-5">
 
-  <h1 class="font-bold text-4xl">
-    <%= challenge_story.title %>
-  </h1>
+  <div class="flex items-center justify-between">
+    <h1 class="font-bold text-4xl">
+      <%= challenge_story.title %>
+    </h1>
+    
+    <% if challenge_story.completed? %>
+      <span class="badge badge-success badge-lg">✓ Completed</span>
+    <% else %>
+      <span class="badge badge-primary badge-lg">Active</span>
+    <% end %>
+  </div>
 
   <div class="avatar-group -space-x-6">
     <% ChallengeParticipant.where(challenge_story: challenge_story).each do |participant| %>

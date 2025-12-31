@@ -4,10 +4,16 @@ class ChallengeStoriesController < ApplicationController
 
   # GET /challenge_stories or /challenge_stories.json
   def index
-    @challenge_stories = ChallengeStory
-      .left_joins(:challenge_comments)
-      .group(:id)
-      .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
+    if current_user
+      @challenge_stories = ChallengeStory
+        .joins(:challenge_participants)
+        .where(challenge_participants: {user_id: current_user.id, status: "active"})
+        .left_joins(:challenge_comments)
+        .group("challenge_stories.id")
+        .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
+    else
+      @challenge_stories = ChallengeStory.none
+    end
   end
 
   # GET /challenge_stories/1 or /challenge_stories/1.json
@@ -18,7 +24,7 @@ class ChallengeStoriesController < ApplicationController
   def new
     @challenge_story = ChallengeStory.new(
       start: Time.zone.today,
-      finish: Time.zone.today + 28.days
+      finish: Time.zone.today + 7.days
     )
   end
 
@@ -60,6 +66,17 @@ class ChallengeStoriesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to challenge_stories_path, status: :see_other, notice: "Challenge story was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  # PATCH /challenge_stories/1/complete
+  def complete
+    @challenge_story = ChallengeStory.find(params[:id])
+    @challenge_story.mark_complete!
+
+    respond_to do |format|
+      format.html { redirect_to challenge_stories_path, notice: "Challenge marked as complete! Time to create a new one." }
       format.json { head :no_content }
     end
   end

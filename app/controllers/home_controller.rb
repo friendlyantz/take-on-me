@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   layout "hero"
-  
+
   def index
     return unless current_user
 

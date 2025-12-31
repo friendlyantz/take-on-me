@@ -17,6 +17,9 @@ class ChallengeStory < ApplicationRecord
   validates :finish, presence: true
   validate :finish_cannot_be_earlier_than_start
 
+  scope :active, -> { where(completed: false) }
+  scope :completed, -> { where(completed: true) }
+
   broadcasts
 
   def finished?
@@ -38,6 +41,14 @@ class ChallengeStory < ApplicationRecord
 
   def available_spots
     MAX_PARTICIPANTS - active_participants.count
+  end
+
+  def mark_complete!
+    update!(completed: true)
+  end
+
+  def completed?
+    completed
   end
 
   private

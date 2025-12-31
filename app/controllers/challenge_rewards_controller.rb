@@ -13,13 +13,13 @@ class ChallengeRewardsController < ApplicationController
   def new
     @reward = ChallengeReward.new(challenge_story: @challenge_story)
     @current_participant = @challenge_story.active_participants.find_by(user: current_user)
-    
+
     # Exclude participants who already have a pledge from current user
     existing_receiver_ids = ChallengeReward.where(
       giver_id: @current_participant&.id,
       challenge_story_id: @challenge_story.id
     ).pluck(:receiver_id)
-    
+
     @participants = @challenge_story.active_participants.where.not(id: existing_receiver_ids)
   end
 
@@ -32,13 +32,13 @@ class ChallengeRewardsController < ApplicationController
         notice: "You've successfully pledged a reward!"
     else
       @current_participant = @challenge_story.active_participants.find_by(user: current_user)
-      
+
       # Exclude participants who already have a pledge from current user
       existing_receiver_ids = ChallengeReward.where(
         giver_id: @current_participant&.id,
         challenge_story_id: @challenge_story.id
       ).pluck(:receiver_id)
-      
+
       @participants = @challenge_story.active_participants.where.not(id: existing_receiver_ids)
       render :new, status: :unprocessable_entity
     end
