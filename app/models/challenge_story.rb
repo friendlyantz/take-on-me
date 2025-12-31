@@ -2,10 +2,10 @@ class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 4
 
   # Associations
-  has_many :challenge_comments, dependent: :destroy, counter_cache: true
-  has_many :challenge_participants, dependent: :destroy, counter_cache: true
-  has_many :challenge_rewards, dependent: :destroy, counter_cache: true
-  has_many :challenge_story_likes, dependent: :destroy, counter_cache: true
+  has_many :challenge_comments, dependent: :destroy
+  has_many :challenge_participants, dependent: :destroy
+  has_many :challenge_rewards, dependent: :destroy
+  has_many :challenge_story_likes, dependent: :destroy
   has_many :active_participants, -> { active }, class_name: "ChallengeParticipant"
   has_many :liking_users, through: :challenge_story_likes, source: :user
 

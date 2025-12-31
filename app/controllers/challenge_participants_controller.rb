@@ -2,7 +2,7 @@ class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
 
   before_action :enforce_current_user
-  before_action :set_challenge_story
+  before_action :set_challenge_story, only: [:create]
 
   def create
     return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)" if @challenge_story.at_capacity?
