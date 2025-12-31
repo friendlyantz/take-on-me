@@ -20,12 +20,14 @@
               method: :patch, 
               class: "btn btn-success btn-sm" %>
         <% end %>
+
         <% if reward.giver.user == current_user %>
           <%= button_to "Cancel", cancel_challenge_story_challenge_reward_path(@challenge_story, reward), 
               method: :patch, 
               class: "btn btn-error btn-sm",
-              data: { turbo_confirm: "Are you sure you want to cancel this reward?" } %>
+              data: { turbo_confirm: "Are you sure? you can pledge again during the challenge." } %>
         <% end %>
+
       </div>
     <% end %>
   </div>

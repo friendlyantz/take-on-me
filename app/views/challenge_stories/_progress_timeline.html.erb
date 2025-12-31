@@ -1,0 +1,87 @@
+<% if notice.present? %>
+  <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice">
+    <%= notice %>
+  </p>
+<% end %>
+
+<% 
+  # Calculate total duration and elapsed time
+  # move to ctrlr
+  # probs a separate checkin object?
+  total_duration = (challenge_story.finish - challenge_story.start).to_i
+  elapsed_days = (Date.today - challenge_story.start).to_i
+  progress_percentage = total_duration > 0 ? (elapsed_days.to_f / total_duration * 100).clamp(0, 100) : 0
+  
+  # Get recent comments (limited to 6 for our steps)
+  recent_comments = challenge_story.challenge_comments.order(created_at: :asc).limit(6)
+  
+  # Determine challenge status
+  status = if Date.today < challenge_story.start
+             "upcoming"
+           elsif Date.today > challenge_story.finish
+             "completed"
+           else
+             "active"
+           end
+%>
+
+<div class="flex flex-col mb-6">
+  <div class="text-sm font-medium mb-2">Time: <%= progress_percentage.round %>% Complete</div>
+  <progress class="progress progress-primary w-full" value="<%= progress_percentage %>" max="100"></progress>
+</div>
+
+<ul class="steps steps-vertical lg:steps">
+  <li data-content="●" class="step step-error">
+    <%= challenge_story.start.strftime("%B %d, %Y") %>
+  </li>
+
+  <% if recent_comments.any? %>
+    <% symbols = ["?", "!", "✓", "✕", "★", "⚡️"] %>
+    <% recent_comments.each_with_index do |comment, index| %>
+      <% step_class = case
+                      when comment.created_at.to_date <= Date.today - 7
+                        "step-neutral" # Older comments
+                      when comment.created_at.to_date <= Date.today - 3
+                        "step-info"    # Somewhat recent
+                      else
+                        "step-info"    # Most recent comments
+                      end %>
+      <li data-content="<%= symbols[index % symbols.size] %>" class="step <%= step_class %>">
+        <span class="text-sm font-medium" title="<%= comment.message %>">
+          <%= comment.message.truncate(25) %>
+          <span class="text-xs opacity-70">(<%= comment.created_at.strftime("%b %d") %>)</span>
+        </span>
+      </li>
+    <% end %>
+
+    <% (6 - recent_comments.size).times do |i| %>
+      <% symbol_index = recent_comments.size + i %>
+      <li data-content="<%= symbols[symbol_index % symbols.size] %>" class="step step-neutral">
+        <%= status == "completed" ? "Completed" : "Future check-in" %>
+      </li>
+    <% end if recent_comments.size < 6 %>
+  <% else %>
+    <li data-content="?" class="step step-info">check in 1</li>
+    <li data-content="!" class="step step-info">check in 2</li>
+    <li data-content="✓" class="step step-neutral">check in 3</li>
+    <li data-content="✕" class="step step-neutral">check in 4</li>
+    <li data-content="★" class="step step-neutral">check in 5</li>
+    <li data-content="⚡️" class="step step-neutral">check in 6</li>
+  <% end %>
+
+  <li data-content="●" class="step step-error">
+    <%= challenge_story.finish.strftime("%B %d, %Y") %>
+  </li>
+</ul>
+
+<div class="flex justify-between items-center mt-4 text-sm">
+  <span class="badge badge-<%= {"upcoming" => "warning", "active" => "success", "completed" => "info"}[status] %>">
+    <%= status.capitalize %> Challenge
+  </span>
+  <span class="opacity-70">
+    <%= total_duration %> days total
+    <% if status == "active" %>
+      (<%= (challenge_story.finish - Date.today).to_i %> days remaining)
+    <% end %>
+  </span>
+</div>
