@@ -2,7 +2,7 @@
 service: take_on_me
 
 # Name of the container image.
-image: friendlyantz/take_on_me
+image: friendlyantz/strivo
 
 # Deploy to these servers.
 servers:
@@ -26,6 +26,7 @@ servers:
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
+  server: ghcr.io
   username: friendlyantz
 
   # Always use an access token rather than real password when possible.
@@ -42,6 +43,7 @@ env:
     - CLOUDINARY_URL
   clear:
     #  Docker container that will run in production will be named service_name-postgres - name it carefully
+    # host name should match service name at the top + '-db' suffix
     DB_HOST: take_on_me-db
     POSTGRES_USER: "take_on_me"
     POSTGRES_DB: "take_on_me_production"
