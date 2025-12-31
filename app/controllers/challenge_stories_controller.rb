@@ -38,6 +38,7 @@ class ChallengeStoriesController < ApplicationController
     @challenge_story = ChallengeStory.new(challenge_story_params)
 
     if @challenge_story.save
+      @challenge_story.find_or_activate_participant!(current_user)
       redirect_to @challenge_story, notice: "Challenge story was successfully created."
     else
       render :new, status: :unprocessable_content
