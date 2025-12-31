@@ -35,9 +35,8 @@ class ChallengeReward < ApplicationRecord
 
   def participants_in_same_challenge
     return unless giver && receiver
+    return if giver.challenge_story_id == receiver.challenge_story_id
 
-    unless giver.challenge_story_id == receiver.challenge_story_id
-      errors.add(:base, "Both participants must be in the same challenge")
-    end
+    errors.add(:base, "Both participants must be in the same challenge")
   end
 end
