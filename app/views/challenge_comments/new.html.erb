@@ -1,6 +1,12 @@
 <%= turbo_frame_tag "new_message", target: "_top" do %>
   <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
     <%= form_with(model: [@challenge_comment.challenge_story, @challenge_comment], class: "contents") do |form| %>
+      <% if @challenge_comment.errors[:base].any? %>
+        <div class="alert alert-error mb-4">
+          <span><%= @challenge_comment.errors[:base].first %></span>
+        </div>
+      <% end %>
+
       <%= 
       form.text_area :message, class: ["textarea", {"border-gray-400 focus:outline-blue-600": @challenge_comment.errors[:message].none?, "border-red-400 focus:outline-red-600": @challenge_comment.errors[:message].any?}],
       id: "message",
