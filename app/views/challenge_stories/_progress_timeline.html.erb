@@ -73,15 +73,3 @@
     <span>No participants yet. Be the first to join this challenge!</span>
   </div>
 <% end %>
-
-<div class="flex justify-between items-center mt-4 text-sm">
-  <span class="badge badge-<%= {"upcoming" => "warning", "active" => "success", "completed" => "info"}[status] %>">
-    <%= status.capitalize %> Challenge
-  </span>
-  <span class="opacity-70">
-    <%= total_duration %> days total
-    <% if status == "active" %>
-      (<%= (challenge_story.finish - Date.today).to_i %> days remaining)
-    <% end %>
-  </span>
-</div>
