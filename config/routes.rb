@@ -10,19 +10,11 @@ Rails.application.routes.draw do
         patch :cancel
       end
     end
-    resource :challenge_story_like, only: [:create] do
-      collection do
-        delete :destroy
-      end
-    end
+    resource :challenge_story_like, only: [:create, :destroy]
   end
 
   resources :challenge_comments, only: [] do
-    resource :challenge_comment_like, only: [:create] do
-      collection do
-        delete :destroy
-      end
-    end
+    resource :challenge_comment_like, only: [:create, :destroy]
   end
 
   resources :challenge_participants, only: %i[create destroy]
