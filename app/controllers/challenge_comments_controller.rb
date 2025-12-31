@@ -1,7 +1,7 @@
 class ChallengeCommentsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :enforce_current_user
+  before_action :require_current_user!
   before_action :set_challenge_story
   before_action :ensure_participant, only: [:new, :create]
 
@@ -19,7 +19,7 @@ class ChallengeCommentsController < ApplicationController
     if @challenge_comment.save
       redirect_to @challenge_story, notice: "Comment was successfully added."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -37,9 +37,9 @@ class ChallengeCommentsController < ApplicationController
   end
 
   def ensure_participant
-    unless @challenge_story.active_participants.exists?(user: current_user)
-      redirect_to challenge_story_path(@challenge_story), alert: "You must be a participant to check in"
-    end
+    return if @challenge_story.active_participants.exists?(user: current_user)
+
+    redirect_to challenge_story_path(@challenge_story), alert: "You must be a participant to check in"
   end
 
   def challenge_comment_params

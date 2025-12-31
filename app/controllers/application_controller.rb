@@ -20,4 +20,8 @@ class ApplicationController < ActionController::Base
         User.find_by(id: session[:user_id])
       end
   end
+
+  def require_current_user!
+    redirect_to new_session_path if current_user.blank?
+  end
 end

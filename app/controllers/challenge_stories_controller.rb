@@ -1,6 +1,6 @@
 class ChallengeStoriesController < ApplicationController
   before_action :set_challenge_story, only: %i[edit update destroy complete]
-  before_action :enforce_current_user, only: %i[new create edit update destroy complete]
+  before_action :require_current_user!, except: %i[show]
 
   def index
     return @challenge_stories = ChallengeStory.none unless current_user
@@ -73,9 +73,5 @@ class ChallengeStoriesController < ApplicationController
 
   def challenge_story_params
     params.expect(challenge_story: [:title, :description, :start, :finish])
-  end
-
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
   end
 end

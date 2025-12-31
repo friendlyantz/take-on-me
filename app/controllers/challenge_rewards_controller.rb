@@ -1,7 +1,7 @@
 class ChallengeRewardsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :enforce_current_user
+  before_action :require_current_user!
   before_action :set_challenge_story
   before_action :set_reward, only: [:fulfill, :cancel]
   before_action :verify_receiver, only: [:fulfill]
@@ -78,10 +78,6 @@ class ChallengeRewardsController < ApplicationController
 
   def reward_params
     params.require(:challenge_reward).permit(:giver_id, :receiver_id, :description)
-  end
-
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
   end
 
   def current_participant_for_story

@@ -1,5 +1,5 @@
 class ChallengeCommentLikesController < ApplicationController
-  before_action :enforce_current_user
+  before_action :require_current_user!
   before_action :set_challenge_comment
 
   def create
@@ -30,9 +30,5 @@ class ChallengeCommentLikesController < ApplicationController
 
   def set_challenge_comment
     @challenge_comment = ChallengeComment.find(params[:challenge_comment_id])
-  end
-
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
   end
 end

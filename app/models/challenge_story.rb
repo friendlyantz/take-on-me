@@ -1,6 +1,9 @@
 class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 4
 
+  # DSL extensions
+  self.implicit_order_column = "created_at"
+
   # Associations
   has_many :challenge_comments, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
@@ -9,8 +12,7 @@ class ChallengeStory < ApplicationRecord
   has_many :active_participants, -> { active }, class_name: "ChallengeParticipant"
   has_many :liking_users, through: :challenge_story_likes, source: :user
 
-  # DSL extensions
-  self.implicit_order_column = "created_at"
+  # Broadcasts (after associations)
   broadcasts
 
   # Validations

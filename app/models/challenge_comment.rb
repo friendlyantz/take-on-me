@@ -1,17 +1,20 @@
 class ChallengeComment < ApplicationRecord
+  # DSL extensions
   self.implicit_order_column = "created_at"
   default_scope { order(created_at: :asc) }
 
+  # Associations
   belongs_to :challenge_participant, counter_cache: true
   belongs_to :challenge_story, counter_cache: true
   has_one_attached :photo
-  has_many :challenge_comment_likes, dependent: :destroy
+  has_many :challenge_comment_likes, dependent: :destroy, counter_cache: true
   has_many :liking_users, through: :challenge_comment_likes, source: :user
 
+  # Validations
   validates :message, presence: true
   validate :one_comment_per_day_per_participant
 
-  # Broadcasts (after attachments, as it is callback anti-pattern)
+  # Callbacks (broadcasts_to must be after has_one_attached for Cloudinary compatibility)
   broadcasts_to :challenge_story, action: :prepend
 
   # Public methods

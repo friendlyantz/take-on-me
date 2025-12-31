@@ -1,7 +1,7 @@
 class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :enforce_current_user
+  before_action :require_current_user!
   before_action :set_challenge_story, only: [:create]
 
   def create
@@ -31,9 +31,5 @@ class ChallengeParticipantsController < ApplicationController
 
   def set_challenge_story
     @challenge_story = ChallengeStory.find(params[:challenge_story_id])
-  end
-
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
   end
 end

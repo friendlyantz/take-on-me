@@ -1,5 +1,5 @@
 class ChallengeStoryLikesController < ApplicationController
-  before_action :enforce_current_user
+  before_action :require_current_user!
   before_action :set_challenge_story
 
   def create
@@ -30,9 +30,5 @@ class ChallengeStoryLikesController < ApplicationController
 
   def set_challenge_story
     @challenge_story = ChallengeStory.find(params[:challenge_story_id])
-  end
-
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
   end
 end
