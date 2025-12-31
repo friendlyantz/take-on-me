@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChallengeComment < ApplicationRecord
   # DSL extensions
   self.implicit_order_column = "created_at"

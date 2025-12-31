@@ -32,10 +32,6 @@ class ChallengeCommentsController < ApplicationController
     @challenge_story = ChallengeStory.find(params[:challenge_story_id])
   end
 
-  def enforce_current_user
-    redirect_to new_session_path if current_user.blank?
-  end
-
   def ensure_participant
     return if @challenge_story.active_participants.exists?(user: current_user)
 

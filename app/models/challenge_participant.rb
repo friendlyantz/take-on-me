@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChallengeParticipant < ApplicationRecord
   # Associations
   belongs_to :user, counter_cache: true

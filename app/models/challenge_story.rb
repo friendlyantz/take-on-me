@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 4
 

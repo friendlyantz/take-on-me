@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChallengeReward < ApplicationRecord
   # Associations
   belongs_to :giver, class_name: "ChallengeParticipant", counter_cache: :given_rewards_count
