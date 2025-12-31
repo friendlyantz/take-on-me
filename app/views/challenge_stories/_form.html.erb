@@ -1,40 +1,79 @@
-<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-  <%= form_with(model: challenge_story, class: "contents") do |form| %>
-    <% if challenge_story.errors.any? %>
-      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-        <h2><%= pluralize(challenge_story.errors.count, "error") %> prohibited this challenge_story from being saved:</h2>
-        <ul class="list-disc ml-6">
-          <% challenge_story.errors.each do |error| %>
-            <li><%= error.full_message %></li>
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <%= form_with(model: challenge_story) do |form| %>
+      <% if challenge_story.errors.any? %>
+        <div class="alert alert-error mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <div>
+            <h3 class="font-bold"><%= pluralize(challenge_story.errors.count, "error") %> prohibited this challenge from being saved:</h3>
+            <ul class="list-disc ml-6 mt-2">
+              <% challenge_story.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-control w-full">
+        <%= form.label :title, class: "label" do %>
+          <span class="label-text font-semibold">Challenge Title</span>
+        <% end %>
+        <%= form.text_field :title, 
+          class: "input input-bordered w-full #{challenge_story.errors[:title].any? ? 'input-error' : ''}", 
+          placeholder: "e.g., 30-Day Fitness Challenge" %>
+        <% if challenge_story.errors[:title].any? %>
+          <label class="label">
+            <span class="label-text-alt text-error"><%= challenge_story.errors[:title].first %></span>
+          </label>
+        <% end %>
+      </div>
+
+      <div class="form-control w-full mt-4">
+        <%= form.label :description, class: "label" do %>
+          <span class="label-text font-semibold">Description</span>
+        <% end %>
+        <%= form.text_area :description, 
+          class: "textarea textarea-bordered h-32 w-full #{challenge_story.errors[:description].any? ? 'textarea-error' : ''}", 
+          placeholder: "Describe the challenge rules, daily requirements, and rewards..." %>
+        <% if challenge_story.errors[:description].any? %>
+          <label class="label">
+            <span class="label-text-alt text-error"><%= challenge_story.errors[:description].first %></span>
+          </label>
+        <% end %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="form-control w-full">
+          <%= form.label :start, class: "label" do %>
+            <span class="label-text font-semibold">Start Date</span>
           <% end %>
-        </ul>
+          <%= form.date_field :start, 
+            class: "input input-bordered w-full #{challenge_story.errors[:start].any? ? 'input-error' : ''}" %>
+          <% if challenge_story.errors[:start].any? %>
+            <label class="label">
+              <span class="label-text-alt text-error"><%= challenge_story.errors[:start].first %></span>
+            </label>
+          <% end %>
+        </div>
+
+        <div class="form-control w-full">
+          <%= form.label :finish, class: "label" do %>
+            <span class="label-text font-semibold">End Date</span>
+          <% end %>
+          <%= form.date_field :finish, 
+            class: "input input-bordered w-full #{challenge_story.errors[:finish].any? ? 'input-error' : ''}" %>
+          <% if challenge_story.errors[:finish].any? %>
+            <label class="label">
+              <span class="label-text-alt text-error"><%= challenge_story.errors[:finish].first %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card-actions justify-end mt-6">
+        <%= form.submit class: "btn btn-primary btn-lg" %>
       </div>
     <% end %>
-    <%= 
-      form.text_field :title, class: ["input", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:title].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:title].any?}],
-      id: "challenge-title",
-      placeholder: "Challenge title"
-     %>
-    <%= 
-      form.text_area :description, class: ["textarea", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:description].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:description].any?}],
-      id: "description",
-      placeholder: "Challenge rules, and rewards if you win or lose"
-    %>
-    <%= form.label :start %>
-    <%= 
-      form.date_field :start, class: ["input", {"border-gray-400 focus:outline-blue-600": challenge_story.errors[:start].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:start].any?}],
-      id: "start"
-    %>
-    <%= form.label :finish %>
-    <%=
-      form.date_field :finish,
-      class: ["input", {"input": challenge_story.errors[:finish].none?, "border-red-400 focus:outline-red-600": challenge_story.errors[:finish].any?}],
-      id: "finish"
-    %>
-    <div class="inline">
-      <%= 
-    form.submit class: "btn btn-soft btn-primary", id: "submit"%>
-    </div>
-  <% end %>
-
-</fieldset>
+  </div>
+</div>

@@ -1,9 +1,20 @@
 <% content_for :title, "Editing challenge story" %>
-<div class="md:w-2/3 w-full">
+<div class="w-full max-w-4xl mx-auto">
   <%= turbo_frame_tag "challenge_story" do %>
-    <h1 class="font-bold text-4xl">Editing challenge story</h1>
+    <div class="mb-6">
+      <h1 class="font-bold text-4xl mb-2">Edit Challenge</h1>
+      <p class="text-base-content/70">Update your challenge details</p>
+    </div>
+    
     <%= render "form", challenge_story: @challenge_story %>
-    <%= link_to "Cancel", challenge_story_path(@challenge_story), class: "btn btn-soft", "data-turbo-frame": "_top" %>
-
+    
+    <div class="mt-4">
+      <%= link_to challenge_story_path(@challenge_story), class: "btn btn-ghost", "data-turbo-frame": "_top" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Cancel
+      <% end %>
+    </div>
   <% end%>
 </div>
