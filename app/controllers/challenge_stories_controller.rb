@@ -8,7 +8,6 @@ class ChallengeStoriesController < ApplicationController
     @challenge_stories = ChallengeStory
       .joins(:challenge_participants)
       .where(challenge_participants: {user_id: current_user.id, status: :active})
-      .merge(ChallengeStory.active)
       .includes(challenge_comments: {photo_attachment: :blob})
       .left_joins(:challenge_comments)
       .group("challenge_stories.id")

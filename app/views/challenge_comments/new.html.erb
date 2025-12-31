@@ -10,7 +10,7 @@
       <%= 
       form.text_area :message, class: ["textarea", {"border-gray-400 focus:outline-blue-600": @challenge_comment.errors[:message].none?, "border-red-400 focus:outline-red-600": @challenge_comment.errors[:message].any?}],
       id: "message",
-      placeholder: "comment"
+      placeholder: "check in report, this cannon be edited later!"
     %>
       <%= form.file_field :photo, class: "file-input" %>
 

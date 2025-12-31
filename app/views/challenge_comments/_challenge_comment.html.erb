@@ -14,7 +14,7 @@
   </div>
   <div class="chat-bubble">
     <%= simple_format(challenge_comment.message) %>
-    <%= cl_image_tag(challenge_comment.photo.key, height: 300, width: 400, crop: :fill) if challenge_comment.photo.attached?%>
+    <%= cl_image_tag(challenge_comment.photo.key, height: 300, width: 400, crop: :fill, fetch_format: :auto) if challenge_comment.photo.attached?%>
   </div>
   <div class="flex items-center gap-2 mt-3">
     <%= render 'challenge_comments/likes', challenge_comment: challenge_comment %>

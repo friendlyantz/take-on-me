@@ -43,7 +43,14 @@
 
   <% if current_user %>
     <% unless @challenge_story.completed? %>
-      <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+      <% participant = @challenge_story.challenge_participants.find_by(user: current_user) %>
+      <% if participant && participant.challenge_comments.exists?(created_at: Time.zone.today.all_day) %>
+        <div class="alert alert-info mt-4">
+          <span>You've already checked in today. Come back tomorrow!</span>
+        </div>
+      <% else %>
+        <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+      <% end %>
     <% else %>
       <div class="alert alert-info mt-4">
         <span>This challenge is complete. No more check-ins can be added.</span>
