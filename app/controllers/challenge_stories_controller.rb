@@ -1,26 +1,22 @@
 class ChallengeStoriesController < ApplicationController
-  before_action :set_challenge_story, only: %i[show edit update destroy]
-  before_action :enforce_current_user, only: %i[new create edit update destroy]
+  before_action :set_challenge_story, only: %i[show edit update destroy complete]
+  before_action :enforce_current_user, only: %i[new create edit update destroy complete]
 
-  # GET /challenge_stories or /challenge_stories.json
   def index
-    if current_user
-      @challenge_stories = ChallengeStory
-        .joins(:challenge_participants)
-        .where(challenge_participants: {user_id: current_user.id, status: "active"})
-        .left_joins(:challenge_comments)
-        .group("challenge_stories.id")
-        .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
-    else
-      @challenge_stories = ChallengeStory.none
-    end
+    return @challenge_stories = ChallengeStory.none unless current_user
+
+    @challenge_stories = ChallengeStory
+      .joins(:challenge_participants)
+      .where(challenge_participants: {user_id: current_user.id, status: :active})
+      .merge(ChallengeStory.active)
+      .left_joins(:challenge_comments)
+      .group("challenge_stories.id")
+      .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
   end
 
-  # GET /challenge_stories/1 or /challenge_stories/1.json
   def show
   end
 
-  # GET /challenge_stories/new
   def new
     @challenge_story = ChallengeStory.new(
       start: Time.zone.today,
@@ -28,57 +24,35 @@ class ChallengeStoriesController < ApplicationController
     )
   end
 
-  # GET /challenge_stories/1/edit
   def edit
   end
 
-  # POST /challenge_stories or /challenge_stories.json
   def create
     @challenge_story = ChallengeStory.new(challenge_story_params)
 
-    respond_to do |format|
-      if @challenge_story.save
-        format.html { redirect_to @challenge_story, notice: "Challenge story was successfully created." }
-        format.json { render :show, status: :created, location: @challenge_story }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @challenge_story.errors, status: :unprocessable_entity }
-      end
+    if @challenge_story.save
+      redirect_to @challenge_story, notice: "Challenge story was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /challenge_stories/1 or /challenge_stories/1.json
   def update
-    respond_to do |format|
-      if @challenge_story.update(challenge_story_params)
-        format.html { redirect_to @challenge_story, notice: "Challenge story was successfully updated." }
-        format.json { render :show, status: :ok, location: @challenge_story }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @challenge_story.errors, status: :unprocessable_entity }
-      end
+    if @challenge_story.update(challenge_story_params)
+      redirect_to @challenge_story, notice: "Challenge story was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /challenge_stories/1 or /challenge_stories/1.json
   def destroy
     @challenge_story.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to challenge_stories_path, status: :see_other, notice: "Challenge story was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to challenge_stories_path, status: :see_other, notice: "Challenge story was successfully destroyed."
   end
 
-  # PATCH /challenge_stories/1/complete
   def complete
-    @challenge_story = ChallengeStory.find(params[:id])
     @challenge_story.mark_complete!
-
-    respond_to do |format|
-      format.html { redirect_to challenge_stories_path, notice: "Challenge marked as complete! Time to create a new one." }
-      format.json { head :no_content }
-    end
+    redirect_to challenge_stories_path, notice: "Challenge marked as complete! Time to create a new one."
   end
 
   private
@@ -92,8 +66,6 @@ class ChallengeStoriesController < ApplicationController
   end
 
   def enforce_current_user
-    if current_user.blank?
-      redirect_to new_session_path
-    end
+    redirect_to new_session_path if current_user.blank?
   end
 end

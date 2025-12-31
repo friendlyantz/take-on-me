@@ -1,12 +1,12 @@
 class ChallengeStory < ApplicationRecord
-  MAX_PARTICIPANTS = 2
+  MAX_PARTICIPANTS = 4
 
   # Associations
   has_many :challenge_comments, dependent: :destroy, counter_cache: true
   has_many :challenge_participants, dependent: :destroy, counter_cache: true
   has_many :challenge_rewards, dependent: :destroy, counter_cache: true
   has_many :challenge_story_likes, dependent: :destroy, counter_cache: true
-  has_many :active_participants, -> { where(status: "active") }, class_name: "ChallengeParticipant"
+  has_many :active_participants, -> { active }, class_name: "ChallengeParticipant"
   has_many :liking_users, through: :challenge_story_likes, source: :user
 
   # DSL extensions
@@ -43,6 +43,17 @@ class ChallengeStory < ApplicationRecord
 
   def mark_complete!
     update!(completed: true)
+  end
+
+  def find_or_activate_participant!(user)
+    participant = challenge_participants.find_by(user: user)
+
+    if participant
+      participant.update!(status: :active) if participant.inactive?
+      participant
+    else
+      challenge_participants.create!(user: user, status: :active)
+    end
   end
 
   private

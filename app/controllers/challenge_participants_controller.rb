@@ -1,39 +1,12 @@
 class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
+  before_action :enforce_current_user
+  before_action :set_challenge_story
 
   def create
-    if current_user.nil?
-      return redirect_to new_session_path
-    end
+    return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)" if @challenge_story.at_capacity?
 
-    @challenge_story = ChallengeStory.find(params[:challenge_story_id])
-
-    # Try to find an existing participant (active or inactive)
-    @participant = ChallengeParticipant.find_by(
-      user: current_user,
-      challenge_story_id: params[:challenge_story_id]
-    )
-
-    if @participant
-      # If the participant exists but is inactive, reactivate them
-      if @participant.status == "inactive"
-        if @challenge_story.at_capacity?
-          return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)"
-        end
-        @participant.update(status: "active")
-      end
-    else
-      # Check capacity before creating new participant
-      if @challenge_story.at_capacity?
-        return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)"
-      end
-
-      # Create a new participant if none exists
-      @participant = ChallengeParticipant.create(
-        user: current_user,
-        challenge_story_id: params[:challenge_story_id]
-      )
-    end
+    @participant = @challenge_story.find_or_activate_participant!(current_user)
 
     respond_to do |format|
       format.turbo_stream do
@@ -50,9 +23,16 @@ class ChallengeParticipantsController < ApplicationController
   def destroy
     @challenge_participant = ChallengeParticipant.find(params[:id])
     @challenge_participant.leave!
+    redirect_to challenge_stories_path, notice: "You have left the challenge!"
+  end
 
-    respond_to do |format|
-      format.html { redirect_to challenge_stories_path, notice: "You have left the challenge!" }
-    end
+  private
+
+  def set_challenge_story
+    @challenge_story = ChallengeStory.find(params[:challenge_story_id])
+  end
+
+  def enforce_current_user
+    redirect_to new_session_path if current_user.blank?
   end
 end

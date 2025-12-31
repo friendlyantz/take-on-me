@@ -5,27 +5,24 @@ class ChallengeCommentLikesController < ApplicationController
   def create
     @like = @challenge_comment.challenge_comment_likes.build(user: current_user)
 
-    respond_to do |format|
-      if @like.save
+    if @like.save
+      respond_to do |format|
         format.html { redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story), notice: "You liked this comment.") }
         format.turbo_stream
-      else
-        format.html { redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story), alert: "Something went wrong.") }
       end
+    else
+      redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story), alert: "Something went wrong.")
     end
   end
 
   def destroy
     @like = @challenge_comment.challenge_comment_likes.find_by(user: current_user)
+    return redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story)) unless @like
 
-    if @like
-      @like.destroy
-      respond_to do |format|
-        format.html { redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story), notice: "You unliked this comment.") }
-        format.turbo_stream
-      end
-    else
-      redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story))
+    @like.destroy
+    respond_to do |format|
+      format.html { redirect_back(fallback_location: challenge_story_path(@challenge_comment.challenge_story), notice: "You unliked this comment.") }
+      format.turbo_stream
     end
   end
 
@@ -36,8 +33,6 @@ class ChallengeCommentLikesController < ApplicationController
   end
 
   def enforce_current_user
-    if current_user.blank?
-      redirect_to new_session_path
-    end
+    redirect_to new_session_path if current_user.blank?
   end
 end

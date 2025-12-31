@@ -1,30 +1,18 @@
 class ChallengeCommentsController < ApplicationController
   include ActionView::RecordIdentifier
   before_action :enforce_current_user
+  before_action :set_challenge_story
 
   def new
-    @challenge_comment = ChallengeComment.new(challenge_story_id: params[:challenge_story_id])
+    @challenge_comment = ChallengeComment.new(challenge_story_id: @challenge_story.id)
   end
 
   def create
-    @challenge_comment = ChallengeComment.new(challenge_comment_params)
-    challenge_story = ChallengeStory.find(params[:challenge_story_id])
+    return redirect_to challenge_story_path(@challenge_story), alert: "Cannot add comments to completed challenges" if @challenge_story.completed?
 
-    if challenge_story.completed?
-      return redirect_to challenge_story_path(challenge_story), alert: "Cannot add comments to completed challenges"
-    end
-
-    # Find or create participant, ensuring they're active
-    challenge_participant = ChallengeParticipant.find_by(user: current_user, challenge_story: challenge_story)
-
-    if challenge_participant
-      challenge_participant.update(status: "active") if challenge_participant.status == "inactive"
-    else
-      challenge_participant = ChallengeParticipant.create(user: current_user, challenge_story: challenge_story)
-    end
-
-    @challenge_comment.challenge_participant = challenge_participant
-    @challenge_comment.challenge_story = challenge_story
+    @challenge_participant = @challenge_story.find_or_activate_participant!(current_user)
+    @challenge_comment = @challenge_participant.challenge_comments.build(challenge_comment_params)
+    @challenge_comment.challenge_story = @challenge_story
 
     respond_to do |format|
       if @challenge_comment.save
@@ -33,10 +21,10 @@ class ChallengeCommentsController < ApplicationController
             turbo_stream.prepend("challenge_comments", partial: "challenge_comments/challenge_comment", locals: {challenge_comment: @challenge_comment}),
             turbo_stream.replace("new_message",
               template: "challenge_comments/new",
-              locals: {challenge_comment: ChallengeComment.new(challenge_story_id: challenge_story.id)})
+              locals: {challenge_comment: ChallengeComment.new(challenge_story_id: @challenge_story.id)})
           ]
         end
-        format.html { redirect_to challenge_story, notice: "Comment was successfully added." }
+        format.html { redirect_to @challenge_story, notice: "Comment was successfully added." }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
@@ -57,10 +45,12 @@ class ChallengeCommentsController < ApplicationController
 
   private
 
+  def set_challenge_story
+    @challenge_story = ChallengeStory.find(params[:challenge_story_id])
+  end
+
   def enforce_current_user
-    if current_user.blank?
-      redirect_to new_session_path
-    end
+    redirect_to new_session_path if current_user.blank?
   end
 
   def challenge_comment_params
