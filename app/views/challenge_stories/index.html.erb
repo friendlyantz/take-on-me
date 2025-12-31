@@ -14,7 +14,7 @@
         <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200">
           <%= link_to challenge_story do %>
             <figure>
-              <% latest_comment_with_photo = challenge_story.challenge_comments.with_attached_photo.select { |comment| comment.photo.attached? }.last %>
+              <% latest_comment_with_photo = challenge_story.challenge_comments.reverse.find { |c| c.photo.attached? } %>
               <% if latest_comment_with_photo %>
                 <%= cl_image_tag(latest_comment_with_photo.photo.key, height: 300, width: 400, crop: :fill) %>
               <% else %>

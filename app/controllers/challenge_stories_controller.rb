@@ -1,5 +1,5 @@
 class ChallengeStoriesController < ApplicationController
-  before_action :set_challenge_story, only: %i[show edit update destroy complete]
+  before_action :set_challenge_story, only: %i[edit update destroy complete]
   before_action :enforce_current_user, only: %i[new create edit update destroy complete]
 
   def index
@@ -9,12 +9,20 @@ class ChallengeStoriesController < ApplicationController
       .joins(:challenge_participants)
       .where(challenge_participants: {user_id: current_user.id, status: :active})
       .merge(ChallengeStory.active)
+      .includes(challenge_comments: {photo_attachment: :blob})
       .left_joins(:challenge_comments)
       .group("challenge_stories.id")
       .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
   end
 
   def show
+    @challenge_story = ChallengeStory
+      .includes(
+        challenge_participants: :user,
+        challenge_rewards: [:giver, :receiver],
+        challenge_comments: [:challenge_participant, :challenge_comment_likes, photo_attachment: :blob]
+      )
+      .find(params[:id])
   end
 
   def new

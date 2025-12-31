@@ -30,7 +30,7 @@
         </div>
         <div class="stat-title">For You</div>
         <div class="stat-value text-secondary">
-          <%= challenge_story.challenge_rewards.select { |r| r.receiver&.user == current_user }.count %>
+          <%= challenge_story.challenge_rewards.count { |r| r.receiver&.user == current_user } %>
         </div>
         <div class="stat-desc">Rewards pledged to you</div>
       </div>

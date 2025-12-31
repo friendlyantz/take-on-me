@@ -10,7 +10,7 @@
     <% end %>
   </div>
 
-  <% if @rewards.empty? %>
+  <% if @rewards_received.empty? && @rewards_given.empty? && @rewards_others.empty? %>
     <div class="alert alert-info shadow-lg">
       <div>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -19,28 +19,34 @@
     </div>
   <% else %>
 
-    <div class="divider"></div>
-    <h2 class="text-xl font-semibold mb-4">Rewards Pledged to You</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      <% @rewards.select { |r| r.receiver.user == current_user }.each do |reward| %>
-        <%= render "reward_card", reward: reward, is_giver: false %>
-      <% end %>
-    </div>
+    <% unless @rewards_received.empty? %>
+      <div class="divider"></div>
+      <h2 class="text-xl font-semibold mb-4">Rewards Pledged to You</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <% @rewards_received.each do |reward| %>
+          <%= render "reward_card", reward: reward, is_giver: false %>
+        <% end %>
+      </div>
+    <% end %>
 
-    <div class="divider"></div>
-    <h2 class="text-xl font-semibold mb-4">Rewards You've Pledged</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      <% @rewards.select { |r| r.giver.user == current_user }.each do |reward| %>
-        <%= render "reward_card", reward: reward, is_giver: true %>
-      <% end %>
-    </div>
+    <% unless @rewards_given.empty? %>
+      <div class="divider"></div>
+      <h2 class="text-xl font-semibold mb-4">Rewards You've Pledged</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <% @rewards_given.each do |reward| %>
+          <%= render "reward_card", reward: reward, is_giver: true %>
+        <% end %>
+      </div>
+    <% end %>
 
-    <div class="divider"></div>
-    <h2 class="text-xl font-semibold mb-4">All Other Rewards</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <% @rewards.reject { |r| r.giver.user == current_user || r.receiver.user == current_user }.each do |reward| %>
-        <%= render "reward_card", reward: reward, is_giver: false %>
-      <% end %>
-    </div>
+    <% unless @rewards_others.empty? %>
+      <div class="divider"></div>
+      <h2 class="text-xl font-semibold mb-4">All Other Rewards</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <% @rewards_others.each do |reward| %>
+          <%= render "reward_card", reward: reward, is_giver: false %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
