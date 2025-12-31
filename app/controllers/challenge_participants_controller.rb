@@ -1,5 +1,6 @@
 class ChallengeParticipantsController < ApplicationController
   include ActionView::RecordIdentifier
+
   before_action :enforce_current_user
   before_action :set_challenge_story
 

@@ -7,21 +7,21 @@ class ChallengeStoryLikesController < ApplicationController
 
     if @like.save
       respond_to do |format|
-        format.html { redirect_back(fallback_location: challenge_story_path(@challenge_story), notice: "You liked this challenge.") }
+        format.html { redirect_back_or_to(challenge_story_path(@challenge_story), notice: "You liked this challenge.") }
         format.turbo_stream
       end
     else
-      redirect_back(fallback_location: challenge_story_path(@challenge_story), alert: "Something went wrong.")
+      redirect_back_or_to(challenge_story_path(@challenge_story), alert: "Something went wrong.")
     end
   end
 
   def destroy
     @like = @challenge_story.challenge_story_likes.find_by(user: current_user)
-    return redirect_back(fallback_location: challenge_story_path(@challenge_story)) unless @like
+    return redirect_back_or_to(challenge_story_path(@challenge_story)) unless @like
 
     @like.destroy
     respond_to do |format|
-      format.html { redirect_back(fallback_location: challenge_story_path(@challenge_story), notice: "You unliked this challenge.") }
+      format.html { redirect_back_or_to(challenge_story_path(@challenge_story), notice: "You unliked this challenge.") }
       format.turbo_stream
     end
   end

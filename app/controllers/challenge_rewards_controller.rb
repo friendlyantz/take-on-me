@@ -1,5 +1,6 @@
 class ChallengeRewardsController < ApplicationController
   include ActionView::RecordIdentifier
+
   before_action :enforce_current_user
   before_action :set_challenge_story
   before_action :set_reward, only: [:fulfill, :cancel]
@@ -40,7 +41,7 @@ class ChallengeRewardsController < ApplicationController
       ).pluck(:receiver_id)
 
       @participants = @challenge_story.active_participants.where.not(id: existing_receiver_ids)
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

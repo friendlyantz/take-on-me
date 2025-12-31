@@ -1,5 +1,6 @@
 class ChallengeCommentsController < ApplicationController
   include ActionView::RecordIdentifier
+
   before_action :enforce_current_user
   before_action :set_challenge_story
 
@@ -35,7 +36,7 @@ class ChallengeCommentsController < ApplicationController
             status: :unprocessable_entity
           )
         end
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
       end
     end
   end

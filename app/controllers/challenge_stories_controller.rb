@@ -33,7 +33,7 @@ class ChallengeStoriesController < ApplicationController
     if @challenge_story.save
       redirect_to @challenge_story, notice: "Challenge story was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -41,7 +41,7 @@ class ChallengeStoriesController < ApplicationController
     if @challenge_story.update(challenge_story_params)
       redirect_to @challenge_story, notice: "Challenge story was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
