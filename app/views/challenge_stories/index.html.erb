@@ -15,7 +15,7 @@
           <%= link_to challenge_story do %>
             <figure>
               <% if (latest_comment_with_photo = challenge_story.latest_photo_comment) %>
-                <%= cl_image_tag(latest_comment_with_photo.photo.key, height: 300, width: 400, crop: :fill, fetch_format: :auto) %>
+                <%= cl_image_tag(latest_comment_with_photo.photo.key, height: 300, width: 400, crop: :fill, loading: :lazy, placeholder: true) %>
               <% else %>
                 <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
               <% end %>
