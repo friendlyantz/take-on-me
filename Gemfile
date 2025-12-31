@@ -69,6 +69,7 @@ group :development do
   gem "web-console"
   gem "trace_location"
   gem "database_consistency", require: false
+  gem "htmlbeautifier" # For ERB formatting in VSCode
 end
 
 group :test do
