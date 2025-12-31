@@ -3,6 +3,7 @@ class ChallengeCommentsController < ApplicationController
 
   before_action :enforce_current_user
   before_action :set_challenge_story
+  before_action :ensure_participant, only: [:new, :create]
 
   def new
     @challenge_comment = ChallengeComment.new(challenge_story_id: @challenge_story.id)
@@ -52,6 +53,12 @@ class ChallengeCommentsController < ApplicationController
 
   def enforce_current_user
     redirect_to new_session_path if current_user.blank?
+  end
+
+  def ensure_participant
+    unless @challenge_story.active_participants.exists?(user: current_user)
+      redirect_to challenge_story_path(@challenge_story), alert: "You must be a participant to check in"
+    end
   end
 
   def challenge_comment_params

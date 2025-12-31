@@ -1,11 +1,13 @@
-<% @participant ||= participant%>
-<%= turbo_frame_tag @participant do %>
-  <p><%= @participant.name %></p>
-  <div class="avatar">
-    <div class="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
-      <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-    </div>
-    <%= link_to 'leave', challenge_participant_path(@participant), method: :delete, class: 'btn btn-danger' %>
+<% @participant ||= participant %>
+<div class="alert alert-success shadow-lg">
+  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <div class="flex-1">
+    <h3 class="font-bold">You've joined!</h3>
+    <p class="text-sm">Welcome to the challenge, <%= @participant.name %>!</p>
   </div>
-
-<% end %>
+  <%= button_to challenge_participant_path(@participant), method: :delete, class: "btn btn-sm btn-ghost", data: { turbo_confirm: "Are you sure you want to leave this challenge?" } do %>
+    Leave Challenge
+  <% end %>
+</div>
