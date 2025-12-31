@@ -1,75 +1,91 @@
-<% if notice.present? %>
-  <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice">
-    <%= notice %>
-  </p>
-<% end %>
-
 <% 
   # Calculate total duration and elapsed time
-  # move to ctrlr
-  # probs a separate checkin object?
   total_duration = (challenge_story.finish - challenge_story.start).to_i
   elapsed_days = (Date.today - challenge_story.start).to_i
   progress_percentage = total_duration > 0 ? (elapsed_days.to_f / total_duration * 100).clamp(0, 100) : 0
-  
-  # Get recent comments (limited to 6 for our steps)
-  recent_comments = challenge_story.challenge_comments.order(created_at: :asc).limit(6)
-  
-  # Determine challenge status
-  status = if Date.today < challenge_story.start
-             "upcoming"
-           elsif Date.today > challenge_story.finish
-             "completed"
-           else
-             "active"
-           end
 %>
 
-<div class="flex flex-col mb-6">
-  <div class="text-sm font-medium mb-2">Time: <%= progress_percentage.round %>% Complete</div>
-  <progress class="progress progress-primary w-full" value="<%= progress_percentage %>" max="100"></progress>
+<div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card-body">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="card-title text-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+        Progress
+      </h3>
+      <div class="badge badge-lg badge-primary"><%= progress_percentage.round %>%</div>
+    </div>
+    
+    <progress class="progress progress-primary w-full h-3" value="<%= progress_percentage %>" max="100"></progress>
+    
+    <div class="flex justify-between text-xs opacity-70 mt-2">
+      <span><%= challenge_story.start.to_fs(:short) %></span>
+      <span><%= challenge_story.finish.to_fs(:short) %></span>
+    </div>
+  </div>
 </div>
 
 <% participants = challenge_story.active_participants.includes(:user, :challenge_comments).order(created_at: :asc) %>
-<% symbols = ["?", "!", "✓", "✕", "★", "⚡️"] %>
 
-<% participants.each do |participant| %>
-  <div class="mb-6">
-    <div class="text-sm font-semibold mb-2 flex items-center gap-2">
-      <span class="badge badge-primary"><%= participant.user.username %></span>
-      <span class="text-xs opacity-70">joined <%= participant.created_at.strftime("%b %d") %></span>
-    </div>
-    
-    <ul class="steps steps-vertical lg:steps">
-      <li data-content="●" class="step step-success">
-        <%= challenge_story.start.strftime("%b %d") %>
-      </li>
+<% if participants.any? %>
+  <div class="space-y-4 mb-6">
+    <% participants.each do |participant| %>
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="avatar placeholder">
+              <div class="bg-neutral text-neutral-content rounded-full w-10">
+                <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(participant.name)}?s=80&d=identicon", 
+                    class: "rounded-full" %>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold"><%= participant.user.username %></div>
+              <div class="text-xs opacity-70">Joined <%= participant.created_at.to_fs(:short) %></div>
+            </div>
+            <div class="badge badge-ghost">
+              <%= participant.challenge_comments.count %> check-ins
+            </div>
+          </div>
 
-      <% participant_comments = participant.challenge_comments.order(created_at: :asc) %>
-      <% if participant_comments.any? %>
-        <% participant_comments.each_with_index do |comment, index| %>
-          <li data-content="<%= symbols[index % symbols.size] %>" class="step step-info">
-            <span class="text-sm font-medium" title="<%= comment.message %>">
-              <%= comment.message.truncate(25) %>
-              <span class="text-xs opacity-70">(<%= comment.created_at.strftime("%b %d") %>)</span>
-            </span>
-          </li>
-        <% end %>
-      <% else %>
-        <li data-content="?" class="step step-neutral">
-          <span class="text-sm opacity-50">No check-ins yet</span>
-        </li>
-      <% end %>
-
-      <li data-content="●" class="step <%= status == 'completed' ? 'step-success' : 'step-neutral' %>">
-        <%= challenge_story.finish.strftime("%b %d") %>
-      </li>
-    </ul>
+          <% participant_comments = participant.challenge_comments.order(created_at: :desc).limit(3) %>
+          <% if participant_comments.any? %>
+            <div class="space-y-2">
+              <% participant_comments.each do |comment| %>
+                <div class="flex items-start gap-2 text-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-success mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div class="flex-1 min-w-0">
+                    <p class="truncate"><%= comment.message %></p>
+                    <p class="text-xs opacity-60"><%= comment.created_at.to_fs(:short) %></p>
+                  </div>
+                </div>
+              <% end %>
+              <% if participant.challenge_comments.count > 3 %>
+                <div class="text-xs text-center opacity-70 pt-1">
+                  + <%= participant.challenge_comments.count - 3 %> more check-ins
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-sm opacity-50 italic text-center py-2">
+              No check-ins yet
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<% if participants.empty? %>
-  <div class="alert alert-info">
-    <span>No participants yet. Be the first to join this challenge!</span>
+<% else %>
+  <div class="card bg-base-200 shadow-lg">
+    <div class="card-body text-center py-8">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-base-content/20 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <h3 class="text-lg font-semibold mb-2">No participants yet</h3>
+      <p class="text-sm opacity-70">Be the first to join this challenge!</p>
+    </div>
   </div>
 <% end %>
