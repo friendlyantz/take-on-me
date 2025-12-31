@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_050650) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -68,6 +68,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
     t.integer "challenge_comment_likes_count", default: 0, null: false
     t.index ["challenge_participant_id"], name: "index_challenge_comments_on_challenge_participant_id"
     t.index ["challenge_story_id"], name: "index_challenge_comments_on_challenge_story_id"
+    t.index ["created_at"], name: "index_challenge_comments_on_created_at"
+    t.check_constraint "challenge_comment_likes_count >= 0", name: "check_comment_likes_non_negative"
   end
 
   create_table "challenge_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -81,8 +83,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
     t.integer "challenge_comments_count", default: 0, null: false
     t.enum "status", default: "active", null: false, enum_type: "challenge_participant_status"
     t.index ["challenge_story_id"], name: "index_challenge_participants_on_challenge_story_id"
+    t.index ["status"], name: "index_challenge_participants_on_status"
     t.index ["user_id", "challenge_story_id"], name: "index_challenge_participants_on_user_id_and_challenge_story_id", unique: true
     t.index ["user_id"], name: "index_challenge_participants_on_user_id"
+    t.check_constraint "challenge_comments_count >= 0", name: "check_comments_count_non_negative"
+    t.check_constraint "given_rewards_count >= 0", name: "check_given_rewards_non_negative"
+    t.check_constraint "received_rewards_count >= 0", name: "check_received_rewards_non_negative"
   end
 
   create_table "challenge_rewards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -95,9 +101,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
     t.datetime "updated_at", null: false
     t.enum "status", default: "pending", null: false, enum_type: "challenge_reward_status"
     t.index ["challenge_story_id"], name: "index_challenge_rewards_on_challenge_story_id"
+    t.index ["fulfilled_at"], name: "index_challenge_rewards_on_fulfilled_at"
     t.index ["giver_id", "receiver_id", "challenge_story_id"], name: "index_challenge_rewards_on_participants_and_story", unique: true
     t.index ["giver_id"], name: "index_challenge_rewards_on_giver_id"
     t.index ["receiver_id"], name: "index_challenge_rewards_on_receiver_id"
+    t.index ["status"], name: "index_challenge_rewards_on_status"
   end
 
   create_table "challenge_stories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -112,6 +120,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
     t.integer "challenge_comments_count", default: 0, null: false
     t.integer "challenge_participants_count", default: 0, null: false
     t.integer "challenge_rewards_count", default: 0, null: false
+    t.index ["completed"], name: "index_challenge_stories_on_completed"
+    t.index ["created_at"], name: "index_challenge_stories_on_created_at"
+    t.index ["finish"], name: "index_challenge_stories_on_finish"
+    t.index ["start"], name: "index_challenge_stories_on_start"
+    t.check_constraint "challenge_comments_count >= 0", name: "check_story_comments_non_negative"
+    t.check_constraint "challenge_participants_count >= 0", name: "check_participants_non_negative"
+    t.check_constraint "challenge_rewards_count >= 0", name: "check_rewards_non_negative"
+    t.check_constraint "challenge_story_likes_count >= 0", name: "check_story_likes_non_negative"
+    t.check_constraint "char_length(description) <= 500", name: "check_description_length"
+    t.check_constraint "finish >= start", name: "check_finish_after_start"
   end
 
   create_table "challenge_story_likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -144,20 +162,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_042213) do
     t.integer "challenge_participants_count", default: 0, null: false
     t.integer "challenge_story_likes_count", default: 0, null: false
     t.index ["username"], name: "index_users_on_username", unique: true
+    t.check_constraint "challenge_participants_count >= 0", name: "check_user_participants_non_negative"
+    t.check_constraint "challenge_story_likes_count >= 0", name: "check_user_likes_non_negative"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "challenge_comment_likes", "challenge_comments"
-  add_foreign_key "challenge_comment_likes", "users"
-  add_foreign_key "challenge_comments", "challenge_participants"
-  add_foreign_key "challenge_comments", "challenge_stories"
-  add_foreign_key "challenge_participants", "challenge_stories"
-  add_foreign_key "challenge_participants", "users"
-  add_foreign_key "challenge_rewards", "challenge_participants", column: "giver_id"
-  add_foreign_key "challenge_rewards", "challenge_participants", column: "receiver_id"
-  add_foreign_key "challenge_rewards", "challenge_stories"
-  add_foreign_key "challenge_story_likes", "challenge_stories"
-  add_foreign_key "challenge_story_likes", "users"
-  add_foreign_key "credentials", "users"
+  add_foreign_key "challenge_comment_likes", "challenge_comments", on_delete: :cascade
+  add_foreign_key "challenge_comment_likes", "users", on_delete: :cascade
+  add_foreign_key "challenge_comments", "challenge_participants", on_delete: :cascade
+  add_foreign_key "challenge_comments", "challenge_stories", on_delete: :cascade
+  add_foreign_key "challenge_participants", "challenge_stories", on_delete: :cascade
+  add_foreign_key "challenge_participants", "users", on_delete: :cascade
+  add_foreign_key "challenge_rewards", "challenge_participants", column: "giver_id", on_delete: :cascade
+  add_foreign_key "challenge_rewards", "challenge_participants", column: "receiver_id", on_delete: :cascade
+  add_foreign_key "challenge_rewards", "challenge_stories", on_delete: :cascade
+  add_foreign_key "challenge_story_likes", "challenge_stories", on_delete: :cascade
+  add_foreign_key "challenge_story_likes", "users", on_delete: :cascade
+  add_foreign_key "credentials", "users", on_delete: :cascade
 end
