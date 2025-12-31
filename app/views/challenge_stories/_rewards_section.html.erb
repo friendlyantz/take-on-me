@@ -52,13 +52,20 @@
           Pledge a reward
         <% end %>
       <% elsif current_user %>
-
-        <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
-          <div class="card-actions justify-end">
-            <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
-              <button class="btn btn-primary">join</button>
-            </turbo-frame >
+        <% if challenge_story.at_capacity? %>
+          <div class="tooltip tooltip-left" data-tip="Challenge is full (max <%= ChallengeStory::MAX_PARTICIPANTS %> participants)">
+            <button class="btn btn-disabled" disabled>Challenge Full</button>
           </div>
+        <% else %>
+          <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
+            <div class="card-actions justify-end">
+              <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
+                <button class="btn btn-primary">
+                  Join (<%= challenge_story.available_spots %> spot<%= challenge_story.available_spots == 1 ? '' : 's' %> left)
+                </button>
+              </turbo-frame >
+            </div>
+          <% end %>
         <% end %>
 
       <% else %>

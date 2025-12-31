@@ -1,4 +1,6 @@
 class ChallengeStory < ApplicationRecord
+  MAX_PARTICIPANTS = 2
+
   has_many :challenge_comments, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
   has_many :challenge_rewards, dependent: :destroy
@@ -28,6 +30,14 @@ class ChallengeStory < ApplicationRecord
 
   def like_count
     challenge_story_likes.count
+  end
+
+  def at_capacity?
+    active_participants.count >= MAX_PARTICIPANTS
+  end
+
+  def available_spots
+    MAX_PARTICIPANTS - active_participants.count
   end
 
   private

@@ -16,8 +16,18 @@ class ChallengeParticipantsController < ApplicationController
 
     if @participant
       # If the participant exists but is inactive, reactivate them
-      @participant.update(status: "active") if @participant.status == "inactive"
+      if @participant.status == "inactive"
+        if @challenge_story.at_capacity?
+          return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)"
+        end
+        @participant.update(status: "active")
+      end
     else
+      # Check capacity before creating new participant
+      if @challenge_story.at_capacity?
+        return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)"
+      end
+
       # Create a new participant if none exists
       @participant = ChallengeParticipant.create(
         user: current_user,
