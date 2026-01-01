@@ -17,7 +17,7 @@ class ChallengeCommentsController < ApplicationController
     @challenge_comment.challenge_story = @challenge_story
 
     if @challenge_comment.save
-      redirect_to @challenge_story, notice: "Comment was successfully added."
+      render :success, status: :ok
     else
       render :new, status: :unprocessable_content
     end

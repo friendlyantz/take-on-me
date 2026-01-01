@@ -18,7 +18,7 @@ class ChallengeComment < ApplicationRecord
   validate :one_comment_per_day_per_participant
 
   # Callbacks (broadcasts_to must be after has_one_attached for Cloudinary compatibility)
-  broadcasts_to :challenge_story, action: :prepend
+  broadcasts_to ->(comment) { [comment.challenge_story, "challenge_comments"] }, action: :prepend
 
   # Public methods
   def liked_by?(user)
