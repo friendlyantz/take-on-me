@@ -1,10 +1,14 @@
-class Library::ChallengeStoriesPage < SitePrism::Page
-  set_url "/challenges/*"
+# frozen_string_literal: true
 
-  element :challenge_title, "#challenge-title"
-  element :description, "#description"
-  element :start, "#start"
-  element :finish, "#finish"
+class Library::ChallengeStoriesPage < BasePage
+  set_url "/challenge_stories"
 
-  element :submit, "#submit"
+  element :page_heading, "h1"
+  elements :challenge_cards, ".card"
+
+  load_validation { has_page_heading? }
+
+  def has_challenge?(title)
+    has_text?(title)
+  end
 end

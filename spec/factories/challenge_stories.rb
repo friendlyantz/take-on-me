@@ -10,6 +10,11 @@ FactoryBot.define do
       completed { true }
     end
 
+    trait :finished do
+      start { Time.zone.today - 10.days }
+      finish { Time.zone.today - 3.days }
+    end
+
     trait :with_participant do
       transient do
         participant_user { nil }

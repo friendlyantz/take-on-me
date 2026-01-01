@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Load SitePrism for page object pattern
+require "site_prism"
+
 # Capybara settings (not covered by Rails system tests)
 
 # Don't wait too long in `have_xyz` matchers

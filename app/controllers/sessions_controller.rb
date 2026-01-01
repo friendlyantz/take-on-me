@@ -58,6 +58,15 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  # Test-only action for signing in without WebAuthn
+  def test_sign_in
+    raise "Not available outside test environment" unless Rails.env.test?
+
+    user = User.find(params[:user_id])
+    sign_in(user)
+    redirect_to root_path
+  end
+
   private
 
   def session_params
