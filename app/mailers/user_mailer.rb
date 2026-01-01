@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserMailer < ApplicationMailer
-  default from: ENV.fetch("MAILER_FROM", "noreply@take-on-me.local")
+  default from: ENV.fetch("MAILER_FROM_ADDRESS", "noreply@strivo.me")
 
   def magic_link_email(user, token)
     @user = user

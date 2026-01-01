@@ -42,6 +42,7 @@ env:
     - NEW_RELIC_API_KEY_GEM
     - CLOUDINARY_URL
     - MAILING_SERVICE_API_KEY
+    - MAILER_FROM_ADDRESS
   clear:
     #  Docker container that will run in production will be named service_name-postgres - name it carefully
     # host name should match service name at the top + '-db' suffix
