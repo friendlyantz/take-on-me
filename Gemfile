@@ -70,6 +70,7 @@ group :development do
   gem "trace_location"
   gem "database_consistency", require: false
   gem "htmlbeautifier" # For ERB formatting in VSCode
+  gem "letter_opener_web" # Preview emails in browser during development
 end
 
 group :test do

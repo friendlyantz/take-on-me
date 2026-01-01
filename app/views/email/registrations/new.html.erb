@@ -1,0 +1,40 @@
+<% if @email_sent %>
+  <div class="alert alert-success mb-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <span>Account created! Check your email to verify your account. Link expires in 24 hours.</span>
+  </div>
+<% elsif @error %>
+  <div class="alert alert-error mb-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l-2-2m0 0l-2-2m2 2l2-2m-2 2l-2 2m2-2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <span><%= @error %></span>
+  </div>
+<% end %>
+
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
+  <legend class="fieldset-legend">Register with Email</legend>
+
+  <% unless @email_sent %>
+    <%= form_with scope: :registration, url: email_registration_path, local: true, id: "email-register-form" do |form| %>
+      <div class="form-group mb-4">
+        <div data-controller="textfield">
+          <%= form.text_field :username, class: "input mdc-text-field__input w-full", placeholder: "Choose a username", required: true, autocapitalize: "none" %>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">Can't be changed later</p>
+      </div>
+
+      <div class="form-group mb-4">
+        <div data-controller="textfield">
+          <%= form.email_field :email, class: "input mdc-text-field__input w-full", placeholder: "your@email.com", required: true, autocapitalize: "none" %>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">We'll send you a verification link</p>
+      </div>
+
+      <%= form.submit "Create Account", class: "btn btn-neutral w-full" %>
+    <% end %>
+  <% end %>
+
+  <%= render partial: 'application/js_error' %>
+
+  <%= link_to "Register with Passkeys instead", new_registration_path, class: "btn btn-secondary w-full mt-4" %>
+  <%= link_to "Back to Sign In", new_session_path, class: "btn btn-primary w-full mt-2" %>
+</fieldset>

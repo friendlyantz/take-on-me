@@ -16,9 +16,9 @@
       </h3>
       <div class="badge badge-lg badge-primary"><%= progress_percentage.round %>%</div>
     </div>
-    
+
     <progress class="progress progress-primary w-full h-3" value="<%= progress_percentage %>" max="100"></progress>
-    
+
     <div class="flex justify-between text-xs opacity-70 mt-2">
       <span><%= challenge_story.start.to_fs(:short) %></span>
       <span><%= challenge_story.finish.to_fs(:short) %></span>

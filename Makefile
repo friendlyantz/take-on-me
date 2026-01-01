@@ -39,6 +39,10 @@ tailwind:
 load-deploy-secrets:
 	bw unlock
 
+.PHONY: letter_opener
+letter_opener:
+	open http://localhost:3000/letter_opener
+
 .PHONY: deploy
 deploy:
 	kamal deploy
@@ -73,6 +77,7 @@ usage:
 	@echo
 	@echo "${YELLOW}make server${NC}                   run server"
 	@echo "${YELLOW}make tailwind${NC}                 run tailwind watcher"
+	@echo "${YELLOW}make letter_opener${NC}            open email preview in browser"
 	@echo
 # 	@echo "${YELLOW}make test${NC}                     run tests"
 	@echo

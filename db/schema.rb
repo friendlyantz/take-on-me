@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_050650) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_01_030637) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -161,6 +161,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_050650) do
     t.datetime "updated_at", null: false
     t.integer "challenge_participants_count", default: 0, null: false
     t.integer "challenge_story_likes_count", default: 0, null: false
+    t.string "email"
+    t.datetime "email_verified_at"
+    t.string "email_login_token"
+    t.datetime "email_login_token_expires_at"
+    t.datetime "last_email_sent_at"
+    t.index ["email"], name: "index_users_on_email", unique: true, where: "(email IS NOT NULL)"
     t.index ["username"], name: "index_users_on_username", unique: true
     t.check_constraint "challenge_participants_count >= 0", name: "check_user_participants_non_negative"
     t.check_constraint "challenge_story_likes_count >= 0", name: "check_user_likes_non_negative"

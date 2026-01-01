@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # Development email preview
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   # Test-only route for signing in without WebAuthn
   if Rails.env.test?
     get "test_sign_in/:user_id", to: "sessions#test_sign_in", as: :test_sign_in
@@ -34,6 +39,13 @@ Rails.application.routes.draw do
 
   resource :session, only: [:new, :create, :destroy] do
     post :callback
+  end
+
+  namespace :email do
+    resource :session, only: [:new, :create] do
+      get :verify, on: :collection
+    end
+    resource :registration, only: [:new, :create]
   end
 
   resource :registration, only: [:new, :create] do
