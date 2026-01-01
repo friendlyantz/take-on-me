@@ -14,6 +14,7 @@ class ChallengeComment < ApplicationRecord
 
   # Validations
   validates :message, presence: true
+  validate :photo_size_validation
   validate :one_comment_per_day_per_participant
 
   # Callbacks (broadcasts_to must be after has_one_attached for Cloudinary compatibility)
@@ -26,6 +27,12 @@ class ChallengeComment < ApplicationRecord
   end
 
   private
+
+  def photo_size_validation
+    if photo.present? && photo.blob.byte_size > 10.megabytes
+      errors.add(:photo, "is too large (maximum 10MB)")
+    end
+  end
 
   def one_comment_per_day_per_participant
     return if challenge_participant.blank?

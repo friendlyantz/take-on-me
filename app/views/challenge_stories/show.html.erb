@@ -46,7 +46,7 @@
             <span>You've already checked in today. Come back tomorrow!</span>
           </div>
         <% else %>
-          <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story), target: "_top" %>
+          <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story) %>
         <% end %>
       <% else %>
         <div class="alert alert-info shadow-lg mb-6">
