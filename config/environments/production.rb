@@ -58,7 +58,11 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = {host: "example.com"}
+  config.action_mailer.default_url_options = {host: "strivo.me"}
+  config.action_mailer.delivery_method = :brevo
+  config.action_mailer.brevo_settings = {
+    api_key: ENV.fetch("MAILING_SERVICE_API_KEY")
+  }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
