@@ -72,4 +72,9 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Set default_url_options for tests (needed for ActionCable broadcast_update_to)
+  config.before(:each) do
+    Rails.application.routes.default_url_options[:host] = "localhost:3000"
+  end
 end
