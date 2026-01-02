@@ -28,12 +28,12 @@ class ChallengeStoriesController < ApplicationController
         challenge_comments: [:challenge_participant, :challenge_comment_likes, photo_attachment: :blob]
       )
       .find(params[:id])
-    
+
     if current_user
       @current_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
       @today_comment = @current_participant&.challenge_comments&.find { |c| c.created_at.to_date == Time.zone.today }
     end
-    
+
     @participants = @challenge_story.challenge_participants
       .select(&:active?)
       .sort_by(&:created_at)
@@ -62,7 +62,7 @@ class ChallengeStoriesController < ApplicationController
 
   def update
     if @challenge_story.update(challenge_story_params)
-      redirect_to @challenge_story, notice: "Challenge story was successfully updated."
+      redirect_to @challenge_story, notice: "Challenge story was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_content
     end
