@@ -1,0 +1,30 @@
+<%# locals: (challenge_story:) %>
+
+<%# TODO: this is not rendered and leftover from spike. omptimize it or remove it o %>
+<% 
+  # Calculate total duration and elapsed time
+  total_duration = (challenge_story.finish - challenge_story.start).to_i
+  elapsed_days = (Date.today - challenge_story.start).to_i
+  progress_percentage = total_duration > 0 ? (elapsed_days.to_f / total_duration * 100).clamp(0, 100) : 0
+%>
+
+<div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card-body">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="card-title text-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+        Original Time Progress
+      </h3>
+      <div class="badge badge-lg badge-primary"><%= progress_percentage.round %>%</div>
+    </div>
+
+    <progress class="progress progress-primary w-full h-3" value="<%= progress_percentage %>" max="100"></progress>
+
+    <div class="flex justify-between text-xs opacity-70 mt-2">
+      <span><%= challenge_story.start.to_fs(:short) %></span>
+      <span><%= challenge_story.finish.to_fs(:short) %></span>
+    </div>
+  </div>
+</div>

@@ -30,6 +30,7 @@ class ChallengeStoriesController < ApplicationController
       .find(params[:id])
     @current_participant = @challenge_story.challenge_participants.find_by(user: current_user) if current_user
     @today_comment = @current_participant&.challenge_comments&.find_by(created_at: Time.zone.today.all_day)
+    @participants = @challenge_story.active_participants.includes(:user, :challenge_comments).order(created_at: :asc)
   end
 
   def new
