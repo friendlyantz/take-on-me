@@ -3,7 +3,7 @@
 >
   <div class="chat-image avatar">
     <div class="w-10 rounded-full">
-      <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(challenge_comment.challenge_participant.name)}?s=80&d=identicon", alt: 'avatar', class: "rounded-full" %>
+      <%= image_tag "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=#{challenge_comment.challenge_participant.name}&options[skinColor]=random&size=80", alt: 'avatar', class: "rounded-full" %>
     </div>
   </div>
   <div class="chat-header">

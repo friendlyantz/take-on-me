@@ -36,7 +36,7 @@
           <div class="flex items-center gap-3 mb-3">
             <div class="avatar placeholder">
               <div class="bg-neutral text-neutral-content rounded-full w-10">
-                <%= image_tag "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(participant.name)}?s=80&d=identicon", 
+                <%= image_tag "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=#{participant.name}&options[skinColor]=random&size=80", 
                     class: "rounded-full" %>
               </div>
             </div>
