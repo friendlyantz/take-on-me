@@ -8,6 +8,6 @@ class UserMailer < ApplicationMailer
     @token = token
     @magic_link_url = verify_email_session_url(token: token)
 
-    mail(to: user.email, subject: "Your Take-On-Me Sign In Link")
+    mail(to: user.email, subject: "Your Strivo Sign In Link")
   end
 end
