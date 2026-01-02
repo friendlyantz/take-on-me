@@ -23,14 +23,20 @@ class ChallengeStoriesController < ApplicationController
   def show
     @challenge_story = ChallengeStory
       .includes(
-        challenge_participants: :user,
+        challenge_participants: [:user, :challenge_comments],
         challenge_rewards: [:giver, :receiver],
         challenge_comments: [:challenge_participant, :challenge_comment_likes, photo_attachment: :blob]
       )
       .find(params[:id])
-    @current_participant = @challenge_story.challenge_participants.find_by(user: current_user) if current_user
-    @today_comment = @current_participant&.challenge_comments&.find_by(created_at: Time.zone.today.all_day)
-    @participants = @challenge_story.active_participants.includes(:user, :challenge_comments).order(created_at: :asc)
+    
+    if current_user
+      @current_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
+      @today_comment = @current_participant&.challenge_comments&.find { |c| c.created_at.to_date == Time.zone.today }
+    end
+    
+    @participants = @challenge_story.challenge_participants
+      .select(&:active?)
+      .sort_by(&:created_at)
   end
 
   def new

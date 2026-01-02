@@ -23,11 +23,10 @@
             </div>
           </div>
 
-          <% participant_comments = participant.challenge_comments.order(created_at: :desc).limit(3) %>
+          <% participant_comments = participant.challenge_comments.sort_by(&:created_at).reverse.take(3) %>
 
           <% if participant_comments.any? %>
             <div class="space-y-2">
-              <%# TODO: fix N+1 %>
               <% participant_comments.each do |comment| %>
                 <div class="flex items-start gap-2 text-sm">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-success mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
