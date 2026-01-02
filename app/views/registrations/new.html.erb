@@ -1,26 +1,29 @@
 <%= render partial: 'application/feature_detection' %>
 
-<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
-  <legend class="fieldset-legend">Register with Passkeys</legend>
-  <%= form_with scope: :registration, url: registration_path, local: false,  id: "new-registration", data: { controller: "new-registration", action: "ajax:success->new-registration#create ajax:error->new-registration#error" } do |form| %>
-    <div class="mdc-text-field mdc-text-field--fullwidth" data-controller="textfield" data-target="new-registration.usernameField">
-      <%= form.text_field :username, class: "input mdc-text-field__input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
-    </div>
-    <p class="text-xs text-gray-500 mt-1">Can't be changed later</p>
-    <div class="mdc-text-field-helper-line">
-      <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+<div class="mt-28">
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
+    <legend class="fieldset-legend">Register with Passkeys</legend>
+    <%= form_with scope: :registration, url: registration_path, local: false,  id: "new-registration", data: { controller: "new-registration", action: "ajax:success->new-registration#create ajax:error->new-registration#error" } do |form| %>
+      <div class="mdc-text-field mdc-text-field--fullwidth" data-controller="textfield" data-target="new-registration.usernameField">
+        <%= form.text_field :username, class: "input mdc-text-field__input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
       </div>
-    </div>
-    <br>
-    <div data-controller="textfield">
-      <%= form.text_field :nickname, class: "input", placeholder: "Device key nickname", required: true %>
-    </div>
-    <%= form.submit "Register", class: "btn btn-neutral mt-4 w-full" %>
-  <% end %>
+      <p class="text-xs text-gray-500 mt-1">Can't be changed later</p>
+      <div class="mdc-text-field-helper-line">
+        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+        </div>
+      </div>
+      <br>
+      <div data-controller="textfield">
+        <%= form.text_field :nickname, class: "input", placeholder: "Device key nickname", required: true %>
+      </div>
+      <%= form.submit "Register", class: "btn btn-neutral mt-4 w-full" %>
+    <% end %>
 
-  <%= render partial: 'application/js_error' %>
+    <%= render partial: 'application/js_error' %>
 
-  <%= link_to "Register with email", new_email_registration_path, class: "btn btn-secondary w-full" %>
+    <%= link_to "Register with email", new_email_registration_path, class: "btn btn-secondary w-full" %>
 
-  <%= link_to 'Sign In Instead', new_session_path, class: "btn btn-primary mt-4" %>
-</fieldset>
+    <%= link_to 'Sign In Instead', new_session_path, class: "btn btn-primary mt-4" %>
+  </fieldset>
+
+</div>
