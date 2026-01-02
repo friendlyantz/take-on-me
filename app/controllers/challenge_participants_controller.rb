@@ -11,11 +11,20 @@ class ChallengeParticipantsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          "story-#{@challenge_story.id}-joining_participant",
-          partial: "challenge_participants/participant_details",
-          locals: {participant: @participant}
-        )
+        @challenge_comment = ChallengeComment.new(challenge_story_id: @challenge_story.id)
+        render turbo_stream: [
+
+          turbo_stream.replace(
+            "story-#{@challenge_story.id}-joining_participant",
+            partial: "challenge_participants/participant_joined_alert",
+            locals: { participant: @participant }
+          ),
+          turbo_stream.replace(
+            "new_message",
+            partial: "challenge_comments/form",
+            locals: { challenge_story: @challenge_story, challenge_comment: @challenge_comment }
+          )
+        ]
       end
       format.html { redirect_to challenge_story_path(@challenge_story), notice: "You have joined the challenge!" }
     end

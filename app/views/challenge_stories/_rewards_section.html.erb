@@ -79,7 +79,7 @@
         </svg>
         <h3 class="text-lg font-semibold mb-2">No rewards yet</h3>
         <p class="text-sm opacity-70 mb-4">Be the first to pledge a reward and motivate the team!</p>
-        
+
         <% if challenge_story.active_participants.exists?(user: current_user) %>
           <%= link_to new_challenge_story_challenge_reward_path(challenge_story), class: "btn btn-warning gap-2" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,17 +93,9 @@
               <button class="btn btn-disabled" disabled>Challenge Full</button>
             </div>
           <% else %>
-            <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), data: { turbo_method: :post } do %>
-              <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
-                <button class="btn btn-primary gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                  </svg>
-                  Join Challenge
-                  <div class="badge badge-sm"><%= challenge_story.available_spots %> spot<%= challenge_story.available_spots == 1 ? '' : 's' %> left</div>
-                </button>
-              </turbo-frame>
-            <% end %>
+
+            <%= render "button_join_challenge", colour_scheme: "primary" %>
+
           <% end %>
         <% else %>
           <%= link_to new_session_path, class: "btn btn-secondary gap-2" do %>

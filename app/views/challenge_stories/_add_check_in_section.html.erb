@@ -1,0 +1,43 @@
+<% if current_user %>
+  <% if @current_participant&.active? %>
+    <% unless @challenge_story.completed? %>
+      <% if @today_comment %>
+        <%= render "challenge_stories/alerts/no_more_check_ins_for_today" %>
+      <% else %>
+        <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story) %>
+      <% end %>
+    <% else %>
+      <%= render "challenge_stories/alerts/no_more_check_ins_for_completed_challenge" %>
+    <% end %>
+  <% else %>
+    <turbo-frame id="new_message">
+      <div class="card bg-warning/10 border border-warning shadow-lg mb-6">
+        <div class="card-body">
+          <div class="flex items-start gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-warning shrink-0 h-8 w-8 mt-1" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div class="flex-1">
+              <h3 class="font-semibold text-lg mb-2">Join this challenge to check in</h3>
+              <p class="text-sm opacity-70 mb-4">You must be a participant to track your progress and check in daily.</p>
+
+              <% if @challenge_story.at_capacity? %>
+                <%= render "challenge_stories/alerts/challenge_at_capacity" %>
+              <% else %>
+                <%= render "button_join_challenge", colour_scheme: "warning"  %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </turbo-frame>
+  <% end %>
+<% else %>
+  <div class="card bg-base-200 shadow-lg mb-6">
+    <div class="card-body text-center">
+      <h3 class="card-title justify-center">Want to join this challenge?</h3>
+      <p class="opacity-70">Sign in to start tracking your progress</p>
+      <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
