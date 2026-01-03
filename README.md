@@ -10,24 +10,24 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 
 ## 📌 ~~PHASE 1: Foundation & Validation (0–1 Month)~~ ✅
 
-### ✅ Goals
+### 🎯 Goals
 
-- Validate the core concept with real users.
-- Refine feature scope for MVP.
+- ✅ Validate the core concept with real users.
+- ✅ Refine feature scope for MVP.
 
 ### 📋 Key Actions
 
 1. **Define MVP Scope**
-   - Core: Join challenge, invite friends, post updates (text/photo), comment.
-   - Stretch: Reward/bet system, supporter-only friends, progress tracking.
+   - ✅ Core: Join challenge, invite friends, post updates (text/photo), comment.
+   - ✅ Stretch: Reward/bet system, supporter-only friends, progress tracking.
 
 2. **User Research**
-   - Interview 5–10 target users (gym-goers, hobbyists, etc.).
-   - Identify motivators: competition, support, accountability.
+   - ✅ Interview 5–10 target users (gym-goers, hobbyists, etc.).
+   - ✅ Identify motivators: competition, support, accountability.
 
 3. **UI/UX Wireframes**
-   - Design Instagram/TikTok-style feed.
-   - Prioritize usability for: creating/joining challenges, posting, and interaction.
+   - ✅ Design Instagram/TikTok-style feed.
+   - ✅ Prioritize usability for: creating/joining challenges, posting, and interaction.
 
 4. **Set Success Criteria**
    - Example: 10 users complete a challenge and post 3+ updates within 2 weeks.
@@ -36,9 +36,9 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 
 ## 📌 PHASE 2: MVP Development (1–2 Months)
 
-### ✅ Goals
+### 🎯 Goals
 
-- Ship a working MVP to a small test group.
+- ✅ Ship a working MVP to a small test group.
 - Collect usage data and qualitative feedback.
 - Research engaging gamification elements that users respond to most.
 - Measure engagement metrics: average posts per challenge, comments per post.
@@ -49,25 +49,25 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 
 - Simple templates with clear success metrics (frequency, duration, counts)
 - Basic custom challenge option
-- Clear start/end dates
-- Progress Updates
+- ✅ Clear start/end dates
+- ✅ Progress Updates
 
 #### Simple photo/text posting
 
 - Progress input tied to challenge type (reps, minutes, etc.)
-- Mobile-friendly quick updates
-- Social Accountability Elements
+- ✅ Mobile-friendly quick updates
+- ✅ Social Accountability Elements
 
 #### Friend invitations via email
 
-- Basic commenting and reactions
+- ✅ Basic commenting and reactions
 - Simple profile showing active challenges
-- Basic Progress Tracking
+- ✅ Basic Progress Tracking
 
 #### Streak counters (days in a row)
 
-- Visual progress indicators
-- "At this pace" simple forecasting
+- ✅ Visual progress indicators
+- ✅ "At this pace" simple forecasting
 
 ### Lower Priority for Initial MVP
 
@@ -89,14 +89,14 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 - Create/join challenges.
   - Template-based challenges with clear success metrics (e.g., frequency, duration, counts).
   - Custom challenge creation with configurable goals.
-- Post updates (text/photo).
+- ✅ Post updates (text/photo).
   - Progress input fields customized to challenge type (reps, minutes, etc.).
-- Comment and react.
-- Invite friends via email.
-- Manual reward/bet tracking (no payments yet).
+- ✅ Comment and react.
+- ~~Invite friends via email.~~ (may be later)
+- ✅ Manual reward/bet tracking (no payments yet).
 - **Progress Tracking**:
-  - Simple streak counters (X days in a row).
-  - Basic milestone tracking with visual indicators.
+  - ✅ Manual reward/bet tracking (no payments yet).
+  - ✅ Manual reward/bet tracking (no payments yet).rs.
   - Weekly summary statistics.
 - **Achievement System**:
   - First milestone badges (first post, first week, etc.).
@@ -105,8 +105,8 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 
 ### 🔒 Privacy/Trust
 
-- Use passwordless authentication.
-- Avoid collecting sensitive data early on.
+- ✅ Manual reward/bet tracking (no payments yet).
+- ✅ Manual reward/bet tracking (no payments yet).
 
 ### 📊 Forecasting & Analytics
 
@@ -125,7 +125,7 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 
 ## 📌 PHASE 3: Beta Testing & Growth Experiments (2–3 Months)
 
-### ✅ Goals
+### 🎯 Goals
 
 - Iterate based on user feedback.
 - Test network effect and virality.
@@ -233,3 +233,8 @@ end
 new_alloc = GC.stat[:total_allocated_objects]
 puts "Total allocations: #{new_alloc - was_alloc}"
 ```
+
+# Credentials
+
+ROTATABLE - ENV vars
+FIXED - config/credentials.yml.enc
