@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_message" do %>
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
     <%= form_with(model: [@challenge_story, @challenge_comment], class: "contents") do |form| %>
       <% if @challenge_comment.errors[:base].any? %>
         <div class="alert alert-error mb-4">
@@ -9,7 +9,7 @@
 
       <%= 
         form.text_area :message,
-        class: ["textarea", {"border-gray-400 focus:outline-blue-600": @challenge_comment.errors[:message].none?, "border-red-400 focus:outline-red-600": @challenge_comment.errors[:message].any?}],
+        class: ["textarea", {"border-gray-400 focus:outline-blue-600 w-full": @challenge_comment.errors[:message].none?, "border-red-400 focus:outline-red-600": @challenge_comment.errors[:message].any?}],
         id: "message",
         placeholder: "check in report, this cannot be edited later!",
         required: true
@@ -18,7 +18,7 @@
       <%= 
         form.file_field :photo,
         class: "file-input",
-        accept: "image/jpeg,image/jpg"
+        accept: "image/*"
        %>
 
       <% if @challenge_comment.errors[:photo].any? %>
@@ -28,7 +28,7 @@
       <% end %>
 
       <div class="inline">
-        <%= form.submit class: "btn btn-soft btn-primary", id: "submit"%>
+        <%= form.submit class: "btn btn-soft btn-secondary", id: "submit"%>
       </div>
 
     <%end%>
