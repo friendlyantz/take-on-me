@@ -9,4 +9,21 @@ import "Chart.bundle"
 
 import Rails from "@rails/ujs";
 
+
+function registerServiceWorker() {
+  console.log('Registering service worker...');
+
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+      console.log('Service worker registered:', registration);
+    }).catch((error) => {
+      console.error('Service worker registration failed:', error);
+    });
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  registerServiceWorker();
+}
+
 Rails.start();
