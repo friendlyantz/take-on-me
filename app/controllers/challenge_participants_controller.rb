@@ -7,7 +7,7 @@ class ChallengeParticipantsController < ApplicationController
   def create
     return redirect_to challenge_story_path(@challenge_story), alert: "This challenge is full (max #{ChallengeStory::MAX_PARTICIPANTS} participants)" if @challenge_story.at_capacity?
 
-    @participant = @challenge_story.find_or_activate_participant!(current_user)
+    @current_challenge_participant = @challenge_story.find_or_activate_participant!(current_user)
 
     respond_to do |format|
       format.turbo_stream do
@@ -17,7 +17,7 @@ class ChallengeParticipantsController < ApplicationController
           turbo_stream.replace(
             "story-#{@challenge_story.id}-joining_participant",
             partial: "challenge_participants/participant_joined_alert",
-            locals: { participant: @participant }
+            locals: { current_challenge_participant: @current_challenge_participant}
           ),
           turbo_stream.replace(
             "new_message",
@@ -31,9 +31,9 @@ class ChallengeParticipantsController < ApplicationController
   end
 
   def destroy
-    @challenge_participant = ChallengeParticipant.find(params[:id])
-    @challenge_participant.leave!
-    redirect_to challenge_stories_path, notice: "You have left the challenge!"
+    challenge_participant = ChallengeParticipant.find(params[:id])
+    challenge_participant.leave!
+    redirect_to challenge_story_path(challenge_participant.challenge_story), notice: "You have left the challenge!"
   end
 
   private

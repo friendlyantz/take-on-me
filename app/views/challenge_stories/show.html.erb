@@ -1,5 +1,5 @@
 <% content_for :title, @challenge_story.title %>
-<div class="md:w-2/3 w-full">
+<div class="md:w-2/3 w-full pt-4">
 
   <div class="flex justify-between items-center mb-6">
 
@@ -33,5 +33,19 @@
   <div id="challenge_comments" class="w-full sm:w-auto my-5 space-y-5">
     <%= render @challenge_story.challenge_comments.reverse %>
   </div>
+
+  <div class="divider"></div>
+
+  <% if @current_challenge_participant&.active? %>
+    <div class="text-center mt-4">
+      <%= button_to 'Leave Challenge',
+        challenge_participant_path(@current_challenge_participant),
+        method: :delete,
+        class: 'btn btn-error',
+        data: { turbo_confirm: "Are you sure you want to leave this challenge?" }
+      %>
+    </div>
+  <% end %>
+
 
 </div>

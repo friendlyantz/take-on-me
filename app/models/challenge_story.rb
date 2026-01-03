@@ -33,7 +33,7 @@ class ChallengeStory < ApplicationRecord
   end
 
   def latest_photo_comment
-    challenge_comments.joins(:photo_attachment).order(created_at: :desc).first
+    challenge_comments.joins(:photo_attachment).last
   end
 
   def liked_by?(user)

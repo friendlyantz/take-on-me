@@ -1,5 +1,5 @@
 <% if current_user %>
-  <% if @current_participant&.active? %>
+  <% if @current_challenge_participant&.active? %>
     <% unless @challenge_story.completed? %>
       <% if @today_comment %>
         <%= render "challenge_stories/alerts/no_more_check_ins_for_today" %>

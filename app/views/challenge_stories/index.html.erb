@@ -7,38 +7,23 @@
 
     <% if @challenge_stories.any? %>
       <% @challenge_stories.each do |challenge_story| %>
-        <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200">
-          <%= link_to challenge_story do %>
+        <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200 flex flex-col">
+          <%= link_to challenge_story, class: "flex-1 flex flex-col" do %>
             <figure>
               <% if (latest_comment_with_photo = challenge_story.latest_photo_comment) %>
                 <%= cl_image_tag(latest_comment_with_photo.photo.key, height: 300, width: 400, crop: :fill) %>
               <% else %>
-                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+                <img src="https://img.daisyui.com/images/stock/photo-1560717789-0ac7c58ac90a.webp" alt="Shoes" />
               <% end %>
             </figure>
 
-            <div class="card-body">
-              <p>
-                <%= render challenge_story %>
-              </p>
-
-              <% user_participation = @user_participations[challenge_story.id] %>
-              <% if user_participation&.active? %>
-                <%= link_to 'leave', challenge_participant_path(user_participation), method: :delete, class: 'btn btn-danger' %>
-              <% else %>
-                <%= link_to challenge_participants_path(challenge_story_id: challenge_story.id), method: :post, turbo: true do %>
-                  <div class="card-actions justify-end">
-                    <turbo-frame id="story-<%= challenge_story.id %>-joining_participant">
-                      <button class="btn btn-primary">join</button>
-                    </turbo-frame >
-                  </div>
-                <% end %>
-              <% end %>
-
+            <div class="flex-1">
+              <%= render challenge_story %>
             </div>
+
           <% end %>
 
-          <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
+          <div class="flex items-center gap-2 text-l text-gray-500">
             <div class="flex items-center">
               <%= render 'challenge_stories/likes', challenge_story: challenge_story %>
             </div>

@@ -10,22 +10,22 @@ class ChallengeRewardsController < ApplicationController
   def index
     return @rewards_received = @rewards_given = @rewards_others = [] unless current_user
 
-    @current_participant = @challenge_story.challenge_participants.find_by(user: current_user)
-    return @rewards_received = @rewards_given = @rewards_others = [] unless @current_participant
+    @current_challenge_participant = @challenge_story.challenge_participants.find_by(user: current_user)
+    return @rewards_received = @rewards_given = @rewards_others = [] unless @current_challenge_participant
 
     # Load all rewards once with eager loading
     all_rewards = @challenge_story.challenge_rewards.includes(giver: :user, receiver: :user).to_a
 
     # Partition in-memory to avoid multiple queries
-    @rewards_received = all_rewards.select { |r| r.receiver_id == @current_participant.id }
-    @rewards_given = all_rewards.select { |r| r.giver_id == @current_participant.id }
+    @rewards_received = all_rewards.select { |r| r.receiver_id == @current_challenge_participant.id }
+    @rewards_given = all_rewards.select { |r| r.giver_id == @current_challenge_participant.id }
     my_reward_ids = (@rewards_received + @rewards_given).map(&:id)
     @rewards_others = all_rewards.reject { |r| my_reward_ids.include?(r.id) }
   end
 
   def new
     @reward = ChallengeReward.new(challenge_story: @challenge_story)
-    @current_participant = current_participant_for_story
+    @current_challenge_participant = current_challenge_participant_for_story
     @participants = available_participants_for_pledge
   end
 
@@ -37,7 +37,7 @@ class ChallengeRewardsController < ApplicationController
       redirect_to challenge_story_challenge_rewards_path(@challenge_story),
         notice: "You've successfully pledged a reward!"
     else
-      @current_participant = current_participant_for_story
+      @current_challenge_participant = current_challenge_participant_for_story
       @participants = available_participants_for_pledge
       render :new, status: :unprocessable_content
     end
@@ -83,16 +83,16 @@ class ChallengeRewardsController < ApplicationController
     params.require(:challenge_reward).permit(:giver_id, :receiver_id, :description)
   end
 
-  def current_participant_for_story
+  def current_challenge_participant_for_story
     @challenge_story.active_participants.find_by(user: current_user)
   end
 
   def available_participants_for_pledge
-    current_participant = current_participant_for_story
-    return [] unless current_participant
+    current_challenge_participant = current_challenge_participant_for_story
+    return [] unless current_challenge_participant
 
     existing_receiver_ids = ChallengeReward.where(
-      giver_id: current_participant.id,
+      giver_id: current_challenge_participant.id,
       challenge_story_id: @challenge_story.id
     ).pluck(:receiver_id)
 

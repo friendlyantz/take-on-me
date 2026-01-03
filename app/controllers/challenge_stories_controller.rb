@@ -30,8 +30,8 @@ class ChallengeStoriesController < ApplicationController
       .find(params[:id])
 
     if current_user
-      @current_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
-      @today_comment = @current_participant&.challenge_comments&.find { |c| c.created_at.to_date == Time.zone.today }
+      @current_challenge_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
+      @today_comment = @current_challenge_participant&.challenge_comments&.find { |c| c.created_at.to_date == Time.zone.today }
     end
 
     @participants = @challenge_story.challenge_participants
