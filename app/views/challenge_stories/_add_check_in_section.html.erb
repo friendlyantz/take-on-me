@@ -1,6 +1,6 @@
 <% if current_user %>
   <% if @current_challenge_participant&.active? %>
-    <% unless @challenge_story.completed? %>
+    <% unless @challenge_story.completed? || Time.zone.today > @challenge_story.finish.to_date + 1.day %>
       <% if @today_comment %>
         <%= render "challenge_stories/alerts/no_more_check_ins_for_today" %>
       <% else %>
