@@ -19,6 +19,17 @@
     <%= javascript_importmap_tags %>
   </head>
   <body>
+    <script>
+      // Make the VAPID public key available to the client as a Uint8Array
+      <% vapid_key = Rails.application.credentials.dig(:web_push, :vapid_public_key) %>
+      <% if vapid_key %>
+        window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(vapid_key).bytes.to_json %>);
+        console.log("VAPID public key loaded for web push notifications.");
+      <% else %>
+        console.warn("VAPID public key not found in credentials. Web push notifications may not
+      <% end %>
+    </script>
+
     <%= render "layouts/navbar" %>
     <div id="content">
       <% if content_for?(:content) %>

@@ -24,13 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
 function registerServiceWorker() {
   console.log('Registering service worker...');
 
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then((registration) => {
       console.log('Service worker registered:', registration);
-    }).catch((error) => {
+
+      navigator.serviceWorker.ready
+      .then((serviceWorkerRegistration) => {
+        serviceWorkerRegistration.pushManager
+        .subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: window.vapidPublicKey
+        })
+        .then(function(sub) {
+           window.myGlobalSub = sub; 
+           console.log('Service worker is ready and push subscription initiated. Subscription:', sub); 
+           console.log(
+            // TODO: Remove in production. Save this to your server to send push notifications.
+            'Subscription (JSON):',
+            JSON.parse(JSON.stringify(sub)) 
+           );
+          })
+      })
+    })
+    .catch((error) => {
       console.error('Service worker registration failed:', error);
     });
-  });
 }
 
 if ('serviceWorker' in navigator) {

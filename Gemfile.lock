@@ -488,6 +488,9 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.1.0)
+      jwt (~> 3.0)
+      openssl (>= 3.0)
     webauthn (3.4.3)
       android_key_attestation (~> 0.3.0)
       bindata (~> 2.4)
@@ -555,6 +558,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  web-push
   webauthn
 
 BUNDLED WITH
