@@ -47,6 +47,18 @@ letter_opener:
 deploy:
 	kamal deploy
 
+.PHONY: js_outdated
+js_outdated:
+	./bin/importmap outdated
+
+.PHONY: js_audit
+js_audit:
+	./bin/importmap audit
+
+.PHONY: js_update
+js_update:
+	./bin/importmap update
+
 .PHONY: lint
 lint:
 	rake standard:fix
@@ -86,6 +98,11 @@ usage:
 	@echo "${YELLOW}make deploy${NC}                   deploy"
 	@echo
 	@echo "${YELLOW}make run${NC}                      launch app"
+	@echo
+	@echo "${YELLOW}make js_outdated${NC}              check for outdated js dependencies"
+	@echo "${YELLOW}make js_audit${NC}                 audit js dependencies"
+	@echo "${YELLOW}make js_update${NC}                update js dependencies"
+	@echo
 	@echo "${YELLOW}make lint${NC}                     lint app"
 	@echo "${YELLOW}make lint-unsafe${NC}              lint app(UNSAFE)"
 # 	@echo "${YELLOW}make lint-checkonly${NC}           check lintintg"
