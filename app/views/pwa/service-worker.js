@@ -1,4 +1,45 @@
-console.log('Service worker loaded.');
+const VERSION = 'v20260103'; // Version will be the key, increment to invalidate old caches
+console.log('Service worker loaded. Version:', VERSION);
+
+async function cacheFirst(request) {
+  const cache = await caches.open(VERSION);
+  const cachedResponse = await caches.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const responseFromNetwork = await fetch(request.clone());
+
+    cache.put(request, responseFromNetwork.clone());
+
+    return responseFromNetwork;
+  } catch (error) {
+    return new Response('Network error happened', {
+      status: 408,
+      headers: { 'Content-Type': 'text/plain' },
+    });
+  }
+}
+
+self.addEventListener('fetch', function(event) {
+    event.respondWith(cacheFirst(event.request))
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheName !== VERSION) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
 // Add a service worker for processing Web Push notifications:
 //
 // self.addEventListener("push", async (event) => {
