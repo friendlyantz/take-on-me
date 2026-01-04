@@ -93,28 +93,31 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span class="text-sm">Invite more participants to unlock reward pledging!</span>
-              <%= render 'challenge_stories/share_challenge', url: challenge_story_url(challenge_story) %>
-            <% end %>
-          <% elsif current_user %>
-            <% if challenge_story.at_capacity? %>
-              <div class="tooltip" data-tip="Challenge is at capacity (max <%= ChallengeStory::MAX_PARTICIPANTS %> participants)">
-                <button class="btn btn-disabled" disabled>Challenge Full</button>
+              <div class="flex flex-col gap-2">
+                <span class="text-sm">Invite more participants to unlock reward pledging!</span>
+                <%= render 'challenge_stories/share_challenge', url: challenge_story_url(challenge_story) %>
               </div>
-            <% else %>
-
-              <%= render "button_join_challenge", colour_scheme: "primary" %>
-
-            <% end %>
-          <% else %>
-            <%= link_to new_session_path, class: "btn btn-secondary gap-2" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              Sign In to Join
-            <% end %>
+            </div>
           <% end %>
-        </div>
-      <% end %>
-    </div>
+        <% elsif current_user %>
+          <% if challenge_story.at_capacity? %>
+            <div class="tooltip" data-tip="Challenge is at capacity (max <%= ChallengeStory::MAX_PARTICIPANTS %> participants)">
+              <button class="btn btn-disabled" disabled>Challenge Full</button>
+            </div>
+          <% else %>
+
+            <%= render "button_join_challenge", colour_scheme: "primary" %>
+
+          <% end %>
+        <% else %>
+          <%= link_to new_session_path, class: "btn btn-secondary gap-2" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            Sign In to Join
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
+</div>

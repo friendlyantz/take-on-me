@@ -9,7 +9,7 @@
   <div class="chat-header">
     <%=  challenge_comment.challenge_participant.name %>
     <time class="text-xs opacity-50">
-      <%=  challenge_comment.created_at.to_fs(:short) %>
+      <%= time_ago_in_words(challenge_comment.created_at) %> ago
     </time>
   </div>
   <div class="chat-bubble">

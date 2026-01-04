@@ -1,8 +1,8 @@
 <% if current_user %>
   <% if @current_challenge_participant&.active? %>
     <% unless @challenge_story.completed? || Time.zone.today > @challenge_story.finish.to_date + 1.day %>
-      <% if @today_comment %>
-        <%= render "challenge_stories/alerts/no_more_check_ins_for_today" %>
+      <% if @time_of_a_next_check_in.present? %>
+        <%= render "challenge_stories/alerts/no_more_check_ins_for_today", time_of_a_next_check_in: @time_of_a_next_check_in %>
       <% else %>
         <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story) %>
       <% end %>

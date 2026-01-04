@@ -31,7 +31,12 @@ class ChallengeStoriesController < ApplicationController
 
     if current_user
       @current_challenge_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
-      @today_comment = @current_challenge_participant&.challenge_comments&.find { |c| c.created_at.to_date == Time.zone.today }
+
+      time_limit_till_next_check_in = 12.hours
+      @already_checked_in_comment = @current_challenge_participant&.challenge_comments&.where(created_at: time_limit_till_next_check_in.ago..Time.zone.now)&.order(:created_at)&.last
+      @time_of_a_next_check_in = if @already_checked_in_comment.present?
+        @already_checked_in_comment.created_at + time_limit_till_next_check_in
+      end
     end
 
     @participants = @challenge_story.challenge_participants
