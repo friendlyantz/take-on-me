@@ -3,9 +3,6 @@
 class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 4
 
-  # DSL extensions
-  self.implicit_order_column = "created_at"
-
   # Associations
   has_many :challenge_comments, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy

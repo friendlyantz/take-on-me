@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class ChallengeComment < ApplicationRecord
-  # DSL extensions
-  self.implicit_order_column = "created_at"
-  default_scope { order(created_at: :asc) }
-
   # Associations
   belongs_to :challenge_participant, counter_cache: true
   belongs_to :challenge_story, counter_cache: true
