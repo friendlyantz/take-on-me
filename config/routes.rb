@@ -48,7 +48,6 @@ Rails.application.routes.draw do
     resource :session, only: [:new, :create] do
       get :verify, on: :collection
     end
-    resource :registration, only: [:new, :create]
   end
 
   resource :registration, only: [:new, :create] do

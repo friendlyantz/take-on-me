@@ -2,7 +2,13 @@
   <% if @email_sent %>
     <div class="alert alert-success mb-4">
       <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-      <span>Check your email for a sign-in link. It expires in 24 hours.</span>
+      <span>
+        <% if @is_new_user %>
+          Account created! Check your email to verify your account. Link expires in 24 hours.
+        <% else %>
+          Check your email for a sign-in link. It expires in 24 hours.
+        <% end %>
+      </span>
     </div>
   <% elsif @error %>
     <div class="alert alert-error mb-4">
@@ -12,20 +18,30 @@
   <% end %>
 
   <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
-    <legend class="fieldset-legend">Sign In with Email</legend>
+    <legend class="fieldset-legend">Sign In or Register with Email</legend>
 
     <% unless @email_sent %>
-      <%= form_with scope: :session, url: email_session_path, local: true, id: "email-sign-in-form" do |form| %>
-        <div data-controller="textfield" class="w-full">
-          <%= form.email_field :email, class: "input mdc-text-field__input w-full", placeholder: "your@email.com", required: true, autocapitalize: "none" %>
+      <%= form_with scope: :session, url: email_session_path, data: { turbo: false }, id: "email-form" do |form| %>
+
+        <div class="form-group mb-4">
+          <div data-controller="textfield" class="w-full">
+            <%= form.email_field :email, class: "input mdc-text-field__input w-full", placeholder: "your@email.com", required: true, autocapitalize: "none" %>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">We'll send you a magic link</p>
         </div>
 
-        <%= form.submit "Send Sign-In Link", class: "btn btn-neutral w-full mt-4" %>
+        <div class="form-group mb-4">
+          <div data-controller="textfield">
+            <%= form.text_field :username, class: "input mdc-text-field__input w-full", placeholder: "Username (optional for existing users)", autocapitalize: "none" %>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Only required for new accounts. Can't be changed later.</p>
+        </div>
+
+        <%= form.submit "Continue with Email", class: "btn btn-neutral w-full" %>
       <% end %>
     <% end %>
 
     <%= link_to "Sign In with Passkey", new_session_path, class: "btn btn-secondary w-full mt-4" %>
-    <%= link_to "Register Instead", new_registration_path, class: "btn btn-primary w-full mt-2" %>
   </fieldset>
 
 </div>

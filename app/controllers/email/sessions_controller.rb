@@ -8,25 +8,36 @@ module Email
 
     def create
       email = session_params[:email]&.strip&.downcase
-      user = User.find_by(email: email)
+      username = session_params[:username]&.strip
 
-      if user.nil?
-        @error = "No account found with that email. Try signing up first."
+      # Find or initialize user
+      user = User.find_or_initialize_by(email: email) do |u|
+        u.username = username || generate_username_from_email(email)
+      end
+
+      # Validate before proceeding
+      unless user.valid?
+        @error = user.errors.full_messages.join(", ")
         render :new, status: :unprocessable_content
         return
       end
 
-      if user.email_login_recently_sent?
+      # Rate limiting
+      if user.persisted? && user.email_login_recently_sent?
         @error = "An email was recently sent. Please wait before requesting another."
         render :new, status: :too_many_requests
         return
       end
+
+      # Save new users
+      user.save! if user.new_record?
 
       # Generate and send magic link
       token = user.generate_email_login_token!
       UserMailer.magic_link_email(user, token).deliver_later
 
       @email_sent = true
+      @is_new_user = user.previous_changes.key?(:id)
       render :new
     end
 
@@ -61,7 +72,20 @@ module Email
     private
 
     def session_params
-      params.require(:session).permit(:email)
+      params.require(:session).permit(:email, :username)
+    end
+
+    def generate_username_from_email(email)
+      base = email.split("@").first.gsub(/[^a-z0-9]/i, "")
+      username = base
+      counter = 1
+
+      while User.exists?(username: username)
+        username = "#{base}#{counter}"
+        counter += 1
+      end
+
+      username
     end
   end
 end
