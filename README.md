@@ -238,3 +238,14 @@ puts "Total allocations: #{new_alloc - was_alloc}"
 
 ROTATABLE - ENV vars
 FIXED - config/credentials.yml.enc
+
+# WebPush
+
+```ruby
+wpn = WebPushNotification.order(:created_at).last
+wpn.send_notification(
+  title: "Hello!",
+  body: "This is a test notification",
+  icon: "/icon.png"
+  )
+```

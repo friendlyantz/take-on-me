@@ -31,6 +31,11 @@
     </script>
 
     <%= render "layouts/navbar" %>
+    
+    <% if current_user && current_user.web_push_notifications.none? %>
+      <%= render "web_push_notifications/banner" %>
+    <% end %>
+    
     <div id="content">
       <% if content_for?(:content) %>
         <%= yield(:content) %>
