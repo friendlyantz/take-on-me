@@ -6,16 +6,19 @@ class User < ApplicationRecord
   RATE_LIMIT_WINDOW = 15.minutes
   MAX_EMAIL_ATTEMPTS = 3
 
+  # TODO: soft delete for users?
   # Associations
   has_many :credentials, dependent: :destroy
   has_many :challenge_story_likes, dependent: :destroy
   has_many :liked_challenge_stories, through: :challenge_story_likes, source: :challenge_story
+  # soft delete challenges?
   has_many :challenge_participants, dependent: :destroy
+  # soft delete stories?
   has_many :challenge_stories, through: :challenge_participants
 
   # Validations
   validates :username, presence: true, uniqueness: true
-  validates :email, presence: false, uniqueness: { allow_nil: true }, format: { with: URI::MailTo::EMAIL_REGEXP, allow_nil: true }
+  validates :email, presence: false, uniqueness: {allow_nil: true}, format: {with: URI::MailTo::EMAIL_REGEXP, allow_nil: true}
 
   # Callbacks
   after_initialize do
