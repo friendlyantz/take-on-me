@@ -55,10 +55,6 @@ js_outdated:
 js_audit:
 	./bin/importmap audit
 
-.PHONY: js_update
-js_update:
-	./bin/importmap update
-
 .PHONY: lint
 lint:
 	rake standard:fix
@@ -99,9 +95,8 @@ usage:
 	@echo
 	@echo "${YELLOW}make run${NC}                      launch app"
 	@echo
-	@echo "${YELLOW}make js_outdated${NC}              check for outdated js dependencies"
-	@echo "${YELLOW}make js_audit${NC}                 audit js dependencies"
-	@echo "${YELLOW}make js_update${NC}                update js dependencies"
+	@echo "${YELLOW}make js_outdated${NC}              check for outdated js dependencies (${RED}NEVER run importmap update${NC}, as it will dowload js dependencies locally, which will break FireFox due to strickt CORS policies)"
+	@echo "${YELLOW}make js_audit${NC}                 audit js dependencies,"
 	@echo
 	@echo "${YELLOW}make lint${NC}                     lint app"
 	@echo "${YELLOW}make lint-unsafe${NC}              lint app(UNSAFE)"

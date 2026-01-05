@@ -26,7 +26,7 @@
         window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(vapid_key).bytes.to_json %>);
         console.log("VAPID public key loaded for web push notifications.");
       <% else %>
-        console.warn("VAPID public key not found in credentials. Web push notifications may not
+        console.warn("VAPID public key not found in credentials. Web push notifications may not work.");
       <% end %>
     </script>
 
