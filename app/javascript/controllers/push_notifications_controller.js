@@ -3,24 +3,40 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["banner"]
 
-  connect() {
-    // Auto-register if user already granted permission
-    if ('serviceWorker' in navigator && window.vapidPublicKey) {
-      this.checkExistingSubscription()
+  async connect() {
+    // Check if this device is already subscribed
+    const isSubscribed = await this.checkIfThisDeviceIsSubscribed()
+    if (isSubscribed) {
+      this.removeBanner()
+    } else {
+      this.showBanner()
     }
   }
 
-  async checkExistingSubscription() {
+  async checkIfThisDeviceIsSubscribed() {
+    if (!('serviceWorker' in navigator)) return false
+    
     try {
       const registration = await navigator.serviceWorker.getRegistration()
-      if (!registration) return
-
-      const existingSub = await registration.pushManager.getSubscription()
-      if (existingSub) {
-        await this.sendSubscriptionToServer(existingSub)
-      }
+      if (!registration) return false
+      
+      const subscription = await registration.pushManager.getSubscription()
+      return !!subscription
     } catch (error) {
       console.error('Error checking subscription:', error)
+      return false
+    }
+  }
+
+  showBanner() {
+    if (this.hasBannerTarget) {
+      this.bannerTarget.classList.remove('hidden')
+    }
+  }
+
+  removeBanner() {
+    if (this.hasBannerTarget) {
+      this.bannerTarget.remove()
     }
   }
 
@@ -44,7 +60,7 @@ export default class extends Controller {
       const existingSub = await registration.pushManager.getSubscription()
       if (existingSub) {
         await this.sendSubscriptionToServer(existingSub)
-        this.hideBanner()
+        this.removeBanner()
         return
       }
 
@@ -65,7 +81,7 @@ export default class extends Controller {
       
       console.log('Subscription successful:', sub)
       await this.sendSubscriptionToServer(sub)
-      this.hideBanner()
+      this.removeBanner()
     } catch (error) {
       console.error('Subscription error:', error)
       alert('Failed to subscribe to notifications. Please try again.')
@@ -95,12 +111,18 @@ export default class extends Controller {
     // Hide for 7 days
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString()
     document.cookie = `push_notification_dismissed=true; expires=${expires}; path=/`
-    this.hideBanner()
+    this.removeBanner()
   }
 
-  hideBanner() {
+  removeBanner() {
     if (this.hasBannerTarget) {
       this.bannerTarget.remove()
+    }
+  }
+
+  showBanner() {
+    if (this.hasBannerTarget) {
+      this.bannerTarget.classList.remove('hidden')
     }
   }
 }
