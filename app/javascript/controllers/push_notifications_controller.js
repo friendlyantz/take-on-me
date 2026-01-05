@@ -1,15 +1,34 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["banner"]
+  static targets = ["banner", "toggle"]
 
   async connect() {
     // Check if this device is already subscribed
     const isSubscribed = await this.checkIfThisDeviceIsSubscribed()
+    
+    // Update toggle state if present
+    if (this.hasToggleTarget) {
+      this.toggleTarget.checked = isSubscribed
+    }
+    
+    // Show/hide banner
     if (isSubscribed) {
       this.removeBanner()
     } else {
       this.showBanner()
+    }
+  }
+
+  async toggle(event) {
+    const checkbox = event.target
+    
+    if (checkbox.checked) {
+      console.log('Toggle: subscribing...')
+      await this.subscribe()
+    } else {
+      console.log('Toggle: unsubscribing...')
+      await this.unsubscribe()
     }
   }
 
@@ -104,6 +123,32 @@ export default class extends Controller {
       }
     } catch (error) {
       console.error('Failed to send subscription to server:', error)
+    }
+  }
+
+  async unsubscribe() {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration()
+      if (!registration) return
+
+      const subscription = await registration.pushManager.getSubscription()
+      if (!subscription) return
+
+      // Unsubscribe from browser
+      await subscription.unsubscribe()
+      console.log('Unsubscribed from push notifications')
+
+      // Remove from server
+      await fetch('/web_push_notifications/unsubscribe', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(subscription)
+      })
+    } catch (error) {
+      console.error('Unsubscribe error:', error)
     }
   }
 

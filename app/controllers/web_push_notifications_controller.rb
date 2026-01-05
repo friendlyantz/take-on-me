@@ -18,6 +18,19 @@ class WebPushNotificationsController < ApplicationController
     render json: {success: true, id: notification.id}, status: :created
   end
 
+  def unsubscribe
+    return head :unauthorized unless current_user
+
+    # Find subscription by endpoint from request body
+    subscription = JSON.parse(request.body.read)
+    endpoint = subscription["endpoint"]
+
+    notification = current_user.web_push_notifications.find_by(endpoint: endpoint)
+    notification&.destroy
+
+    head :ok
+  end
+
   private
 
   def detect_device_name
