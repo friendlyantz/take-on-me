@@ -3,7 +3,12 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["banner", "toggle"]
 
-  async connect() {
+  connect() {
+    this.isProcessing = false
+    this.initialize()
+  }
+
+  async initialize() {
     // Check if this device is already subscribed
     const isSubscribed = await this.checkIfThisDeviceIsSubscribed()
     
@@ -21,14 +26,41 @@ export default class extends Controller {
   }
 
   async toggle(event) {
+    // Prevent rapid toggling
+    if (this.isProcessing) {
+      console.log('Already processing, ignoring toggle')
+      event.preventDefault()
+      event.target.checked = !event.target.checked // Revert the checkbox
+      return
+    }
+
+    this.isProcessing = true
     const checkbox = event.target
+    const wasChecked = checkbox.checked
     
-    if (checkbox.checked) {
-      console.log('Toggle: subscribing...')
-      await this.subscribe()
-    } else {
-      console.log('Toggle: unsubscribing...')
-      await this.unsubscribe()
+    // Disable checkbox during processing
+    if (this.hasToggleTarget) {
+      this.toggleTarget.disabled = true
+    }
+    
+    try {
+      if (wasChecked) {
+        console.log('Toggle: subscribing...')
+        await this.subscribe()
+      } else {
+        console.log('Toggle: unsubscribing...')
+        await this.unsubscribe()
+      }
+    } catch (error) {
+      console.error('Toggle error:', error)
+      // Revert checkbox state on error
+      checkbox.checked = !wasChecked
+    } finally {
+      this.isProcessing = false
+      // Re-enable checkbox
+      if (this.hasToggleTarget) {
+        this.toggleTarget.disabled = false
+      }
     }
   }
 
