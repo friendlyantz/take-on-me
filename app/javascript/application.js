@@ -27,28 +27,73 @@ function registerServiceWorker() {
   navigator.serviceWorker.register('/service-worker.js')
     .then((registration) => {
       console.log('Service worker registered:', registration);
+      return navigator.serviceWorker.ready;
+    })
+    .then(async (serviceWorkerRegistration) => {
+      console.log('Service worker ready');
+      console.log('Push manager:', serviceWorkerRegistration.pushManager);
+      
+      // Check for existing subscription
+      const existingSub = await serviceWorkerRegistration.pushManager.getSubscription();
+      console.log('Existing subscription:', existingSub);
+      
+      if (existingSub) {
+        console.log('Already subscribed, sending to server');
+        await sendSubscriptionToServer(existingSub);
+        return;
+      }
 
-      navigator.serviceWorker.ready
-      .then((serviceWorkerRegistration) => {
-        serviceWorkerRegistration.pushManager
-        .subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: window.vapidPublicKey
-        })
-        .then(function(sub) {
-           window.myGlobalSub = sub; 
-           console.log('Service worker is ready and push subscription initiated. Subscription:', sub); 
-           console.log(
-            // TODO: Remove in production. Save this to your server to send push notifications.
-            'Subscription (JSON):',
-            JSON.parse(JSON.stringify(sub)) 
-           );
-          })
-      })
+      // Check permission state
+      const permissionState = await serviceWorkerRegistration.pushManager.permissionState({
+        userVisibleOnly: true,
+        applicationServerKey: window.vapidPublicKey
+      });
+      console.log('Permission state:', permissionState);
+
+      // Request permission if needed
+      const permission = await Notification.requestPermission();
+      console.log('Notification permission:', permission);
+      
+      if (permission !== 'granted') {
+        console.warn('Notification permission denied');
+        return;
+      }
+
+      // Subscribe
+      console.log('Attempting to subscribe...');
+      console.log('VAPID key length:', window.vapidPublicKey?.length);
+      
+      const sub = await serviceWorkerRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: window.vapidPublicKey
+      });
+      
+      console.log('Subscription successful:', sub);
+      await sendSubscriptionToServer(sub);
     })
     .catch((error) => {
-      console.error('Service worker registration failed:', error);
+      console.error('Error details:');
+      console.error('  Name:', error.name);
+      console.error('  Message:', error.message);
+      console.error('  Stack:', error.stack);
     });
+}
+
+async function sendSubscriptionToServer(sub) {
+  try {
+    const data = await fetch('/web_push_notifications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify(sub)
+    }).then(response => response.json());
+
+    console.log('Push subscription sent to server:', data);
+  } catch (error) {
+    console.error('Failed to send subscription to server:', error);
+  }
 }
 
 if ('serviceWorker' in navigator) {

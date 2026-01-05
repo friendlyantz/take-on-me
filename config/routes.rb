@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :web_push_notifications, only: %i[create]
   # Development email preview
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
