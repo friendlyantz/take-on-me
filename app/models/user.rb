@@ -12,10 +12,11 @@ class User < ApplicationRecord
   has_many :liked_challenge_stories, through: :challenge_story_likes, source: :challenge_story
   has_many :challenge_participants, dependent: :destroy
   has_many :challenge_stories, through: :challenge_participants
+  has_many :web_push_notifications, dependent: :destroy
 
   # Validations
   validates :username, presence: true, uniqueness: true
-  validates :email, presence: false, uniqueness: { allow_nil: true }, format: { with: URI::MailTo::EMAIL_REGEXP, allow_nil: true }
+  validates :email, presence: false, uniqueness: {allow_nil: true}, format: {with: URI::MailTo::EMAIL_REGEXP, allow_nil: true}
 
   # Callbacks
   after_initialize do

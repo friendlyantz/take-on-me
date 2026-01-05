@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_01_030637) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_05_025247) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -172,6 +172,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_01_030637) do
     t.check_constraint "challenge_story_likes_count >= 0", name: "check_user_likes_non_negative"
   end
 
+  create_table "web_push_notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "endpoint", null: false
+    t.string "auth_key", null: false
+    t.string "p256dh_key", null: false
+    t.string "device_name"
+    t.text "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "endpoint"], name: "index_web_push_notifications_on_user_id_and_endpoint", unique: true
+    t.index ["user_id"], name: "index_web_push_notifications_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "challenge_comment_likes", "challenge_comments", on_delete: :cascade
@@ -186,4 +199,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_01_030637) do
   add_foreign_key "challenge_story_likes", "challenge_stories", on_delete: :cascade
   add_foreign_key "challenge_story_likes", "users", on_delete: :cascade
   add_foreign_key "credentials", "users", on_delete: :cascade
+  add_foreign_key "web_push_notifications", "users", on_delete: :cascade
 end
