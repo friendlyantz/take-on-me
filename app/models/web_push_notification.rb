@@ -1,13 +1,16 @@
 class WebPushNotification < ApplicationRecord
   belongs_to :user
 
-  def send_notification(title:, body: nil, icon: nil, badge: nil)
+  def send_notification(title:, body: nil, icon: nil, badge: nil, path: "/")
     message = JSON.generate({
       title: title,
       options: {
         body: body,
         icon: icon,
-        badge: badge
+        badge: badge,
+        data: {
+          path: path
+        }
       }.compact
     })
 
