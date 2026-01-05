@@ -100,7 +100,7 @@ RSpec.describe "Sessions Email Authentication", type: :request do
     it "returns error for invalid token" do
       get verify_email_session_path, params: { token: "invalid-token" }
 
-      expect(response).to redirect_to(new_session_path)
+      expect(response).to redirect_to(new_webauthn_session_path)
       expect(flash[:alert]).to include("Invalid or expired")
       expect(session[:user_id]).to be_nil
     end
@@ -111,7 +111,7 @@ RSpec.describe "Sessions Email Authentication", type: :request do
 
       get verify_email_session_path, params: { token: token }
 
-      expect(response).to redirect_to(new_session_path)
+      expect(response).to redirect_to(new_webauthn_session_path)
       expect(flash[:alert]).to include("expired")
       expect(session[:user_id]).to be_nil
     end
@@ -119,7 +119,7 @@ RSpec.describe "Sessions Email Authentication", type: :request do
     it "returns error when no token provided" do
       get verify_email_session_path, params: { token: "" }
 
-      expect(response).to redirect_to(new_session_path)
+      expect(response).to redirect_to(new_webauthn_session_path)
       expect(flash[:alert]).to include("Invalid sign-in link")
       expect(session[:user_id]).to be_nil
     end

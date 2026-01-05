@@ -45,19 +45,19 @@ module Email
       token = params[:token]
 
       if token.blank?
-        redirect_to new_session_path, alert: "Invalid sign-in link"
+        redirect_to new_webauthn_session_path, alert: "Invalid sign-in link"
         return
       end
 
       user = User.find_by_email_login_token(token)
 
       if user.nil?
-        redirect_to new_session_path, alert: "Invalid or expired sign-in link"
+        redirect_to new_webauthn_session_path, alert: "Invalid or expired sign-in link"
         return
       end
 
       unless user.verify_email_login_token(token)
-        redirect_to new_session_path, alert: "This sign-in link has expired"
+        redirect_to new_webauthn_session_path, alert: "This sign-in link has expired"
         return
       end
 

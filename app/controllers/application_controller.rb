@@ -29,6 +29,6 @@ class ApplicationController < ActionController::Base
   end
 
   def require_current_user!
-    redirect_to new_session_path if current_user.blank?
+    redirect_to new_webauthn_session_path if current_user.blank?
   end
 end

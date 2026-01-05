@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   # Test-only route for signing in without WebAuthn
   if Rails.env.test?
-    get "test_sign_in/:user_id", to: "sessions#test_sign_in", as: :test_sign_in
+    get "test_sign_in/:user_id", to: "webauthn/sessions#test_sign_in", as: :test_sign_in
   end
 
   resources :challenge_stories, only: %i[index show new create edit update destroy] do
@@ -40,18 +40,20 @@ Rails.application.routes.draw do
   mount Challenge::Engine, at: "/challenge"
   root "home#index"
 
-  resource :session, only: [:new, :create, :destroy] do
-    post :callback
+  namespace :webauthn do
+    resource :session, only: [:new, :create, :destroy] do
+      post :callback, on: :collection
+    end
+
+    resource :registration, only: [:new, :create] do
+      post :callback, on: :collection
+    end
   end
 
   namespace :email do
     resource :session, only: [:new, :create] do
       get :verify, on: :collection
     end
-  end
-
-  resource :registration, only: [:new, :create] do
-    post :callback
   end
 
   resources :credentials, only: [:index, :create, :destroy] do

@@ -10,7 +10,7 @@ RSpec.describe "ChallengeComments", type: :request do
       it "redirects to sign in" do
         get new_challenge_story_challenge_comment_path(story)
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to redirect_to(new_webauthn_session_path)
       end
     end
 

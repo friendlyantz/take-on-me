@@ -9,7 +9,7 @@ RSpec.describe "ChallengeParticipants", type: :request do
       it "redirects to sign in" do
         post challenge_participants_path, params: {challenge_story_id: story.id}
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to redirect_to(new_webauthn_session_path)
       end
     end
 

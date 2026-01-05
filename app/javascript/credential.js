@@ -43,7 +43,7 @@ function create(callbackUrl, credentialOptions) {
 
 function get(credentialOptions) {
   WebAuthnJSON.get({ "publicKey": credentialOptions }).then(function(credential) {
-    callback("/session/callback", credential);
+    callback("/webauthn/session/callback", credential);
   }).catch(function(error) {
     showMessage(error);
   });
