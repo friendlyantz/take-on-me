@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_message" do %>
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4" data-controller="image-compressor">
     <%= form_with(model: [@challenge_story, @challenge_comment], class: "contents") do |form| %>
       <% if @challenge_comment.errors[:base].any? %>
         <div class="alert alert-error mb-4">
@@ -19,7 +19,11 @@
       <%= 
         form.file_field :photo,
         class: "file-input",
-        accept: "image/*"
+        accept: "image/*",
+        data: { 
+          image_compressor_target: "input",
+          action: "change->image-compressor#compress"
+        }
        %>
 
       <% if @challenge_comment.errors[:photo].any? %>
@@ -30,6 +34,9 @@
 
       <div class="inline">
         <%= form.submit class: "btn btn-soft btn-secondary", id: "submit"%>
+      </div>
+      <div class="alert hidden mt-2" data-image-compressor-target="status">
+        <span></span>
       </div>
 
     <%end%>
