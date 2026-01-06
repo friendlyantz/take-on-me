@@ -10,8 +10,8 @@
         <div class="card bg-base-100 shadow-sm hover:shadow-lg hover:bg-base-200 transition duration-200 flex flex-col">
           <%= link_to challenge_story, class: "flex-1 flex flex-col" do %>
             <figure>
-              <% if (latest_comment_with_photo = challenge_story.latest_photo_comment) %>
-                <%= cl_image_tag(latest_comment_with_photo.photo.key, height: 300, width: 400, crop: :fill) %>
+              <% if (latest_check_in_with_photo = challenge_story.latest_photo_check_in) %>
+                <%= cl_image_tag(latest_check_in_with_photo.photo.key, height: 300, width: 400, crop: :fill) %>
               <% else %>
                 <img src="https://img.daisyui.com/images/stock/photo-1560717789-0ac7c58ac90a.webp" alt="Shoes" />
               <% end %>
@@ -32,7 +32,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
               </svg>
-              <%= challenge_story.challenge_comments_count %>
+              <%= challenge_story.challenge_check_ins_count %>
             </div>
           </div>
 

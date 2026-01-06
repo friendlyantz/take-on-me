@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "challenge_check_in_#{@challenge_check_in.id}_likes" do %>
+  <%= render 'challenge_check_ins/likes', challenge_check_in: @challenge_check_in %>
+<% end %>

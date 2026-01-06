@@ -8,10 +8,10 @@ class ChallengeStoriesController < ApplicationController
     @challenge_stories = ChallengeStory
       .joins(:challenge_participants)
       .where(challenge_participants: {user_id: current_user.id, status: :active})
-      .includes(:active_participants, challenge_comments: {photo_attachment: :blob})
-      .left_joins(:challenge_comments)
+      .includes(:active_participants, challenge_check_ins: {photo_attachment: :blob})
+      .left_joins(:challenge_check_ins)
       .group("challenge_stories.id")
-      .order(Arel.sql("MAX(challenge_comments.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
+      .order(Arel.sql("MAX(challenge_check_ins.created_at) DESC NULLS LAST, challenge_stories.updated_at DESC"))
 
     # Preload current user's participations to avoid N+1 in views
     story_ids = @challenge_stories.map(&:id)
@@ -27,9 +27,9 @@ class ChallengeStoriesController < ApplicationController
 
     @challenge_story = ChallengeStory
       .includes(
-        challenge_participants: [:user, :challenge_comments],
+        challenge_participants: [:user, :challenge_check_ins],
         challenge_rewards: [:giver, :receiver],
-        challenge_comments: [:challenge_participant, :challenge_comment_likes, photo_attachment: :blob]
+        challenge_check_ins: [:challenge_participant, :challenge_check_in_likes, photo_attachment: :blob]
       )
       .find(params[:id])
 
@@ -37,9 +37,9 @@ class ChallengeStoriesController < ApplicationController
       @current_challenge_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
 
       time_limit_till_next_check_in = 12.hours
-      @already_checked_in_comment = @current_challenge_participant&.challenge_comments&.where(created_at: time_limit_till_next_check_in.ago..Time.zone.now)&.order(:created_at)&.last
-      @time_of_a_next_check_in = if @already_checked_in_comment.present?
-        @already_checked_in_comment.created_at + time_limit_till_next_check_in
+      recent_check_in = @current_challenge_participant&.challenge_check_ins&.where(created_at: time_limit_till_next_check_in.ago..Time.zone.now)&.order(:created_at)&.last
+      @time_of_a_next_check_in = if recent_check_in.present?
+        recent_check_in.created_at + time_limit_till_next_check_in
       end
     end
 

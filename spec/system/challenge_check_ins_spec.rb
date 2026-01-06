@@ -1,6 +1,6 @@
 require "system_helper"
 
-RSpec.describe "Challenge Comments (Check-ins)", type: :system do
+RSpec.describe "Challenge Check-ins", type: :system do
   let(:user) { create(:user) }
   let(:challenge) { create(:challenge_story) }
   let!(:participant) { create(:challenge_participant, user: user, challenge_story: challenge) }
@@ -24,7 +24,7 @@ RSpec.describe "Challenge Comments (Check-ins)", type: :system do
   end
 
   scenario "participant cannot check in twice in one day" do
-    create(:challenge_comment, challenge_participant: participant, challenge_story: challenge)
+    create(:challenge_check_in, challenge_participant: participant, challenge_story: challenge)
 
     show_page.load
 

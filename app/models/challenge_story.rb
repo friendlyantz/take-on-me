@@ -4,7 +4,7 @@ class ChallengeStory < ApplicationRecord
   MAX_PARTICIPANTS = 4
 
   # Associations
-  has_many :challenge_comments, -> { order(created_at: :desc) }, dependent: :destroy
+  has_many :challenge_check_ins, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
   has_many :challenge_rewards, dependent: :destroy
   has_many :challenge_story_likes, dependent: :destroy
@@ -29,8 +29,8 @@ class ChallengeStory < ApplicationRecord
     finish < Time.zone.today
   end
 
-  def latest_photo_comment
-    challenge_comments.joins(:photo_attachment).last
+  def latest_photo_check_in
+    challenge_check_ins.joins(:photo_attachment).last
   end
 
   def liked_by?(user)

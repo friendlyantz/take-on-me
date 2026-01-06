@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     member do
       patch :complete
     end
-    resources :challenge_comments, only: %i[new create destroy]
+    resources :challenge_check_ins, only: %i[new create destroy]
     resources :challenge_rewards, only: %i[index new create show] do
       member do
         patch :fulfill
@@ -26,8 +26,8 @@ Rails.application.routes.draw do
     resource :challenge_story_like, only: [:create, :destroy]
   end
 
-  resources :challenge_comments, only: [] do
-    resource :challenge_comment_like, only: [:create, :destroy]
+  resources :challenge_check_ins, only: [] do
+    resource :challenge_check_in_like, only: [:create, :destroy]
   end
 
   resources :challenge_participants, only: %i[create destroy]

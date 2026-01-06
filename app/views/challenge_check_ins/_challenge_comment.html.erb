@@ -1,0 +1,22 @@
+<div id="<%= dom_id challenge_check_in %>" 
+  class="<%= current_user == challenge_check_in.challenge_participant.user ? 'chat chat-end' : 'chat chat-start' %>"
+>
+  <div class="chat-image avatar">
+    <div class="w-10 rounded-full">
+      <%= image_tag "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=#{challenge_check_in.challenge_participant.name}&options[skinColor]=random&size=80", alt: 'avatar', class: "rounded-full" %>
+    </div>
+  </div>
+  <div class="chat-header">
+    <%=  challenge_check_in.challenge_participant.name %>
+    <time class="text-xs opacity-50">
+      <%= time_ago_in_words(challenge_check_in.created_at) %> ago
+    </time>
+  </div>
+  <div class="chat-bubble">
+    <%= simple_format(challenge_check_in.message) %>
+    <%= cl_image_tag(challenge_check_in.photo.key, height: 300, width: 400, crop: :fill) if challenge_check_in.photo.attached?%>
+  </div>
+  <div class="flex items-center gap-2 mt-3">
+    <%= render 'challenge_check_ins/likes', challenge_check_in: challenge_check_in %>
+  </div>
+</div>

@@ -8,15 +8,15 @@
     total_days = [total_days, (challenge_story.finish - challenge_story.start).to_i + 1].min
     
     # Sort participants by check-ins for ranking
-    ranked_participants = @participants.sort_by { |p| -p.challenge_comments_count }
+    ranked_participants = @participants.sort_by { |p| -p.challenge_check_ins_count }
   %>
 
   <div class="space-y-3 mb-6">
     <% ranked_participants.each_with_index do |participant, index| %>
       <% 
-        check_ins = participant.challenge_comments_count
+        check_ins = participant.challenge_check_ins_count
         completion_rate = total_days > 0 ? (check_ins.to_f / total_days * 100).round : 0
-        latest_comment = participant.challenge_comments.order(created_at: :desc).limit(1).first
+        latest_check_in = participant.challenge_check_ins.order(created_at: :desc).limit(1).first
         
         # Rank styling
         rank_class = case index
@@ -80,13 +80,13 @@
               </div>
 
               <!-- Latest Activity -->
-              <% if latest_comment %>
+              <% if latest_check_in %>
                 <div class="flex items-center gap-2 mt-2 text-xs opacity-70">
                   <svg class="h-3 w-3 text-success flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
-                  <span class="truncate"><%= latest_comment.message.truncate(40) %></span>
-                  <span class="text-base-content/50">· <%= time_ago_in_words(latest_comment.created_at) %> ago</span>
+                  <span class="truncate"><%= latest_check_in.message.truncate(40) %></span>
+                  <span class="text-base-content/50">· <%= time_ago_in_words(latest_check_in.created_at) %> ago</span>
                 </div>
               <% end %>
             </div>

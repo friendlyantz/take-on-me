@@ -4,7 +4,7 @@
       <% if @time_of_a_next_check_in.present? %>
         <%= render "challenge_stories/alerts/no_more_check_ins_for_today", time_of_a_next_check_in: @time_of_a_next_check_in %>
       <% else %>
-        <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_comment_path(@challenge_story) %>
+        <%= turbo_frame_tag "new_message", src: new_challenge_story_challenge_check_in_path(@challenge_story) %>
       <% end %>
     <% else %>
       <%= render "challenge_stories/alerts/no_more_check_ins_for_completed_challenge" %>
@@ -19,7 +19,7 @@
             </svg>
             <div class="flex-1">
               <h3 class="font-semibold text-lg mb-2">Join this challenge to check in</h3>
-              <p class="text-sm opacity-70 mb-4">You must be a participant to track your progress and check in daily.</p>
+              <p class="text-sm opacity-70 mb-4">You must be a participant to track your progress.</p>
 
               <% if @challenge_story.at_capacity? %>
                 <%= render "challenge_stories/alerts/challenge_at_capacity" %>
