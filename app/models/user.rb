@@ -15,7 +15,12 @@ class User < ApplicationRecord
   has_many :web_push_notifications, dependent: :destroy
 
   # Validations
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true, uniqueness: true,
+    length: {minimum: 3, maximum: 20},
+    format: {
+      with: /\A[a-zA-Z0-9_-]+\z/,
+      message: "can only contain letters, numbers, underscores, and hyphens"
+    }
   validates :email, presence: false, uniqueness: {allow_nil: true}, format: {with: URI::MailTo::EMAIL_REGEXP, allow_nil: true}
 
   # Callbacks
