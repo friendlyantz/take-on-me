@@ -15,14 +15,15 @@
           <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
           </div>
         </div>
-        <%= form.submit "Sign in with Passkey", class: "btn btn-neutral mt-4 w-full" %>
+        <%= form.submit "Sign in with Passkey", class: "btn btn-primary mt-4 w-full" %>
       <% end %>
 
       <%= render partial: 'application/js_error' %>
 
-      <%= link_to "Sign in with email", new_email_session_path, class: "btn btn-secondary w-full mt-3" %>
-      <%= link_to 'Register Instead', new_webauthn_registration_path(return_to: session[:return_to]), class: "btn btn-primary mt-4" if session[:return_to] %>
-      <%= link_to 'Register Instead', new_webauthn_registration_path, class: "btn btn-primary mt-2" unless session[:return_to] %>
+      <%= link_to 'Register Instead', new_webauthn_registration_path(return_to: session[:return_to]), class: "btn btn-secondary mt-4" if session[:return_to] %>
+      <%= link_to 'Register Instead', new_webauthn_registration_path, class: "btn btn-secondary mt-2" unless session[:return_to] %>
+
+      <%= link_to "Sign in with email", new_email_session_path, class: "btn btn-neutral w-full mt-3" %>
     </fieldset>
   </div>
 
