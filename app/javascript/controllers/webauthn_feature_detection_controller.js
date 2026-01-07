@@ -7,14 +7,19 @@ export default class extends Controller {
   connect() {
     if (!supported()) {
       this.messageTarget.innerHTML = "This browser doesn't support WebAuthn API";
-      this.element.classList.remove("hidden");
+      this.showUnsupportedView();
     } else {
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then((available) => {
         if (!available) {
           this.messageTarget.innerHTML = "We couldn't detect a user-verifying platform authenticator";
-          this.element.classList.remove("hidden");
+          this.showUnsupportedView();
         }
       });
     }
   }
+
+  showUnsupportedView() {
+    this.element.classList.remove("hidden");
+  }
 }
+

@@ -69,6 +69,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+  # TODO: low priority - configure multiple origins webAuthn for local dev at the start
+  # config.webauthn_origin = "https://" + ENV.fetch("APP_HOST")
   config.webauthn_origin = "http://localhost:3000"
   config.hosts = [
     ENV.fetch("APP_HOST", "localhost"),
