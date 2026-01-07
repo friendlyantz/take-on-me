@@ -1,11 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
-import { supported as WebAuthnSupported } from "@github/webauthn-json";
+import { supported } from "credential";
 
 export default class extends Controller {
   static targets = ["message"]
 
   connect() {
-    if (!WebAuthnSupported()) {
+    if (!supported()) {
       this.messageTarget.innerHTML = "This browser doesn't support WebAuthn API";
       this.element.classList.remove("hidden");
     } else {

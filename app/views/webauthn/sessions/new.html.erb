@@ -4,9 +4,9 @@
   <div class="flex flex-col gap-4 max-w-xs">
     <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
       <legend class="fieldset-legend">Sign In with Passkey</legend>
-      <%= form_with scope: :session, url: webauthn_session_path, local: false, id: "new-session",
-      data: { controller: "new-session",
-      action: "ajax:success->new-session#create ajax:error->new-session#error" } do |form| %>
+      <%= form_with scope: :session, url: webauthn_session_path, id: "new-session",
+      data: { controller: "new-session", turbo: false,
+      action: "submit->new-session#submit" } do |form| %>
         <div class="mdc-text-field mdc-text-field--fullwidth" data-controller="textfield" data-new-session-target="usernameField">
           <%= form.text_field :username, class: "input mdc-text-field__input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
         </div>

@@ -19,13 +19,9 @@ module Webauthn
       if user.valid?
         session[:current_registration] = {challenge: create_options.challenge, user_attributes: user.attributes}
 
-        respond_to do |format|
-          format.json { render json: create_options }
-        end
+        render json: create_options
       else
-        respond_to do |format|
-          format.json { render json: {errors: user.errors.full_messages}, status: :unprocessable_content }
-        end
+        render json: {errors: user.errors.full_messages}, status: :unprocessable_content
       end
     end
 
@@ -38,7 +34,7 @@ module Webauthn
         webauthn_credential.verify(session[:current_registration]["challenge"], user_verification: true)
 
         user.credentials.build(
-          external_id: Base64.strict_encode64(webauthn_credential.raw_id),
+          external_id: Base64.urlsafe_encode64(webauthn_credential.raw_id, padding: false),
           nickname: params[:credential_nickname],
           public_key: webauthn_credential.public_key,
           sign_count: webauthn_credential.sign_count

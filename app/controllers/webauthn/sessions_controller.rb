@@ -16,13 +16,9 @@ module Webauthn
 
         session[:current_authentication] = {challenge: get_options.challenge, username: session_params[:username]}
 
-        respond_to do |format|
-          format.json { render json: get_options }
-        end
+        render json: get_options
       else
-        respond_to do |format|
-          format.json { render json: {errors: ["Username doesn't exist"]}, status: :unprocessable_content }
-        end
+        render json: {errors: ["Username doesn't exist"]}, status: :unprocessable_content
       end
     end
 
@@ -32,7 +28,7 @@ module Webauthn
       user = User.find_by(username: session[:current_authentication]["username"])
       raise "user #{session[:current_authentication]["username"]} never initiated sign up" unless user
 
-      credential = user.credentials.find_by(external_id: Base64.strict_encode64(webauthn_credential.raw_id))
+      credential = user.credentials.find_by(external_id: Base64.urlsafe_encode64(webauthn_credential.raw_id, padding: false))
 
       begin
         webauthn_credential.verify(

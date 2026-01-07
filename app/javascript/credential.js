@@ -1,4 +1,3 @@
-import * as WebAuthnJSON from "@github/webauthn-json"
 import { showMessage } from "messenger";
 
 function getCSRFToken() {
@@ -31,24 +30,41 @@ function callback(url, body) {
   });
 }
 
-function create(callbackUrl, credentialOptions) {
-  WebAuthnJSON.create({ "publicKey": credentialOptions }).then(function(credential) {
-    callback(callbackUrl, credential);
-  }).catch(function(error) {
-    showMessage(error);
-  });
-
+async function create(callbackUrl, credentialOptions) {
   console.log("Creating new public key credential...");
+  
+  try {
+    // Use native browser API to parse JSON options
+    const publicKey = PublicKeyCredential.parseCreationOptionsFromJSON(credentialOptions);
+    const credential = await navigator.credentials.create({ publicKey });
+    
+    // Use native toJSON() to serialize the credential
+    callback(callbackUrl, credential.toJSON());
+  } catch (error) {
+    console.error("WebAuthn create error:", error);
+    showMessage(`${error.name}: ${error.message}`);
+  }
 }
 
-function get(credentialOptions) {
-  WebAuthnJSON.get({ "publicKey": credentialOptions }).then(function(credential) {
-    callback("/webauthn/session/callback", credential);
-  }).catch(function(error) {
-    showMessage(error);
-  });
-
+async function get(credentialOptions) {
   console.log("Getting public key credential...");
+  
+  try {
+    // Use native browser API to parse JSON options
+    const publicKey = PublicKeyCredential.parseRequestOptionsFromJSON(credentialOptions);
+    const credential = await navigator.credentials.get({ publicKey });
+    
+    // Use native toJSON() to serialize the credential
+    callback("/webauthn/session/callback", credential.toJSON());
+  } catch (error) {
+    console.error("WebAuthn get error:", error);
+    showMessage(`${error.name}: ${error.message}`);
+  }
 }
 
-export { create, get }
+// Check if native WebAuthn JSON methods are supported
+function supported() {
+  return !!window.PublicKeyCredential?.parseCreationOptionsFromJSON;
+}
+
+export { create, get, supported }
