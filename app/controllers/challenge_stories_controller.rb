@@ -33,19 +33,20 @@ class ChallengeStoriesController < ApplicationController
       )
       .find(params[:id])
 
+    @participants = @challenge_story.challenge_participants
+      .select(&:active?)
+      .sort_by(&:created_at)
+
     if current_user
-      @current_challenge_participant = @challenge_story.challenge_participants.find { |p| p.user_id == current_user.id }
+      @current_challenge_participant = @participants.find { |p| p.user_id == current_user.id }
 
       time_limit_till_next_check_in = 12.hours
       recent_check_in = @current_challenge_participant&.challenge_check_ins&.where(created_at: time_limit_till_next_check_in.ago..Time.zone.now)&.order(:created_at)&.last
       @time_of_a_next_check_in = if recent_check_in.present?
         recent_check_in.created_at + time_limit_till_next_check_in
       end
-    end
 
-    @participants = @challenge_story.challenge_participants
-      .select(&:active?)
-      .sort_by(&:created_at)
+    end
   end
 
   def new

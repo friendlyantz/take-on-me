@@ -27,6 +27,25 @@ class ChallengeParticipant < ApplicationRecord
     update!(status: :active)
   end
 
+  def has_pledged_to_all_active_participants?
+    other_active_ids = challenge_story.active_participants.where.not(id: id).pluck(:id)
+    return true if other_active_ids.empty?
+
+    pledged_ids = given_rewards.pluck(:receiver_id)
+    (other_active_ids - pledged_ids).empty?
+  end
+
+  def unpledged_participants
+    pledged_ids = given_rewards.pluck(:receiver_id)
+    challenge_story.active_participants
+      .where.not(id: id)
+      .where.not(id: pledged_ids)
+  end
+
+  def missing_pledges?
+    !has_pledged_to_all_active_participants?
+  end
+
   private
 
   def set_default_name

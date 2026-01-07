@@ -1,0 +1,24 @@
+<% if current_challenge_participant&.active? && current_challenge_participant.missing_pledges? %>
+  <% unpledged = current_challenge_participant.unpledged_participants %>
+  <% if unpledged.any? %>
+    <div class="alert alert-warning shadow-lg mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div class="flex-1">
+        <h3 class="font-bold">Missing pledges!</h3>
+        <p class="text-sm">
+          You haven't pledged rewards to
+          <%= unpledged.map(&:name).to_sentence %>.
+          Show your support!
+        </p>
+      </div>
+      <%= link_to new_challenge_story_challenge_reward_path(current_challenge_participant.challenge_story), class: "btn btn-warning btn-sm gap-1" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Pledge Now
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
