@@ -2,6 +2,8 @@
 
 module Webauthn
   class RegistrationsController < ApplicationController
+    before_action :check_webview, only: [:new]
+
     def new
     end
 
@@ -51,6 +53,14 @@ module Webauthn
         render json: "Verification failed: #{e.message}", status: :unprocessable_content
       ensure
         session.delete(:current_registration)
+      end
+    end
+
+    private
+
+    def check_webview
+      if likely_webview?
+        redirect_to unsupported_browser_path(url: request.original_url)
       end
     end
   end

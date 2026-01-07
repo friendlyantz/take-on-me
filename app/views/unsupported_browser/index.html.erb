@@ -1,0 +1,9 @@
+<div class="max-w-md mx-auto mt-28 px-4">
+  <% if @webview_again %>
+    <%= render 'application/alerts/unsupported_browser',  url: @unsupported_url  %>
+  <% else %>
+    <%# TODO: possibly cleanup. safenet if bouncing between browsers doesn't work %>
+    <%= link_to "Continue", @unsupported_url, class: "btn btn-primary mt-4" %>
+  <% end %>
+
+</div>

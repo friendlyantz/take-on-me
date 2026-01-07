@@ -22,7 +22,7 @@ class ChallengeStoriesController < ApplicationController
 
   def show
     if likely_webview?
-      @likely_webview_shared_url = params[:url] || root_url
+      @likely_webview_shared_url = params[:url] || request.original_url || root_url
     end
 
     @challenge_story = ChallengeStory

@@ -2,6 +2,8 @@
 
 module Webauthn
   class SessionsController < ApplicationController
+    before_action :check_webview, only: [:new]
+
     def new
     end
 
@@ -68,6 +70,12 @@ module Webauthn
 
     def session_params
       params.require(:session).permit(:username)
+    end
+
+    def check_webview
+      if likely_webview?
+        redirect_to unsupported_browser_path(url: request.original_url)
+      end
     end
   end
 end
