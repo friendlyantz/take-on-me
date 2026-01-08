@@ -8,8 +8,8 @@
       </h1>
       <p class="mb-5">
         Personal challenges with social proof.
-         <br>
-         Let friends keep you honest.
+        <br>
+        Let friends keep you honest.
       </p>
       <div class="avatar-group -space-x-6 justify-center mb-5">
         <div class="avatar">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <ul class="steps">
-        <li class="step step-primary" data-content="✓"> 
+        <li class="step step-primary" data-content="✓">
           <%= (Date.today - 3.days).strftime("%d %B") %>
         </li>
         <li class="step step-primary" data-content="✓"></li>
@@ -90,8 +90,10 @@
         </div>
       </div>
 
-      Users registered
-      <%= line_chart User.group_by_day(:created_at).count %>
+      <div class="pb-12">
+        User registions recently
+        <%= line_chart User.where(created_at: 14.days.ago..Time.current).group_by_day(:created_at).count %>
+      </div>
 
     </div>
   </div>
