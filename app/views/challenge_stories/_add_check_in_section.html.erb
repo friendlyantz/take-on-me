@@ -36,8 +36,12 @@
   <div class="card bg-base-200 shadow-lg mb-6">
     <div class="card-body text-center">
       <h3 class="card-title justify-center">Want to join this challenge?</h3>
-      <p class="opacity-70">Sign in to start tracking your progress</p>
-      <%= link_to "Sign In", new_webauthn_session_path, class: "btn btn-primary" %>
+      <p class="opacity-70">Sign up to start tracking your progress</p>
+
+      <div class="flex flex-col sm:flex-row gap-2 justify-center mt-4">
+        <%= render 'shared/call_to_action_sign_up' %>
+      </div>
+
     </div>
   </div>
 <% end %>

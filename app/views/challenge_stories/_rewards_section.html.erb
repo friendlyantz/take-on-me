@@ -1,5 +1,8 @@
 <div class="card bg-gradient-to-br from-primary/5 to-secondary/5 shadow-xl mb-6">
   <div class="card-body">
+    <% current_challenge_participant = challenge_story.active_participants.find { |p| p.user_id == current_user&.id } %>
+    <%= render "challenge_rewards/pledge_reminder_banner", current_challenge_participant: current_challenge_participant %>
+
     <div class="flex items-start justify-between">
       <div>
         <h2 class="card-title text-2xl flex items-center gap-2 mb-2">
@@ -110,13 +113,10 @@
 
           <% end %>
         <% else %>
-          <%= link_to new_webauthn_session_path, class: "btn btn-secondary gap-2" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
-            Sign In to Join
-          <% end %>
+
+          <%= render 'shared/call_to_action_sign_up' %>
         <% end %>
+
       </div>
     <% end %>
   </div>

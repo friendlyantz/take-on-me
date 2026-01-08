@@ -1,10 +1,10 @@
-<%= render partial: 'application/feature_detection' %>
-
 <div class="mt-28">
+  <%= render partial: 'webauthn/alerts/feature_detection' %>
+
   <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
     <legend class="fieldset-legend">Register with Passkeys</legend>
-    <%= form_with scope: :registration, url: webauthn_registration_path, local: false,  id: "new-registration", data: { controller: "new-registration", action: "ajax:success->new-registration#create ajax:error->new-registration#error" } do |form| %>
-      <div class="mdc-text-field mdc-text-field--fullwidth" data-controller="textfield" data-target="new-registration.usernameField">
+    <%= form_with scope: :registration, url: webauthn_registration_path, id: "new-registration", data: { controller: "new-registration", turbo: false, action: "submit->new-registration#submit" } do |form| %>
+      <div class="mdc-text-field mdc-text-field--fullwidth" data-controller="textfield" data-new-registration-target="usernameField">
         <%= form.text_field :username, class: "input mdc-text-field__input", placeholder: "Username", required: true, autocapitalize: "none", "aria-controls" => "username-helper-text" %>
       </div>
       <p class="text-xs text-gray-500 mt-1">Can't be changed later</p>
@@ -13,7 +13,7 @@
         </div>
       </div>
       <br>
-      <div data-controller="textfield">
+      <div>
         <%= form.text_field :nickname, class: "input", placeholder: "Device key nickname", required: true %>
       </div>
       <%= form.submit "Register", class: "btn btn-neutral mt-4 w-full" %>

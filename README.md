@@ -92,7 +92,7 @@ A social app to help people stay accountable by joining challenges (e.g., gym ro
 - ✅ Post updates (text/photo).
   - Progress input fields customized to challenge type (reps, minutes, etc.).
 - ✅ Comment and react.
-- ~~Invite friends via email.~~ (may be later)
+- ~~Invite friends via email.~~ (may be later).  ✅ Just a shareable link to challenge.
 - ✅ Manual reward/bet tracking (no payments yet).
 - **Progress Tracking**:
   - ✅ Manual reward/bet tracking (no payments yet).

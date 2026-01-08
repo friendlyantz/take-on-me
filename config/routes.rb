@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   mount Challenge::Engine, at: "/challenge"
   root "home#index"
 
+  get "unsupported_browser", to: "unsupported_browser#index", as: :unsupported_browser
+
   namespace :webauthn do
     resource :session, only: [:new, :create, :destroy] do
       post :callback, on: :collection

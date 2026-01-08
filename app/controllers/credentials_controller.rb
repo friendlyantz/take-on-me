@@ -2,6 +2,7 @@
 
 class CredentialsController < ApplicationController
   before_action :require_current_user!
+  before_action :check_webview, only: [:index]
 
   def index
   end
@@ -30,7 +31,7 @@ class CredentialsController < ApplicationController
       webauthn_credential.verify(session[:current_registration]["challenge"], user_verification: true)
 
       credential = current_user.credentials.find_or_initialize_by(
-        external_id: Base64.strict_encode64(webauthn_credential.raw_id)
+        external_id: Base64.urlsafe_encode64(webauthn_credential.raw_id, padding: false)
       )
 
       if credential.update(
@@ -55,5 +56,13 @@ class CredentialsController < ApplicationController
     end
 
     redirect_to credentials_path
+  end
+
+  private
+
+  def check_webview
+    if likely_webview?
+      redirect_to unsupported_browser_path(url: request.original_url)
+    end
   end
 end
